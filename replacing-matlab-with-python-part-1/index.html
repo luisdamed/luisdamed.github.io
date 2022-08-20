@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Replacing MATLAB with Python - Part 1</title>
+    <link rel="stylesheet" href="../assets/built/screen.css@v=aeded3ee6e.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400;1,700&family=Mulish:ital,wght@0,400;0,700;0,800;1,400;1,700&display=swap">
+
+    <script>
+        if (localStorage.getItem('alto_dark') == 'true') {
+            document.documentElement.classList.add('dark-mode');
+        }
+    </script>
+
+    <meta name="description" content="Stick with me in this series of posts if you want to see some examples of using Python for MATLAB users. I am not an expert, and the code I will share can probably be improved, but I think these practical examples can be useful for a beginner like me." />
+    <link rel="canonical" href="index.html" />
+    <meta name="referrer" content="no-referrer-when-downgrade" />
+    
+    <meta property="og:site_name" content="Making stuff after office hours" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Replacing MATLAB with Python - Part 1" />
+    <meta property="og:description" content="Stick with me in this series of posts if you want to see some examples of using Python for MATLAB users. I am not an expert, and the code I will share can probably be improved, but I think these practical examples can be useful for a beginner like me." />
+    <meta property="og:url" content="http://localhost:2368/replacing-matlab-with-python-part-1/" />
+    <meta property="og:image" content="https://images.unsplash.com/photo-1497285597995-6ed7de6bfebd?crop&#x3D;entropy&amp;cs&#x3D;tinysrgb&amp;fit&#x3D;max&amp;fm&#x3D;jpg&amp;ixid&#x3D;MnwxMTc3M3wwfDF8c2VhcmNofDE3fHxvcGVufGVufDB8fHx8MTY2MDk4NTE3NQ&amp;ixlib&#x3D;rb-1.2.1&amp;q&#x3D;80&amp;w&#x3D;2000" />
+    <meta property="article:published_time" content="2022-08-20T08:32:32.000Z" />
+    <meta property="article:modified_time" content="2022-08-20T08:49:33.000Z" />
+    <meta property="article:tag" content="Python" />
+    <meta property="article:tag" content="MATLAB" />
+    <meta property="article:tag" content="Engineering" />
+    
+    <meta property="article:publisher" content="https://www.facebook.com/ghost" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Replacing MATLAB with Python - Part 1" />
+    <meta name="twitter:description" content="Stick with me in this series of posts if you want to see some examples of using Python for MATLAB users. I am not an expert, and the code I will share can probably be improved, but I think these practical examples can be useful for a beginner like me." />
+    <meta name="twitter:url" content="http://localhost:2368/replacing-matlab-with-python-part-1/" />
+    <meta name="twitter:image" content="https://images.unsplash.com/photo-1497285597995-6ed7de6bfebd?crop&#x3D;entropy&amp;cs&#x3D;tinysrgb&amp;fit&#x3D;max&amp;fm&#x3D;jpg&amp;ixid&#x3D;MnwxMTc3M3wwfDF8c2VhcmNofDE3fHxvcGVufGVufDB8fHx8MTY2MDk4NTE3NQ&amp;ixlib&#x3D;rb-1.2.1&amp;q&#x3D;80&amp;w&#x3D;2000" />
+    <meta name="twitter:label1" content="Written by" />
+    <meta name="twitter:data1" content="Luis Medina" />
+    <meta name="twitter:label2" content="Filed under" />
+    <meta name="twitter:data2" content="Python, MATLAB, Engineering" />
+    <meta name="twitter:site" content="@ghost" />
+    <meta property="og:image:width" content="2000" />
+    <meta property="og:image:height" content="1398" />
+    
+    <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "publisher": {
+        "@type": "Organization",
+        "name": "Making stuff after office hours",
+        "url": "http://localhost:2368/",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "http://localhost:2368/favicon.ico",
+            "width": 48,
+            "height": 48
+        }
+    },
+    "author": {
+        "@type": "Person",
+        "name": "Luis Medina",
+        "image": {
+            "@type": "ImageObject",
+            "url": "http://localhost:2368/content/images/2022/07/IMG_20210703_160904-1.jpg",
+            "width": 1475,
+            "height": 1474
+        },
+        "url": "http://localhost:2368/author/luis/",
+        "sameAs": []
+    },
+    "headline": "Replacing MATLAB with Python - Part 1",
+    "url": "http://localhost:2368/replacing-matlab-with-python-part-1/",
+    "datePublished": "2022-08-20T08:32:32.000Z",
+    "dateModified": "2022-08-20T08:49:33.000Z",
+    "image": {
+        "@type": "ImageObject",
+        "url": "https://images.unsplash.com/photo-1497285597995-6ed7de6bfebd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxMTc3M3wwfDF8c2VhcmNofDE3fHxvcGVufGVufDB8fHx8MTY2MDk4NTE3NQ&ixlib=rb-1.2.1&q=80&w=2000",
+        "width": 2000,
+        "height": 1398
+    },
+    "keywords": "Python, MATLAB, Engineering",
+    "description": "Stick with me in this series of posts if you want to see some examples of using Python for MATLAB users. I am not an expert, and the code I will share can probably be improved, but I think these practical examples can be useful for a beginner like me.",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "http://localhost:2368/"
+    }
+}
+    </script>
+
+    <meta name="generator" content="Ghost 5.2" />
+    <link rel="alternate" type="application/rss+xml" title="Making stuff after office hours" href="../rss/index.html" />
+    <script defer src="https://unpkg.com/@tryghost/portal@~2.2.0/umd/portal.min.js" data-ghost="http://localhost:2368/" data-key="301bf1d34b7e435e3fcf462aa7" data-api="http://localhost:2368/ghost/api/content/" crossorigin="anonymous"></script><style id="gh-members-styles">.gh-post-upgrade-cta-content,
+.gh-post-upgrade-cta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    text-align: center;
+    width: 100%;
+    color: #ffffff;
+    font-size: 16px;
+}
+
+.gh-post-upgrade-cta-content {
+    border-radius: 8px;
+    padding: 40px 4vw;
+}
+
+.gh-post-upgrade-cta h2 {
+    color: #ffffff;
+    font-size: 28px;
+    letter-spacing: -0.2px;
+    margin: 0;
+    padding: 0;
+}
+
+.gh-post-upgrade-cta p {
+    margin: 20px 0 0;
+    padding: 0;
+}
+
+.gh-post-upgrade-cta small {
+    font-size: 16px;
+    letter-spacing: -0.2px;
+}
+
+.gh-post-upgrade-cta a {
+    color: #ffffff;
+    cursor: pointer;
+    font-weight: 500;
+    box-shadow: none;
+    text-decoration: underline;
+}
+
+.gh-post-upgrade-cta a:hover {
+    color: #ffffff;
+    opacity: 0.8;
+    box-shadow: none;
+    text-decoration: underline;
+}
+
+.gh-post-upgrade-cta a.gh-btn {
+    display: block;
+    background: #ffffff;
+    text-decoration: none;
+    margin: 28px 0 0;
+    padding: 8px 18px;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.gh-post-upgrade-cta a.gh-btn:hover {
+    opacity: 0.92;
+}</style><style>:root {--ghost-accent-color: #19809a;}</style>
+</head>
+
+<body class="post-template tag-python tag-matlab tag-engineering has-serif-title">
+    <div class="site">
+        <header class="site-header container">
+    <div class="navbar">
+        <div class="navbar-left">
+            <div class="burger hidden-lg hidden-xl"></div>
+            <a class="logo" href="../index.html">
+        <span class="logo-text">Making stuff after office hours</span>
+</a>            <div class="sep hidden-xs hidden-sm hidden-sm"></div>
+                <nav class="main-menu hidden-xs hidden-sm hidden-md">
+                    <ul class="nav-list u-plain-list">
+        <li class="menu-item menu-item-home"><a class="menu-item-link"
+                href="../index.html">Home</a></li>
+        <li class="menu-item menu-item-about"><a class="menu-item-link"
+                href="../about/index.html">About</a></li>
+</ul>
+                </nav>
+        </div>
+        <div class="navbar-right">
+            <div class="toggle-track">
+                <div class="toggle-moon"><i class="icon icon-brightness-2"></i></div>
+                <div class="toggle-sun"><i class="icon icon-white-balance-sunny"></i></div>
+                <div class="toggle-thumb"></div>
+            </div>
+        </div>
+    </div>
+</header>        <div class="site-content">
+            
+<div class="content-area">
+    <main class="site-main">
+            <article class="post tag-python tag-matlab tag-engineering single-post">
+                <header class="post-header big-title container medium">
+        <h1 class="post-title">Replacing MATLAB with Python - Part 1</h1>
+            <div class="post-meta">
+                <span class="post-meta-item post-meta-date">
+                    <time datetime="2022-08-20">Aug 20, 2022</time>
+                </span>
+                <span class="post-meta-item post-meta-length">
+                    8 min read
+                </span>
+                    <span class="post-meta-item post-meta-tags">
+                        <a class="post-tag post-tag-python" href="../tag/python/index.html"
+                                title="Python">Python</a><a class="post-tag post-tag-matlab" href="../tag/matlab/index.html"
+                                title="MATLAB">MATLAB</a><a class="post-tag post-tag-engineering" href="../tag/engineering/index.html"
+                                title="Engineering">Engineering</a>
+                    </span>
+            </div>
+</header>                    <figure class="post-media container large">
+        <div class="u-placeholder horizontal">
+            <a class="post-image-link" href="index.html">
+                <img class="post-image lazyload u-object-fit"
+
+                    data-srcset="https://images.unsplash.com/photo-1497285597995-6ed7de6bfebd?crop&#x3D;entropy&amp;cs&#x3D;tinysrgb&amp;fit&#x3D;max&amp;fm&#x3D;jpg&amp;ixid&#x3D;MnwxMTc3M3wwfDF8c2VhcmNofDE3fHxvcGVufGVufDB8fHx8MTY2MDk4NTE3NQ&amp;ixlib&#x3D;rb-1.2.1&amp;q&#x3D;80&amp;w&#x3D;2000 400w, https://images.unsplash.com/photo-1497285597995-6ed7de6bfebd?crop&#x3D;entropy&amp;cs&#x3D;tinysrgb&amp;fit&#x3D;max&amp;fm&#x3D;jpg&amp;ixid&#x3D;MnwxMTc3M3wwfDF8c2VhcmNofDE3fHxvcGVufGVufDB8fHx8MTY2MDk4NTE3NQ&amp;ixlib&#x3D;rb-1.2.1&amp;q&#x3D;80&amp;w&#x3D;2000 750w, https://images.unsplash.com/photo-1497285597995-6ed7de6bfebd?crop&#x3D;entropy&amp;cs&#x3D;tinysrgb&amp;fit&#x3D;max&amp;fm&#x3D;jpg&amp;ixid&#x3D;MnwxMTc3M3wwfDF8c2VhcmNofDE3fHxvcGVufGVufDB8fHx8MTY2MDk4NTE3NQ&amp;ixlib&#x3D;rb-1.2.1&amp;q&#x3D;80&amp;w&#x3D;2000 960w, https://images.unsplash.com/photo-1497285597995-6ed7de6bfebd?crop&#x3D;entropy&amp;cs&#x3D;tinysrgb&amp;fit&#x3D;max&amp;fm&#x3D;jpg&amp;ixid&#x3D;MnwxMTc3M3wwfDF8c2VhcmNofDE3fHxvcGVufGVufDB8fHx8MTY2MDk4NTE3NQ&amp;ixlib&#x3D;rb-1.2.1&amp;q&#x3D;80&amp;w&#x3D;2000 1140w, https://images.unsplash.com/photo-1497285597995-6ed7de6bfebd?crop&#x3D;entropy&amp;cs&#x3D;tinysrgb&amp;fit&#x3D;max&amp;fm&#x3D;jpg&amp;ixid&#x3D;MnwxMTc3M3wwfDF8c2VhcmNofDE3fHxvcGVufGVufDB8fHx8MTY2MDk4NTE3NQ&amp;ixlib&#x3D;rb-1.2.1&amp;q&#x3D;80&amp;w&#x3D;2000 1920w"
+                    data-sizes="auto" src="https://images.unsplash.com/photo-1497285597995-6ed7de6bfebd?crop&#x3D;entropy&amp;cs&#x3D;tinysrgb&amp;fit&#x3D;max&amp;fm&#x3D;jpg&amp;ixid&#x3D;MnwxMTc3M3wwfDF8c2VhcmNofDE3fHxvcGVufGVufDB8fHx8MTY2MDk4NTE3NQ&amp;ixlib&#x3D;rb-1.2.1&amp;q&#x3D;80&amp;w&#x3D;2000"
+                    srcset="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                     alt="Replacing MATLAB with Python - Part 1">
+            </a>
+        </div>
+
+                <figcaption>Photo by <a href="https://unsplash.com/@cbarbalis?utm_source=ghost&utm_medium=referral&utm_campaign=api-credit">Chris Barbalis</a> / <a href="https://unsplash.com/?utm_source=ghost&utm_medium=referral&utm_campaign=api-credit">Unsplash</a></figcaption>
+    </figure>
+                <div class="post-content gh-content kg-canvas">
+                    <p>I work a full-time job as an automotive Control Systems Engineer, and - usually - a big chunk of my time during the day is employed using MATLAB/Simulink for different types of tasks.</p><p>I recently spent a couple of weeks without an individual MATLAB license at work due to different issues that I am not going to address. Of course, I had the chance to use workstations with shared licenses in the office to continue working in <a href="https://en.wikipedia.org/wiki/Model-based_design#:~:text=Model%2Dbased%20design%20(MBD),%2C%20aerospace%2C%20and%20automotive%20applications.">Model-Based software development</a>. For that kind of activity, you can't just go around the license problem, since you work on shared files and projects within a team, and you need to produce models (code) that can work within a larger project.</p><!--kg-card-begin: markdown--><p>However, I took the chance to sharpen my Python skills while completing some of the other tasks I had to do, mainly when analyzing data. I could have used other alternatives, like <a href="https://octave.org/">GNU Octave</a> - which even has the same MATLAB syntax, or <a href="https://www.scilab.org/">Scilab</a>. But I wanted to learn more about Python, since it is a <em>general-purpose programming language</em>.</p>
+<p>I figured that I could share some of the things I learned, and started to write an article that suddenly was too long for a single post. So this will be an ongoing series of posts. In each entry, I will share a simple but practical example of how to do a certain task with MATLAB, but using Python instead. Probably some of the code can be improved, but I think it can be useful to see these examples if you are a beginner like me.</p>
+<p>I think this is important, since Python opens the possibilities for individuals and companies that cannot afford to buy an expensive MATLAB license, or that already using MATLAB but have use cases for which MATLAB can be easily replaced with Python, cutting down the license costs.</p>
+<p>MATLAB is still being used widely, especially in the Automotive and Aerospace industries, but the usage of Python has grown dramatically in many different sectors, since it can be used for many other things - like I said, general-purpose. <em>Python cannot really be compared with MATLAB, as they were designed for different purposes</em>, but I will focus on the use cases that can overlap between the two of them.</p>
+<!--kg-card-end: markdown--><!--kg-card-begin: html--><script type="text/javascript" src="https://ssl.gstatic.com/trends_nrtr/3045_RC01/embed_loader.js"></script> <script type="text/javascript"> trends.embed.renderExploreWidget("TIMESERIES", {"comparisonItem":[{"keyword":"/m/05z1_","geo":"","time":"2004-01-01 2022-08-12"},{"keyword":"/m/053_x","geo":"","time":"2004-01-01 2022-08-12"}],"category":0,"property":""}, {"exploreQuery":"date=all&q=%2Fm%2F05z1_,%2Fm%2F053_x","guestPath":"https://trends.google.com:443/trends/embed/"}); </script><!--kg-card-end: html--><p></p><!--kg-card-begin: markdown--><h2 id="about-automotive-file-formats-and-data-extraction">About Automotive file formats and data extraction</h2>
+<p><em>Skip this part if you are not interested in automotive-specific data</em></p>
+<!--kg-card-end: markdown--><p>Extracting and doing the first-level analysis of data from large log files is a very common use case of MATLAB in automotive testing environments - at least from what I've seen in three different large companies in Europe. It could be seen as a mundane activity, but it is not straightforward if the files you have are in different formats. Also,  it might be something you need to do very frequently. </p><p><strong><em>For this series of posts, I will look at the tasks I learned to do with Python once the data was available in some kind of universal text encoding.</em> </strong>For instance a CSV file or an ASCII file. This is not always obvious, and there were many cases in which I needed to convert <a href="https://support.vector.com/kb?id=kb_article_view&amp;sysparm_article=KB0011536">VECTOR CAN log files </a>or other <a href="https://www.asam.net/standards/detail/mdf/wiki/#:~:text=An%20ASAM%20MDF%20file%20(file,the%20block's%20purpose%20and%20content.">ASAM standard formats</a> to text, or use some kind of API to be able to work with them in Python or MATLAB. But that will be part of another article later on.</p><!--kg-card-begin: markdown--><h1 id="how-to-start-using-python">How to start using Python?</h1>
+<p>Python can be actually written in any raw text editor, like <a href="https://www.chip.de/downloads/Notepad_12996935.html">Numpad++ </a>, and then run from the Windows command prompt. But you probably don't want to do that.</p>
+<p>If you are coming from MATLAB and want to start using Python, you probably want some kind of user interface or IDE (Integrated Development Environment) to work with. There is no unique or best answer here, so I will just tell you the ones I have tried.</p>
+<p>The first thing is, of course, to download and install <a href="https://www.python.org/downloads/">Python 3 itself</a> (Python 2 is already in an End-of-Life stage and will no longer be supported by new libraries). Then, you can download and install one of the following IDEs:</p>
+<ol>
+<li><a href="https://jupyterlab.readthedocs.io/en/stable/">Jupyter Labs</a>. Probably the most used interface for working with Python nowadays. It allows you to work on your web browser, and the Jupyter Notebooks allow splitting the code into <em>cells</em> that can be run individually, like we do with MATLAB's <em>code sections</em>.</li>
+<li><a href="https://www.spyder-ide.org/">SPyder IDE</a>. In my opinion, this one provides the closest experience to MATLAB in terms of interface. You can even have a panel to look at the variables you are working with, for example, and interactive plots. You can install add-ins to work with Jupyter Notebooks within the Spyder IDE too.</li>
+<li><a href="https://code.visualstudio.com/">Visual Studio Code</a> (VS Code) This is a more general-purpose programming IDE, but has great support for Python, including support for Jupyter Notebooks too.</li>
+</ol>
+<p>Personally, I prefer to use VS Code since it allows me to work also on other types of programming projects in the same environment, for example when working with Arduino. However, the code examples I will share will work no matter the IDE you are using.</p>
+<!--kg-card-end: markdown--><!--kg-card-begin: markdown--><h2 id="example-1-simple-time-series-visualization">Example 1: Simple time series visualization</h2>
+<!--kg-card-end: markdown--><p>Normally, working with MATLAB or not, the first thing to do after loading data from some large file would be to plot a time series of the most interesting data (or signals, if we are talking about a CAN data log file, for example). This way I can at least know what I’m dealing with. For this example, I will use this <a href="https://drive.google.com/file/d/1SntfHfiLiTw1Oucy80MRuj8r9WnVa807/view?usp=sharing">example file</a>, which contains some CAN data from a Formula Student Electric car.</p><p>If you download the file, you'll notice that there are missing values on each variable (CAN signal). This happens a lot especially if you have CAN data, which travels in packets, sometimes at different rates. When the data is exported to other formats, there are different ways to handle the different rates of the signals. In some cases, you will get an output file containing data with individual time vectors for each signal. In this case, the user preferred to have a single time base in the exported file, common to all signals, but the drawback is that there are empty values. I personally prefer this way, since it is easier to do time-based analyses with a unique time vector. We just need to handle the empty values.</p><p>To look at this file with MATLAB, I would do something like this:</p><!--kg-card-begin: html--><script src="https://gist.github.com/luisdamed/77e6fff0c5cc9f0bd5a082af0535df3d.js"></script><!--kg-card-end: html--><p></p><p>Notice that I extracted the indices of the non-empty values of each signal, and then used that to represent the data.  I also did some formatting to the plot to make it understandable. </p><p>I needed to represent data containing information about speed, in rpm, and torque, in Nm. And I wanted to visualize both against the same time scale, in order to understand what happened during the test I am looking at. </p><!--kg-card-begin: markdown--><p>This is why I created a tiled layout. I could have used <a href="https://it.mathworks.com/help/matlab/ref/subplot.html">subplots</a> instead, and the results would have been very similar. Or I could have plotted both speeds and rpm against a single abscissa, but using two different y axes using <code>yyaxis right</code>.</p>
+<!--kg-card-end: markdown--><p>The output will be something like this:</p><figure class="kg-card kg-image-card kg-card-hascaption"><img src="../content/images/2022/08/MATLAB_figure_timeseries-2.png" class="kg-image" alt loading="lazy" width="1078" height="701" srcset="../content/images/size/w600/2022/08/MATLAB_figure_timeseries-2.png 600w, ../content/images/size/w1000/2022/08/MATLAB_figure_timeseries-2.png 1000w, ../content/images/2022/08/MATLAB_figure_timeseries-2.png 1078w" sizes="(min-width: 720px) 720px"><figcaption>Plot of time series data obtained using MATLAB - Image by author</figcaption></figure><p>Simple enough, right? Let's see what we have to do instead, when using Python.</p><hr><!--kg-card-begin: html--><script src="https://gist.github.com/luisdamed/34eba609e5877f2181dcec84be5190e3.js"></script><!--kg-card-end: html--><!--kg-card-begin: markdown--><p>The first difference you'll notice is that we need to import the Python libraries we'll use at the start of the code. In this case, we are dealing with data from a text file, so it is a common practice to use the library called Pandas. Although it can be slow for doing complex computations or handling large datasets, there some workarounds.  In general, it is better to do the calculations using another library, Numpy. We simply import those using the <code>import</code> commad before using anything from them.</p>
+<!--kg-card-end: markdown--><!--kg-card-begin: markdown--><p>Then we can read the file, and load the data as a Pandas dataframe. In Python, we have to get used to working with <em>methods</em> other than functions. This will allow us to do different things with the variables we are working with, depending on what type of object (class) they are. For instance, we loaded the data from the file as a dataframe object that we called <code>df</code> (we could have called it anything, like <code>Pikachu</code>, if we wanted, but <code>df</code> is more self-explanatory and a common practice). Then, to extract the non-empty values we use the <code>.</code> notation to access the <code>notnull()</code> method of the dataframe class.</p>
+<p>This is different from the function-based approach that I used in the MATLAB script above, where I used the <a href="https://it.mathworks.com/help/matlab/ref/isnan.html#mw_db2dcfa9-acb4-48e9-a017-ee0c39f1f741"><code>isnan</code></a> function, and it would have worked on either a double array, a scalar, a matrix or a multidimensional array.</p>
+<p>However, methods and classes are not unique to Python, they exist in almost any programming language, and even in MATLAB. The difference is how they are used depending on the <em>intent</em> of the language. MATLAB is specific for matrix computations, so it relies heavily on functions, whereas Python has specific libraries for different purposes, and they use both functions and methods to accomplish some tasks. There are also some <a href="https://docs.python.org/3/library/functions.html">built-in functions in Python</a></p>
+<p>Next, we create the figure and plot the data. We first need to specify the figure size, otherwise, the default figure dimensions will be too small. In this case, we are using subplots to obtain the following result:</p>
+<!--kg-card-end: markdown--><figure class="kg-card kg-image-card kg-card-hascaption"><img src="../content/images/2022/08/Python_fig_timeseries-1.jpeg" class="kg-image" alt loading="lazy" width="1800" height="1200" srcset="../content/images/size/w600/2022/08/Python_fig_timeseries-1.jpeg 600w, ../content/images/size/w1000/2022/08/Python_fig_timeseries-1.jpeg 1000w, ../content/images/size/w1600/2022/08/Python_fig_timeseries-1.jpeg 1600w, ../content/images/2022/08/Python_fig_timeseries-1.jpeg 1800w" sizes="(min-width: 720px) 720px"><figcaption>Plot of time series data obtained using Python (Pyplot) - Image by author</figcaption></figure><p>Granted, the Python plot needs a bit more manual formatting to have the same look as the MATLAB one. But this is not really an issue once you know what you need to change to get the format you want. You can set the defaults for creating figures on the top of your script, or make a function that does the formatting for new figures.</p><!--kg-card-begin: markdown--><p>If you have trouble getting some details to work, you can just google your answer. The amount of Python users is huge <a href="https://ponder.io/pandas-is-now-as-popular-as-python-was-in-2016/#Python%E2%80%99s%20Popularity%20more%20than%20Doubled%20Between%202013%20and%202022">and growing</a>, so it is very likely you will find someone already asked a similar question online. For instance, I was having a hard time getting the axes titles to show correctly, and there was <a href="https://stackoverflow.com/questions/6774086/how-to-adjust-padding-with-cutoff-or-overlapping-labels">a Stackoverflow thread</a> solving exactly the same issue - turns out you need to add <code>plt.tight_layout()</code> for the figure to be padded correctly. Just part of the learning curve. It's like when I needed to call the legend in MATLAB as <code>legend('interpreter', 'none')</code> to avoid <em>tex</em> interpretation of variable names with underscores, for instance.</p>
+<!--kg-card-end: markdown--><p>Plus, this example was done using <a href="https://matplotlib.org/stable/tutorials/introductory/pyplot.html#:~:text=pyplot%20is%20a%20collection%20of,In%20matplotlib.">Pyplot</a>. There are other libraries for plotting, which can produce cleaner plots in different cases, depending on your purposes.</p><hr><p>This post was a bit longer than the others, being the introduction of the series, but I hope you found it helpful or at least interesting. Over the next weeks, I will be sharing other example codes, highlighting the differences between MATLAB and Python, and showing also the things I struggled with. I hope you are motivated to learning Python as I am, and this can be an incentive to try it on your own.</p><p>I will update this first post to index the new examples I include as I go, so it is easier to navigate between the different entries.</p><p>Until the next one!</p><p>Luis</p><p></p>
+                </div>
+                <div class="container medium">
+                        <div class="share u-hover-wrapper">
+    <a class="share-item share-facebook u-hover-item"
+        href="https://www.facebook.com/sharer.php?u=http://localhost:2368/replacing-matlab-with-python-part-1/" target="_blank" rel="noopener"><i
+            class="icon icon-facebook"></i></a>
+    <a class="share-item share-twitter u-hover-item"
+        href="https://twitter.com/intent/tweet?url=http://localhost:2368/replacing-matlab-with-python-part-1/&text=Replacing%20MATLAB%20with%20Python%20-%20Part%201" target="_blank" rel="noopener"><i
+            class="icon icon-twitter"></i></a>
+    <a class="share-item share-pinterest u-hover-item"
+        href="https://pinterest.com/pin/create/button/?url=http://localhost:2368/replacing-matlab-with-python-part-1/&media=&description=Replacing%20MATLAB%20with%20Python%20-%20Part%201"
+        target="_blank" rel="noopener" data-pin-do="none"><i class="icon icon-pinterest"></i></a>
+    <a class="share-item share-linkedin u-hover-item"
+        href="https://www.linkedin.com/shareArticle?mini=true&url=http://localhost:2368/replacing-matlab-with-python-part-1/&title=Replacing%20MATLAB%20with%20Python%20-%20Part%201"
+        target="_blank" rel="noopener"><i class="icon icon-linkedin"></i></a>
+    <a class="share-item share-reddit u-hover-item"
+        href="https://reddit.com/submit?url=http://localhost:2368/replacing-matlab-with-python-part-1/&title=Replacing%20MATLAB%20with%20Python%20-%20Part%201" target="_blank" rel="noopener"><i
+            class="icon icon-reddit"></i></a>
+    <a class="share-item share-tumblr u-hover-item"
+        href="https://www.tumblr.com/widgets/share/tool?canonicalUrl=http://localhost:2368/replacing-matlab-with-python-part-1/&title=Replacing%20MATLAB%20with%20Python%20-%20Part%201"
+        target="_blank" rel="noopener"><i class="icon icon-tumblr"></i></a>
+    <a class="share-item share-vk u-hover-item"
+        href="http://vk.com/share.php?url=http://localhost:2368/replacing-matlab-with-python-part-1/&title=Replacing%20MATLAB%20with%20Python%20-%20Part%201" target="_blank" rel="noopener"><i
+            class="icon icon-vk"></i></a>
+    <a class="share-item share-pocket u-hover-item" href="https://getpocket.com/edit?url=http://localhost:2368/replacing-matlab-with-python-part-1/"
+        target="_blank" rel="noopener"><i class="icon icon-pocket"></i></a>
+    <a class="share-item share-telegram u-hover-item"
+        href="https://t.me/share/url?url=http://localhost:2368/replacing-matlab-with-python-part-1/&text=Replacing%20MATLAB%20with%20Python%20-%20Part%201" target="_blank" rel="noopener"><i
+            class="icon icon-telegram"></i></a>
+</div>                            <section class="author">
+        <div class="author-image-placeholder u-placeholder">
+            <img class="author-image lazyload u-object-fit"
+                data-srcset="/content/images/size/w150/2022/07/IMG_20210703_160904-1.jpg"
+                src="../content/images/size/w150/2022/07/IMG_20210703_160904-1.jpg"
+                srcset="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                alt="Luis Medina">
+        </div>
+        <div class="author-wrapper">
+            <header class="author-header">
+                <div class="author-header-wrapper">
+                    <h4 class="author-name">Luis Medina</h4>
+                    <div class="author-social">
+                        <a class="author-social-item author-more"
+                            href="../author/luis/index.html">More posts</a>
+                    </div>
+                </div>
+            </header>
+            <div class="author-bio"></div>
+        </div>
+    </section>
+                </div>
+            </article>
+            <div class="navigation container medium">
+        <div class="navigation-item navigation-previous">
+            <a class="navigation-item-link button-arrow button-arrow-left" href="../that-s-it-i-am-getting-a-more-reliable-3d-printer/index.html">
+                <i class="button-arrow-icon icon icon-arrow-left"></i> Previous Post
+            </a>
+        </div>
+
+</div>                        <section class="related-posts container medium">
+            <h3 class="related-title"><span class="text">You might also like...</span></h3>
+            <div class="row">
+                    <div class="col-md-4 related-column">
+                        <article class="post tag-maker tag-plans tag-organization tag-cad tag-electronics tag-esp32 tag-3dprinting tag-python featured">
+                                <figure class="post-media">
+        <div class="u-placeholder rectangle">
+            <a class="post-image-link" href="../hello-world-welcome-to-my-blog/index.html">
+                <img class="post-image lazyload u-object-fit"
+
+                    data-srcset="/content/images/size/w400/2022/06/Portacoronas-23-15.jpg 400w, /content/images/size/w750/2022/06/Portacoronas-23-15.jpg 750w, /content/images/size/w960/2022/06/Portacoronas-23-15.jpg 960w, /content/images/size/w1140/2022/06/Portacoronas-23-15.jpg 1140w, /content/images/size/w1920/2022/06/Portacoronas-23-15.jpg 1920w"
+                    data-sizes="auto" src="../content/images/size/w960/2022/06/Portacoronas-23-15.jpg"
+                    srcset="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                     alt="Hello world! Welcome to my blog">
+            </a>
+        </div>
+
+    </figure>
+                            <header class="post-header">
+        <h2 class="post-title">
+            <a class="post-title-link" href="../hello-world-welcome-to-my-blog/index.html">Hello world! Welcome to my blog</a>
+        </h2>
+            <div class="post-meta">
+                <span class="post-meta-item post-meta-date">
+                    <time datetime="2022-06-30">Jun 30, 2022</time>
+                </span>
+                <span class="post-meta-item post-meta-length">
+                    2 min read
+                </span>
+                    <span class="post-meta-item post-meta-tags">
+                        <a class="post-tag post-tag-maker" href="../tag/maker/index.html"
+                                title="Maker">Maker</a><a class="post-tag post-tag-plans" href="../tag/plans/index.html"
+                                title="Plans">Plans</a><a class="post-tag post-tag-organization" href="../tag/organization/index.html"
+                                title="Organization">Organization</a><a class="post-tag post-tag-cad" href="../tag/cad/index.html"
+                                title="CAD">CAD</a><a class="post-tag post-tag-electronics" href="../tag/electronics/index.html"
+                                title="Electronics">Electronics</a><a class="post-tag post-tag-esp32" href="../tag/esp32/index.html"
+                                title="EsP32">EsP32</a><a class="post-tag post-tag-3dprinting" href="../tag/3dprinting/index.html"
+                                title="3dprinting">3dprinting</a><a class="post-tag post-tag-python" href="../tag/python/index.html"
+                                title="Python">Python</a>
+                    </span>
+            </div>
+</header>                        </article>
+                    </div>
+            </div>
+        </section>
+                </main>
+</div>
+        </div>
+        <footer class="site-footer container large">
+    <div class="copyright">
+        Powered by <a href="https://ghost.org/" target="_blank" rel="noopener">Ghost</a>
+    </div>
+
+        <nav class="footer-nav">
+            <ul class="nav-list u-plain-list">
+        <li class="menu-item menu-item-sign-up"><a class="menu-item-link"
+                href="index.html#/portal/">Sign up</a></li>
+</ul>
+        </nav>
+
+    <div class="footer-social">
+            <a class="footer-social-item footer-social-item-facebook" href="https://www.facebook.com/ghost"
+                target="_blank" rel="noopener" aria-label="Facebook">
+                <i class="icon icon-facebook"></i>
+            </a>
+            <a class="footer-social-item footer-social-item-twitter" href="https://twitter.com/ghost"
+                target="_blank" rel="noopener" aria-label="Twitter">
+                <i class="icon icon-twitter"></i>
+            </a>
+        <a class="footer-social-item footer-social-item-rss"
+            href="https://feedly.com/i/subscription/feed/http://localhost:2368/rss/" target="_blank" rel="noopener"
+            aria-label="RSS">
+            <i class="icon icon-rss"></i>
+        </a>
+    </div>
+</footer>    </div>
+
+    <div class="dimmer"></div>
+
+    <div class="off-canvas">
+        <div class="canvas-close">
+            <i class="canvas-icon icon icon-window-close"></i>
+        </div>
+        <div class="mobile-menu"></div>
+    </div>
+
+    <script
+        src="https://code.jquery.com/jquery-3.5.1.min.js"
+        integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
+        crossorigin="anonymous">
+    </script>
+    <script src="../assets/built/main.min.js@v=aeded3ee6e"></script>
+
+    
+
+    
+</body>
+
+</html>
