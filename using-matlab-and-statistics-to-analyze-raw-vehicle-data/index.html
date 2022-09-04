@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Using MATLAB and statistics to analyze raw vehicle data</title>
+    <link rel="stylesheet" href="../assets/built/screen.css@v=8e59953f1b.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400;1,700&family=Mulish:ital,wght@0,400;0,700;0,800;1,400;1,700&display=swap">
+
+    <script>
+        if (localStorage.getItem('alto_dark') == 'true') {
+            document.documentElement.classList.add('dark-mode');
+        }
+    </script>
+
+    <meta name="description" content="I am sharing an example of the workflow I would follow for getting insights from real-world data using histograms and some very basic statistics." />
+    <link rel="canonical" href="index.html" />
+    <meta name="referrer" content="no-referrer-when-downgrade" />
+    
+    <meta property="og:site_name" content="Making stuff after office hours" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Using MATLAB and statistics to analyze raw vehicle data" />
+    <meta property="og:description" content="I am sharing an example of the workflow I would follow for getting insights from real-world data using histograms and some very basic statistics." />
+    <meta property="og:url" content="http://localhost:2368/using-matlab-and-statistics-to-analyze-raw-vehicle-data/" />
+    <meta property="og:image" content="https://images.unsplash.com/photo-1512717919743-801d3d85ec83?crop&#x3D;entropy&amp;cs&#x3D;tinysrgb&amp;fit&#x3D;max&amp;fm&#x3D;jpg&amp;ixid&#x3D;MnwxMTc3M3wwfDF8c2VhcmNofDEwOHx8Y2FyJTIwdG95fGVufDB8fHx8MTY2MjMwMTQxMw&amp;ixlib&#x3D;rb-1.2.1&amp;q&#x3D;80&amp;w&#x3D;2000" />
+    <meta property="article:published_time" content="2022-09-04T15:23:12.000Z" />
+    <meta property="article:modified_time" content="2022-09-04T15:28:33.000Z" />
+    <meta property="article:tag" content="MATLAB" />
+    <meta property="article:tag" content="Engineering" />
+    <meta property="article:tag" content="Data" />
+    
+    <meta property="article:publisher" content="https://www.facebook.com/ghost" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Using MATLAB and statistics to analyze raw vehicle data" />
+    <meta name="twitter:description" content="I am sharing an example of the workflow I would follow for getting insights from real-world data using histograms and some very basic statistics." />
+    <meta name="twitter:url" content="http://localhost:2368/using-matlab-and-statistics-to-analyze-raw-vehicle-data/" />
+    <meta name="twitter:image" content="https://images.unsplash.com/photo-1512717919743-801d3d85ec83?crop&#x3D;entropy&amp;cs&#x3D;tinysrgb&amp;fit&#x3D;max&amp;fm&#x3D;jpg&amp;ixid&#x3D;MnwxMTc3M3wwfDF8c2VhcmNofDEwOHx8Y2FyJTIwdG95fGVufDB8fHx8MTY2MjMwMTQxMw&amp;ixlib&#x3D;rb-1.2.1&amp;q&#x3D;80&amp;w&#x3D;2000" />
+    <meta name="twitter:label1" content="Written by" />
+    <meta name="twitter:data1" content="Luis Medina" />
+    <meta name="twitter:label2" content="Filed under" />
+    <meta name="twitter:data2" content="MATLAB, Engineering, Data" />
+    <meta name="twitter:site" content="@ghost" />
+    <meta property="og:image:width" content="2000" />
+    <meta property="og:image:height" content="1225" />
+    
+    <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "publisher": {
+        "@type": "Organization",
+        "name": "Making stuff after office hours",
+        "url": "http://localhost:2368/",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "http://localhost:2368/favicon.ico",
+            "width": 48,
+            "height": 48
+        }
+    },
+    "author": {
+        "@type": "Person",
+        "name": "Luis Medina",
+        "image": {
+            "@type": "ImageObject",
+            "url": "http://localhost:2368/content/images/2022/07/IMG_20210703_160904-1.jpg",
+            "width": 1475,
+            "height": 1474
+        },
+        "url": "http://localhost:2368/author/luis/",
+        "sameAs": []
+    },
+    "headline": "Using MATLAB and statistics to analyze raw vehicle data",
+    "url": "http://localhost:2368/using-matlab-and-statistics-to-analyze-raw-vehicle-data/",
+    "datePublished": "2022-09-04T15:23:12.000Z",
+    "dateModified": "2022-09-04T15:28:33.000Z",
+    "image": {
+        "@type": "ImageObject",
+        "url": "https://images.unsplash.com/photo-1512717919743-801d3d85ec83?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxMTc3M3wwfDF8c2VhcmNofDEwOHx8Y2FyJTIwdG95fGVufDB8fHx8MTY2MjMwMTQxMw&ixlib=rb-1.2.1&q=80&w=2000",
+        "width": 2000,
+        "height": 1225
+    },
+    "keywords": "MATLAB, Engineering, Data",
+    "description": "I am sharing an example of the workflow I would follow for getting insights from real-world data using histograms and some very basic statistics.",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "http://localhost:2368/"
+    }
+}
+    </script>
+
+    <meta name="generator" content="Ghost 5.2" />
+    <link rel="alternate" type="application/rss+xml" title="Making stuff after office hours" href="../rss/index.html" />
+    <script defer src="https://unpkg.com/@tryghost/portal@~2.2.0/umd/portal.min.js" data-ghost="http://localhost:2368/" data-key="301bf1d34b7e435e3fcf462aa7" data-api="http://localhost:2368/ghost/api/content/" crossorigin="anonymous"></script><style id="gh-members-styles">.gh-post-upgrade-cta-content,
+.gh-post-upgrade-cta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    text-align: center;
+    width: 100%;
+    color: #ffffff;
+    font-size: 16px;
+}
+
+.gh-post-upgrade-cta-content {
+    border-radius: 8px;
+    padding: 40px 4vw;
+}
+
+.gh-post-upgrade-cta h2 {
+    color: #ffffff;
+    font-size: 28px;
+    letter-spacing: -0.2px;
+    margin: 0;
+    padding: 0;
+}
+
+.gh-post-upgrade-cta p {
+    margin: 20px 0 0;
+    padding: 0;
+}
+
+.gh-post-upgrade-cta small {
+    font-size: 16px;
+    letter-spacing: -0.2px;
+}
+
+.gh-post-upgrade-cta a {
+    color: #ffffff;
+    cursor: pointer;
+    font-weight: 500;
+    box-shadow: none;
+    text-decoration: underline;
+}
+
+.gh-post-upgrade-cta a:hover {
+    color: #ffffff;
+    opacity: 0.8;
+    box-shadow: none;
+    text-decoration: underline;
+}
+
+.gh-post-upgrade-cta a.gh-btn {
+    display: block;
+    background: #ffffff;
+    text-decoration: none;
+    margin: 28px 0 0;
+    padding: 8px 18px;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.gh-post-upgrade-cta a.gh-btn:hover {
+    opacity: 0.92;
+}</style><style>:root {--ghost-accent-color: #19809a;}</style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/themes/prism-tomorrow.min.css" integrity="sha512-vswe+cgvic/XBoF1OcM/TeJ2FW0OofqAVdCZiEYkd6dwGXthvkSFWOoGGJgS2CW70VK5dQM5Oh+7ne47s74VTg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body class="post-template tag-matlab tag-engineering tag-data has-serif-title">
+    <div class="site">
+        <header class="site-header container">
+    <div class="navbar">
+        <div class="navbar-left">
+            <div class="burger hidden-lg hidden-xl"></div>
+            <a class="logo" href="../index.html">
+        <span class="logo-text">Making stuff after office hours</span>
+</a>            <div class="sep hidden-xs hidden-sm hidden-sm"></div>
+                <nav class="main-menu hidden-xs hidden-sm hidden-md">
+                    <ul class="nav-list u-plain-list">
+        <li class="menu-item menu-item-home"><a class="menu-item-link"
+                href="../index.html">Home</a></li>
+        <li class="menu-item menu-item-about"><a class="menu-item-link"
+                href="../about/index.html">About</a></li>
+</ul>
+                </nav>
+        </div>
+        <div class="navbar-right">
+            <div class="toggle-track">
+                <div class="toggle-moon"><i class="icon icon-brightness-2"></i></div>
+                <div class="toggle-sun"><i class="icon icon-white-balance-sunny"></i></div>
+                <div class="toggle-thumb"></div>
+            </div>
+        </div>
+    </div>
+</header>        <div class="site-content">
+            
+<div class="content-area">
+    <main class="site-main">
+            <article class="post tag-matlab tag-engineering tag-data single-post">
+                <header class="post-header big-title container medium">
+        <h1 class="post-title">Using MATLAB and statistics to analyze raw vehicle data</h1>
+            <div class="post-meta">
+                <span class="post-meta-item post-meta-date">
+                    <time datetime="2022-09-04">Sep 4, 2022</time>
+                </span>
+                <span class="post-meta-item post-meta-length">
+                    12 min read
+                </span>
+                    <span class="post-meta-item post-meta-tags">
+                        <a class="post-tag post-tag-matlab" href="../tag/matlab/index.html"
+                                title="MATLAB">MATLAB</a><a class="post-tag post-tag-engineering" href="../tag/engineering/index.html"
+                                title="Engineering">Engineering</a><a class="post-tag post-tag-data" href="../tag/data/index.html"
+                                title="Data">Data</a>
+                    </span>
+            </div>
+</header>                    <figure class="post-media container large">
+        <div class="u-placeholder horizontal">
+            <a class="post-image-link" href="index.html">
+                <img class="post-image lazyload u-object-fit"
+
+                    data-srcset="https://images.unsplash.com/photo-1512717919743-801d3d85ec83?crop&#x3D;entropy&amp;cs&#x3D;tinysrgb&amp;fit&#x3D;max&amp;fm&#x3D;jpg&amp;ixid&#x3D;MnwxMTc3M3wwfDF8c2VhcmNofDEwOHx8Y2FyJTIwdG95fGVufDB8fHx8MTY2MjMwMTQxMw&amp;ixlib&#x3D;rb-1.2.1&amp;q&#x3D;80&amp;w&#x3D;2000 400w, https://images.unsplash.com/photo-1512717919743-801d3d85ec83?crop&#x3D;entropy&amp;cs&#x3D;tinysrgb&amp;fit&#x3D;max&amp;fm&#x3D;jpg&amp;ixid&#x3D;MnwxMTc3M3wwfDF8c2VhcmNofDEwOHx8Y2FyJTIwdG95fGVufDB8fHx8MTY2MjMwMTQxMw&amp;ixlib&#x3D;rb-1.2.1&amp;q&#x3D;80&amp;w&#x3D;2000 750w, https://images.unsplash.com/photo-1512717919743-801d3d85ec83?crop&#x3D;entropy&amp;cs&#x3D;tinysrgb&amp;fit&#x3D;max&amp;fm&#x3D;jpg&amp;ixid&#x3D;MnwxMTc3M3wwfDF8c2VhcmNofDEwOHx8Y2FyJTIwdG95fGVufDB8fHx8MTY2MjMwMTQxMw&amp;ixlib&#x3D;rb-1.2.1&amp;q&#x3D;80&amp;w&#x3D;2000 960w, https://images.unsplash.com/photo-1512717919743-801d3d85ec83?crop&#x3D;entropy&amp;cs&#x3D;tinysrgb&amp;fit&#x3D;max&amp;fm&#x3D;jpg&amp;ixid&#x3D;MnwxMTc3M3wwfDF8c2VhcmNofDEwOHx8Y2FyJTIwdG95fGVufDB8fHx8MTY2MjMwMTQxMw&amp;ixlib&#x3D;rb-1.2.1&amp;q&#x3D;80&amp;w&#x3D;2000 1140w, https://images.unsplash.com/photo-1512717919743-801d3d85ec83?crop&#x3D;entropy&amp;cs&#x3D;tinysrgb&amp;fit&#x3D;max&amp;fm&#x3D;jpg&amp;ixid&#x3D;MnwxMTc3M3wwfDF8c2VhcmNofDEwOHx8Y2FyJTIwdG95fGVufDB8fHx8MTY2MjMwMTQxMw&amp;ixlib&#x3D;rb-1.2.1&amp;q&#x3D;80&amp;w&#x3D;2000 1920w"
+                    data-sizes="auto" src="https://images.unsplash.com/photo-1512717919743-801d3d85ec83?crop&#x3D;entropy&amp;cs&#x3D;tinysrgb&amp;fit&#x3D;max&amp;fm&#x3D;jpg&amp;ixid&#x3D;MnwxMTc3M3wwfDF8c2VhcmNofDEwOHx8Y2FyJTIwdG95fGVufDB8fHx8MTY2MjMwMTQxMw&amp;ixlib&#x3D;rb-1.2.1&amp;q&#x3D;80&amp;w&#x3D;2000"
+                    srcset="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                     alt="Using MATLAB and statistics to analyze raw vehicle data">
+            </a>
+        </div>
+
+                <figcaption>Photo by <a href="https://unsplash.com/@samule?utm_source=ghost&utm_medium=referral&utm_campaign=api-credit">Samule Sun</a> / <a href="https://unsplash.com/?utm_source=ghost&utm_medium=referral&utm_campaign=api-credit">Unsplash</a></figcaption>
+    </figure>
+                <div class="post-content gh-content kg-canvas">
+                    <p>It’s been a couple of weeks since I published the <a href="https://makerluis.com/replacing-matlab-with-python-part-1/index.html">initial post</a> of a series about replacing MATLAB with Python. If you haven’t read it yet, the short story is that I forced myself to use Python to do some of the tasks I would normally do using MATLAB at work. I committed to sharing what I have learned in the process, including simple code examples to illustrate it, which may be useful if you are interested in doing something similar.</p><p>However, I figured that it would be easier to share separately the MATLAB examples and the Python ones. Mainly because otherwise, the articles would be excessively long.</p><p>In this second entry, I am sharing an example of the workflow I would follow for getting insights from real-world data using histograms and some very basic statistics.</p><p>We will be using two datasets containing raw data logged from the CAN bus of a <a href="https://www.imeche.org/events/formula-student">Formula Student Electric</a> car. The data is already stored in a .CSV format to make this more “universal”, since there are different formats for storing automotive data.</p><figure class="kg-card kg-bookmark-card"><a class="kg-bookmark-container" href="https://drive.google.com/drive/folders/16f2fLXelTBtj9vFxSSiNUQrmIUy3IEPX?usp&#x3D;sharing"><div class="kg-bookmark-content"><div class="kg-bookmark-title">RaceCar data - Google Drive</div><div class="kg-bookmark-description"></div><div class="kg-bookmark-metadata"><img class="kg-bookmark-icon" src="https://ssl.gstatic.com/docs/doclist/images/drive_2022q3_32dp.png" alt=""><span class="kg-bookmark-author">Google Drive</span></div></div><div class="kg-bookmark-thumbnail"><img src="https://drive-thirdparty.googleusercontent.com/128/type/text/csv" alt=""></div></a></figure><p>For context, the datasets were recorded while two drivers tested exactly the same vehicle in exactly the same circuit. On the same day, a few minutes apart from each other. There was no transponder installed for recording the lap time accurately, and the information from the electric motors is not available for some reason. This is about all the context we need. We want to analyze the data from both drivers but won’t go into the details. I just want to illustrate how to get some useful information using histograms and statistics.</p><hr><h3 id="let%E2%80%99s-jump-right-into-it">Let’s jump right into it!</h3><p>When using MATLAB, I load the data from the CSV files, store the data in some variables, and define the constants that I am going to use later.</p><pre><code class="language-matlab">%% Get descriptive statistics from CAN datalogs
+close all, clc
+
+filename1 = 'driver1.csv';
+filename2 = 'driver2.csv';
+
+% Read file 1
+t1 = readtable(filename1);
+% Verify that I get all the columns I need
+t1.Properties.VariableNames
+
+% Repeat for file 2
+t2 = readtable(filename2);
+t2.Properties.VariableNames
+
+%% Define vehicle parameters
+% This was a Formula Student Electric car, with four in-wheel electric
+% motors coupled to an epicyclic transmission a single gear ratio
+gear_ratio = 16;    % Transmission gear ratio
+r = 0.263;          % Wheel radius [m]
+
+%% Filter the longitudinal acceleration
+g = 9.81;           % Gravity, 9.81 m/s^2. Acceleration data is given in "G" units.
+t1.AccX = sgolayfilt(t1.AccX(:,1)*g, 3, 101);
+t2.AccX = sgolayfilt(t2.AccX(:,1)*g, 3, 101);
+</code></pre><p></p><p>I'm using tables to handle the data because I find them very easy to use. Additionally, using tables in MATLAB can help you transition more easily to using Pandas data frames if you want to. This will be more evident later on. Tables are not the most efficient way to handle very large datasets, but they do offer some convenience and if you know how to index them, they work great.</p><!--kg-card-begin: markdown--><p>I also filtered the acceleration signals using a Finite-Impulse-Response filter, in this case a Savitzky–Golay filter. This type of filter is often preferred over others when filtering acceleration signals from vehicle data. This is because they offer a better signal-to-noise ratio and better preserve the height and location of the peaks and the area below them. Those are important aspects in some kinds of analyses for automotive applications. Implementing this type of filter in MATLAB is as simple as that, just typing the <a href="https://it.mathworks.com/help/signal/ref/sgolayfilt.html">sgolay</a> command and including some parameters. <em>But only if you have the Signal Processing Toolbox license</em>. So this might be one of the reasons to consider using free software options. Of course, with a little more work, you can implement a similar filter yourself using “standard” MATLAB commands, or you could just settle for another type of filter. You could also do an FFT analysis (which I’ll do in another post of this series :) .</p>
+<!--kg-card-end: markdown--><p>Let’s move on. I have the data loaded on MATLAB, so now I can do stuff. As I’ve <a href="https://makerluis.com/replacing-matlab-with-python-part-1/index.html#example-1-simple-time-series-visualization">mentioned before</a>, a good practice is to start with a simple plot or, in this case, a bunch of them,  since we have few variables and files.</p><p></p><pre><code class="language-matlab">%% Plot the data available
+figure
+tiledlayout('flow', 'TileSpacing', 'compact')
+
+for i_plot = 2:size(t1,2)
+    
+    nexttile
+    plot(t1.Time_s, t1{:, i_plot}, 'DisplayName', '1')
+    hold on
+    plot(t2.Time_s, t2{:, i_plot}, 'DisplayName', '2')
+    title(t1.Properties.VariableNames{i_plot}, 'Interpreter' , 'none')
+    legend
+    
+end
+</code></pre><figure class="kg-card kg-image-card kg-card-hascaption"><img src="../content/images/2022/09/DATA_plot.jpg" class="kg-image" alt="DATA_plot.png" loading="lazy" width="1809" height="1494" srcset="../content/images/size/w600/2022/09/DATA_plot.jpg 600w, ../content/images/size/w1000/2022/09/DATA_plot.jpg 1000w, ../content/images/size/w1600/2022/09/DATA_plot.jpg 1600w, ../content/images/2022/09/DATA_plot.jpg 1809w" sizes="(min-width: 720px) 720px"><figcaption>Time series plots of the data stored in the files. This is useful to visualize what kind of information we have.</figcaption></figure><p>Great, we have comparable data in both files. There is a slight time offset between the two data sets, and one of them is a bit longer. This is raw data, so it is something completely normal.</p><p>Let’s determine which driver was faster. To do this, we need to compute the vehicle speed. This is not easy at all - it might seem, <a href="http://dx.doi.org/10.26552/com.C.2021.2.B117-B129">but it is not</a>, at least if you want to do it accurately. What we can do is settle down for a simplified calculation based on the wheel speeds. Let’s assume the following:</p><ul><li>When the vehicle is accelerating, the speed of the car is similar to the speed of the contact point of the slowest tire, i.e. the one that rotates slower than the others and thus has a smaller <a href="https://www.racecar-engineering.com/tech-explained/tyre-dynamics/#:~:text=The%20slip%20ratio%20is%20similar,tyre%20that%20has%20lost%20traction">slip ratio</a>.</li><li>On the other hand, when the car is braking, the slowest tire is most likely locked, with a higher absolute slip ratio than the others. So in this case the vehicle's speed is closer to that of the fastest spinning tire - no accelerating torque is present.</li></ul><p>This is a rough estimate but should be enough for this analysis. Now, how to determine this in MATLAB?</p><p>Easy, right? Just make a <code>for</code> loop and iterate through the rows of the table. When the acceleration is positive take the minimum wheel speed, when it is negative, take the maximum one. And of course, convert each value to linear speed.</p><p></p><pre><code class="language-matlab">%% Find the vehicle speed: The for-loop way
+% Extract the wheel rotational speed data from the two files
+wRPM1 = t1(:,{'spd_rpmFL', 'spd_rpmFR', 'spd_rpmRL', 'spd_rpmRR'}); 
+wRPM2 = t2(:,{'spd_rpmFL', 'spd_rpmFR', 'spd_rpmRL', 'spd_rpmRR'});
+
+tic
+for i_ax1=1:height(wRPM1)
+    
+   if t1.AccX(i_ax1,1)&gt;0
+       VEL1_for(i_ax1,1)=min(wRPM1{i_ax1,:})*(pi/30)*r/gear_ratio*3.6;
+   else
+       VEL1_for(i_ax1,1)=max(wRPM1{i_ax1,:})*(pi/30)*r/gear_ratio*3.6;
+   end
+end
+toc % Elapsed time is 3.592689 seconds.
+</code></pre><p></p><p>Wait! No actually, I don’t want to wait almost 4 seconds when I do this. What if the data grows larger, or if I need to compare 100 files instead of 2, should I wait 1 hour? Maybe my PC is not the fastest, but there has to be a better way! Yes, there is a better way.</p><p></p><pre><code class="language-matlab">%% Estimate the vehicle speed: Release the power of table indexing
+tic
+VEL1 = table(zeros(height(t1), 1), 'VariableNames', {'Veh_Spd'});
+VEL2 = table(zeros(height(t2), 1), 'VariableNames', {'Veh_Spd'});
+t1 = [t1 VEL1];
+t2 = [t2 VEL2];
+toc % Elapsed time is 0.070162 seconds.
+
+tic
+t1(t1.AccX &gt; 0, 'Veh_Spd') = table(min(t1{t1.AccX &gt; 0,...
+    {'spd_rpmFL','spd_rpmFR','spd_rpmRL','spd_rpmRR'}}, [], 2)*pi/30*r/gear_ratio*3.6);
+t1(t1.AccX &lt;= 0, 'Veh_Spd') = table(max(t1{t1.AccX &lt;= 0,...
+    {'spd_rpmFL','spd_rpmFR','spd_rpmRL','spd_rpmRR'}}, [], 2)*pi/30*r/gear_ratio*3.6);     
+
+t2(t2.AccX &gt; 0, 'Veh_Spd') = table(min(t2{t2.AccX &gt; 0,...
+    {'spd_rpmFL','spd_rpmFR','spd_rpmRL','spd_rpmRR'}}, [], 2)*pi/30*r/gear_ratio*3.6);
+t2(t2.AccX &lt;= 0, 'Veh_Spd') = table(max(t2{t2.AccX &lt;= 0,...
+    {'spd_rpmFL','spd_rpmFR','spd_rpmRL','spd_rpmRR'}}, [], 2)*pi/30*r/gear_ratio*3.6);
+toc % Elapsed time is 0.089683 seconds.
+</code></pre><p>Awesome! In just a fraction of a second, we get both, velocity vectors instead of just one in 3 seconds. Notice that also the number of lines of code is exactly the same, once you remove the <code>tic</code> and <code>toc</code> commands used for <a href="https://it.mathworks.com/help/matlab/ref/tic.html">timing the code</a>. A similar approach can be used to avoid <code>for</code> loops when using numeric arrays or cell arrays instead of tables. The difference is just the syntax for indexing them.</p><p>Let’s see what we’ve got:</p><p></p><pre><code class="language-matlab">%% Create a figure with a tiled layout                                             
+time_series = figure('Name', ['Time series comparison'], 'Position', [10 10 900 600]);
+tiles = tiledlayout(2,1);
+title(tiles, 'MATLAB figure')
+xlabel(tiles, 'Time [s]')
+
+%% Plot the data from the first file
+nexttile
+plot(t1.Time_s, VEL1{:,:}, '-b')
+xlabel('Time [s]')
+ylabel('Vehicle speed [km/h]')
+hold on
+time_start1 = t1.Time_s(min(find(VEL1{:,:} &gt; 20)));
+time_end1 = t1.Time_s(max(find(VEL1{:,:} &gt; 20)));
+t_elap_1 = time_end1 - time_start1;
+
+plot([[time_start1 time_end1]; [time_start1 time_end1] ], ...
+    repmat(ylim',1, 2), 'Color', 'k', 'LineWidth', 2);
+title(['Driver 1 approximate time: ' num2str(time_end1-time_start1, '%0.1f') ' seconds'])
+grid minorgrid minor
+
+%% Plot the data from the second file
+nexttile
+plot(t2.Time_s, VEL2{:,:}, '-b')
+xlabel('Time [s]')
+ylabel('Vehicle speed [km/h]')
+hold on
+time_start2 = t2.Time_s(min(find(VEL2{:,:} &gt; 20)));
+time_end2 = t2.Time_s(max(find(VEL2{:,:} &gt; 20)));
+t_elap_1 = time_end1 - time_start1;
+
+plot([[time_start2 time_end2]; [time_start2 time_end2] ], ...
+		repmat(ylim',1, 2), 'Color', 'k', 'LineWidth', 2);
+grid minor
+title(['Driver 2 approximate time: ' num2str(time_end2-time_start2, '%0.1f') ' seconds'])
+</code></pre><figure class="kg-card kg-image-card"><img src="../content/images/2022/09/Drivers_time_plot.jpg" class="kg-image" alt="Drivers_time_plot.jpg" loading="lazy" width="1991" height="784" srcset="../content/images/size/w600/2022/09/Drivers_time_plot.jpg 600w, ../content/images/size/w1000/2022/09/Drivers_time_plot.jpg 1000w, ../content/images/size/w1600/2022/09/Drivers_time_plot.jpg 1600w, ../content/images/2022/09/Drivers_time_plot.jpg 1991w" sizes="(min-width: 720px) 720px"></figure><p>Ok, the second driver was<em> <strong>a lot</strong></em><strong> </strong>faster. There are probably very noticeable differences in the driving styles, so let’s see If we can spot them. First, let’s look at their speeds from a statistical perspective:</p><p></p><pre><code class="language-matlab">%% Get statistics about the driving speeds                                               
+histograms = figure('Name', ['Histograms comparison'], 'Position', [10 10 900 600]);
+tiles = tiledlayout(2,1);
+title(tiles, 'Comparing vehicle speed data using histograms')
+xlabel(tiles, 'Vehicle speed [km/h]')
+binEdges = 0:5:100;
+
+nexttile
+VEL1 = t1.Veh_Spd;
+VEL2 = t2.Veh_Spd;
+n_vel=max(numel(VEL1),numel(VEL2));
+
+VEL1(end+1:n_vel)=nan;
+VEL2(end+1:n_vel)=nan;
+% "Old" method for creating a histogram
+hist([VEL1, VEL2], binEdges);
+ylabel('Counts')
+
+legend('Driver 1', 'Driver 2')
+title('Bar plots of histogram data (hist command)')
+grid on
+
+nexttile
+% Newer way of creating a histogram
+h1 = histogram(t1.Veh_Spd, binEdges, 'normalization' , 'probability')
+hold on
+h2 = histogram(t2.Veh_Spd, binEdges, 'normalization' , 'probability')
+legend('Driver 1', 'Driver 2')
+title('Plotting two overlapping histograms (histogram command)')
+ylabel('Probability')
+grid on
+
+%% Get some descriptive parameters
+v1_mean = mean(t1.Veh_Spd, 'omitnan')       % Means of the two samples
+v2_mean = mean(t2.Veh_Spd, 'omitnan')
+v1_median = median(t1.Veh_Spd, 'omitnan')	% Medians of the two samples
+v2_median = median(t2.Veh_Spd, 'omitnan')
+v1_std = std(t1.Veh_Spd, 'omitnan')         % Standard deviations of the two samples
+v2_std = std(t2.Veh_Spd, 'omitnan')
+</code></pre><figure class="kg-card kg-image-card kg-card-hascaption"><img src="../content/images/2022/09/veh_spd_histograms_MATLAB.png" class="kg-image" alt="veh_spd_histograms_MATLAB.png" loading="lazy" width="2000" height="617" srcset="../content/images/size/w600/2022/09/veh_spd_histograms_MATLAB.png 600w, ../content/images/size/w1000/2022/09/veh_spd_histograms_MATLAB.png 1000w, ../content/images/size/w1600/2022/09/veh_spd_histograms_MATLAB.png 1600w, ../content/images/size/w2400/2022/09/veh_spd_histograms_MATLAB.png 2400w" sizes="(min-width: 720px) 720px"><figcaption>Two different ways of plotting histograms in MATLAB. There is also the "bar" command. I didn’t bother to normalize the data on the left side, in this particular case it doesn’t matters much.</figcaption></figure><p>The histograms on the right side are normalized so that we can compare both files, even if the time of the second driver was shorter - which means that we have fewer data points. By dividing the counts of each bin by the size of the total sample, we actually get a representation of the discrete probability distribution. In this case, the width of the bins is constant, but if there were bins of different sizes, we would also need to divide by the width of the bins to get a valid comparison.</p><hr><p>Anyways, back to the analysis.</p><p>The histograms show that the second driver spent more time at speeds above 50 km/h than the first one. This is a hint of why he achieved a shorter time. But both drivers were using exactly the same car. And the mean and median values are not that different between the two. So what could have changed? Perhaps it is also important to see how they were using the brakes.</p><pre><code class="language-matlab">%% Find the speeds at the start of braking maneuvers
+% This considers only the use of mechanical brakes.
+% The electric car can also use the electric motors for regenerative braking. 
+% This is enabled through a small portion of the brake pedal travel.
+% These two particular datalogs do not contain information about that, so we will
+% focus on the mechanical (hydraulic) brakes.
+
+t1.BrakeFront(t1.BrakeFront &lt;=0) = 0; %filter negative pressure values
+t2.BrakeFront(t2.BrakeFront &lt;=0) = 0; %filter negative pressure values
+%%
+figure;
+hold on
+histogram(t1.BrakeFront, 'Normalization', 'probability')
+histogram(t2.BrakeFront, 'Normalization', 'probability')
+ylabel('Probability')
+xlabel('Pressure [bar]' )
+title('Brakes pressure in the front circuit ')
+legend('Driver 1', 'Dirver 2')
+grid on
+</code></pre><figure class="kg-card kg-image-card kg-card-hascaption"><img src="../content/images/2022/09/pressure_hist_2Driver_ARROWS_tile1_MATLAB.jpg" class="kg-image" alt="pressure_hist_2Driver_ARROWS_tile1_MATLAB.jpg" loading="lazy" width="2000" height="577" srcset="../content/images/size/w600/2022/09/pressure_hist_2Driver_ARROWS_tile1_MATLAB.jpg 600w, ../content/images/size/w1000/2022/09/pressure_hist_2Driver_ARROWS_tile1_MATLAB.jpg 1000w, ../content/images/size/w1600/2022/09/pressure_hist_2Driver_ARROWS_tile1_MATLAB.jpg 1600w, ../content/images/2022/09/pressure_hist_2Driver_ARROWS_tile1_MATLAB.jpg 2262w" sizes="(min-width: 720px) 720px"><figcaption>If we zoomed in, we would notice that the second driver also was using the brakes at higher pressures compared to the first one. But I left the zoomed-out scale to highlight the peak on the left side.</figcaption></figure><p></p><p>The high bar on the left side represents the low-pressure values, which are the most common values present during driving. This makes sense since one doesn’t drive with the brakes pressed, especially during a race. But driver 1 did spend more time braking. We can see that the probability of having the brakes completely disengaged (e.g.about zero hydraulic pressure in the circuit) is lower for driver one. And we also see that the probability of having low pressures in the circuit is higher in case 1. This could mean that the first driver actually had the brakes slightly pressed constantly, perhaps without noticing.</p><p>Let’s see also at what speeds the drivers were braking. To do this, we need to identify the speeds at the start of the braking maneuvers. I defined a small pressure value to use as a threshold for identifying when the brakes are pressed. This is a bit of an iterative process - you don’t get it right the first time and need to adjust the value until the results make sense.</p><p>I could have used a <code>for</code> loop to iterate over the pressure values and find the points in which the pressure is increased compared to the previous point. But I said I would leverage the power of indexing 🙂</p><p></p><pre><code class="language-matlab">%% Find the index of the start of braking
+
+%Define a pressure threshold value to consider as start of braking
+p_start = 2; % bar
+
+id_start1 = t1.BrakeFront &lt;= p_start &amp; [t1.BrakeFront(2:end);0] &gt; p_start &amp; [t1.Veh_Spd(2:end); 0] &gt;= 15;
+id_start2 = t2.BrakeFront &lt;= p_start &amp; [t2.BrakeFront(2:end);0] &gt; p_start &amp; [t2.Veh_Spd(2:end); 0] &gt;= 15;
+
+%% Verify that the identified points make sense
+figure
+plot(t1.Time_s, t1.BrakeFront, 'b', 'LineWidth', 1,'DisplayName', 'Pressure')
+hold on
+x = [t1.Time_s(id_start1), t1.Time_s(id_start1)];
+
+% Show a black vertical line at the start of each braking maneuver
+line(x, ylim, 'Color', 'k', 'LineWidth', .5, 'HandleVisibility', 'off'); 
+yline(p_start, 'DisplayName', 'Brake start threshold' ,'LineWidth', 2) 
+ylabel('Pressure [bar]' )
+yyaxis right
+
+plot(t1.Time_s, t1.Veh_Spd, 'r', 'LineWidth', 1, 'DisplayName', 'Vehicle Spd')
+set(gca, 'Ycolor', 'r')
+ylabel('Vehicle speed [km/h]')
+xlabel('Time [s]' ), xlim([750, 800])
+legend, grid on
+</code></pre><figure class="kg-card kg-image-card"><img src="../content/images/2022/09/Start_of_brake_MATLAB.jpg" class="kg-image" alt="Start_of_brake_MATLAB.jpg" loading="lazy" width="2000" height="590" srcset="../content/images/size/w600/2022/09/Start_of_brake_MATLAB.jpg 600w, ../content/images/size/w1000/2022/09/Start_of_brake_MATLAB.jpg 1000w, ../content/images/size/w1600/2022/09/Start_of_brake_MATLAB.jpg 1600w, ../content/images/size/w2400/2022/09/Start_of_brake_MATLAB.jpg 2400w" sizes="(min-width: 720px) 720px"></figure><hr><p>Great! we have identified the starts of braking maneuvers. Now let’s look at the speeds at which the drivers started braking.</p><p></p><pre><code class="language-MATLAB">%% Create histograms and plot them
+                                                
+histograms = figure('Name', ['Histograms comparison'], 'Position', [10 10 900 600]);
+title('MATLAB figure')
+xlabel('Vehicle speed [km/h]')
+binEdges = 10:5:100;
+
+histogram(t1.Veh_Spd(id_start1), binEdges, 'Normalization' , 'probability')
+hold on
+histogram(t2.Veh_Spd(id_start2), binEdges, 'Normalization' , 'probability')
+legend('Driver 1', 'Driver 2')
+ylabel('Probability')
+xlabel('Vehicle speed at the start of braking [km/h]')
+grid on
+</code></pre><figure class="kg-card kg-image-card"><img src="../content/images/2022/09/VEL_start_brakin_MATLAB.jpg" class="kg-image" alt loading="lazy" width="2000" height="773" srcset="../content/images/size/w600/2022/09/VEL_start_brakin_MATLAB.jpg 600w, ../content/images/size/w1000/2022/09/VEL_start_brakin_MATLAB.jpg 1000w, ../content/images/size/w1600/2022/09/VEL_start_brakin_MATLAB.jpg 1600w, ../content/images/2022/09/VEL_start_brakin_MATLAB.jpg 2110w" sizes="(min-width: 720px) 720px"></figure><p>Looking at the histograms, we can see that the second driver was braking more consistently, especially between 55 and 65 km/h. The first driver initiated more braking maneuvers at the highest speed, but he also initiated more braking maneuvers at lower speeds - below 55 km/h. In general, the driving style of the first one is not uniform - this is a sign of an inexperienced driver, which is normal in this case, since we are talking about a Formula Student car.</p><hr><p>This was a simple example of how to use MATLAB to do some tasks with real-world data. We used histograms to get valuable insights from the data, something that would not be easy if we just used time series plots to visualize the two datasets.</p><p>I've met lots of different people working in the automotive sector, and it is surprising how many of them would not consider using histograms when looking at vehicle data, especially recent graduates. This kind of analysis is not very elaborated, but sometimes inexperienced engineers can be too concerned with the time-based evolution of the data they are looking at, rather than their distribution, or the trends and correlations between different variables. </p><p>Seeing how histograms can be used to get insights without actually needing to look at the times series can sometimes open a new perspective when looking at data recorded from physical things (cars, machines, sensors, etc).</p><p>Hopefully, this example was useful or interesting for you if you are just getting started doing similar things. I would be glad if it was in any way :) </p><p>In the next entry, I will repeat the analysis (at least the main part) using Python instead of MATLAB. Stay tuned!</p>
+                </div>
+                <div class="container medium">
+                        <div class="share u-hover-wrapper">
+    <a class="share-item share-facebook u-hover-item"
+        href="https://www.facebook.com/sharer.php?u=http://localhost:2368/using-matlab-and-statistics-to-analyze-raw-vehicle-data/" target="_blank" rel="noopener"><i
+            class="icon icon-facebook"></i></a>
+    <a class="share-item share-twitter u-hover-item"
+        href="https://twitter.com/intent/tweet?url=http://localhost:2368/using-matlab-and-statistics-to-analyze-raw-vehicle-data/&text=Using%20MATLAB%20and%20statistics%20to%20analyze%20raw%20vehicle%20data" target="_blank" rel="noopener"><i
+            class="icon icon-twitter"></i></a>
+    <a class="share-item share-pinterest u-hover-item"
+        href="https://pinterest.com/pin/create/button/?url=http://localhost:2368/using-matlab-and-statistics-to-analyze-raw-vehicle-data/&media=&description=Using%20MATLAB%20and%20statistics%20to%20analyze%20raw%20vehicle%20data"
+        target="_blank" rel="noopener" data-pin-do="none"><i class="icon icon-pinterest"></i></a>
+    <a class="share-item share-linkedin u-hover-item"
+        href="https://www.linkedin.com/shareArticle?mini=true&url=http://localhost:2368/using-matlab-and-statistics-to-analyze-raw-vehicle-data/&title=Using%20MATLAB%20and%20statistics%20to%20analyze%20raw%20vehicle%20data"
+        target="_blank" rel="noopener"><i class="icon icon-linkedin"></i></a>
+    <a class="share-item share-reddit u-hover-item"
+        href="https://reddit.com/submit?url=http://localhost:2368/using-matlab-and-statistics-to-analyze-raw-vehicle-data/&title=Using%20MATLAB%20and%20statistics%20to%20analyze%20raw%20vehicle%20data" target="_blank" rel="noopener"><i
+            class="icon icon-reddit"></i></a>
+    <a class="share-item share-tumblr u-hover-item"
+        href="https://www.tumblr.com/widgets/share/tool?canonicalUrl=http://localhost:2368/using-matlab-and-statistics-to-analyze-raw-vehicle-data/&title=Using%20MATLAB%20and%20statistics%20to%20analyze%20raw%20vehicle%20data"
+        target="_blank" rel="noopener"><i class="icon icon-tumblr"></i></a>
+    <a class="share-item share-vk u-hover-item"
+        href="http://vk.com/share.php?url=http://localhost:2368/using-matlab-and-statistics-to-analyze-raw-vehicle-data/&title=Using%20MATLAB%20and%20statistics%20to%20analyze%20raw%20vehicle%20data" target="_blank" rel="noopener"><i
+            class="icon icon-vk"></i></a>
+    <a class="share-item share-pocket u-hover-item" href="https://getpocket.com/edit?url=http://localhost:2368/using-matlab-and-statistics-to-analyze-raw-vehicle-data/"
+        target="_blank" rel="noopener"><i class="icon icon-pocket"></i></a>
+    <a class="share-item share-telegram u-hover-item"
+        href="https://t.me/share/url?url=http://localhost:2368/using-matlab-and-statistics-to-analyze-raw-vehicle-data/&text=Using%20MATLAB%20and%20statistics%20to%20analyze%20raw%20vehicle%20data" target="_blank" rel="noopener"><i
+            class="icon icon-telegram"></i></a>
+</div>                            <section class="author">
+        <div class="author-image-placeholder u-placeholder">
+            <img class="author-image lazyload u-object-fit"
+                data-srcset="/content/images/size/w150/2022/07/IMG_20210703_160904-1.jpg"
+                src="../content/images/size/w150/2022/07/IMG_20210703_160904-1.jpg"
+                srcset="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                alt="Luis Medina">
+        </div>
+        <div class="author-wrapper">
+            <header class="author-header">
+                <div class="author-header-wrapper">
+                    <h4 class="author-name">Luis Medina</h4>
+                    <div class="author-social">
+                        <a class="author-social-item author-more"
+                            href="../author/luis/index.html">More posts</a>
+                    </div>
+                </div>
+            </header>
+            <div class="author-bio"></div>
+        </div>
+    </section>
+                </div>
+            </article>
+            <div class="navigation container medium">
+        <div class="navigation-item navigation-previous">
+            <a class="navigation-item-link button-arrow button-arrow-left" href="../replacing-matlab-with-python-part-1/index.html">
+                <i class="button-arrow-icon icon icon-arrow-left"></i> Previous Post
+            </a>
+        </div>
+
+</div>                        <section class="related-posts container medium">
+            <h3 class="related-title"><span class="text">You might also like...</span></h3>
+            <div class="row">
+                    <div class="col-md-4 related-column">
+                        <article class="post tag-python tag-matlab tag-engineering">
+                                <figure class="post-media">
+        <div class="u-placeholder rectangle">
+            <a class="post-image-link" href="../replacing-matlab-with-python-part-1/index.html">
+                <img class="post-image lazyload u-object-fit"
+
+                    data-srcset="https://images.unsplash.com/photo-1497285597995-6ed7de6bfebd?crop&#x3D;entropy&amp;cs&#x3D;tinysrgb&amp;fit&#x3D;max&amp;fm&#x3D;jpg&amp;ixid&#x3D;MnwxMTc3M3wwfDF8c2VhcmNofDE3fHxvcGVufGVufDB8fHx8MTY2MDk4NTE3NQ&amp;ixlib&#x3D;rb-1.2.1&amp;q&#x3D;80&amp;w&#x3D;2000 400w, https://images.unsplash.com/photo-1497285597995-6ed7de6bfebd?crop&#x3D;entropy&amp;cs&#x3D;tinysrgb&amp;fit&#x3D;max&amp;fm&#x3D;jpg&amp;ixid&#x3D;MnwxMTc3M3wwfDF8c2VhcmNofDE3fHxvcGVufGVufDB8fHx8MTY2MDk4NTE3NQ&amp;ixlib&#x3D;rb-1.2.1&amp;q&#x3D;80&amp;w&#x3D;2000 750w, https://images.unsplash.com/photo-1497285597995-6ed7de6bfebd?crop&#x3D;entropy&amp;cs&#x3D;tinysrgb&amp;fit&#x3D;max&amp;fm&#x3D;jpg&amp;ixid&#x3D;MnwxMTc3M3wwfDF8c2VhcmNofDE3fHxvcGVufGVufDB8fHx8MTY2MDk4NTE3NQ&amp;ixlib&#x3D;rb-1.2.1&amp;q&#x3D;80&amp;w&#x3D;2000 960w, https://images.unsplash.com/photo-1497285597995-6ed7de6bfebd?crop&#x3D;entropy&amp;cs&#x3D;tinysrgb&amp;fit&#x3D;max&amp;fm&#x3D;jpg&amp;ixid&#x3D;MnwxMTc3M3wwfDF8c2VhcmNofDE3fHxvcGVufGVufDB8fHx8MTY2MDk4NTE3NQ&amp;ixlib&#x3D;rb-1.2.1&amp;q&#x3D;80&amp;w&#x3D;2000 1140w, https://images.unsplash.com/photo-1497285597995-6ed7de6bfebd?crop&#x3D;entropy&amp;cs&#x3D;tinysrgb&amp;fit&#x3D;max&amp;fm&#x3D;jpg&amp;ixid&#x3D;MnwxMTc3M3wwfDF8c2VhcmNofDE3fHxvcGVufGVufDB8fHx8MTY2MDk4NTE3NQ&amp;ixlib&#x3D;rb-1.2.1&amp;q&#x3D;80&amp;w&#x3D;2000 1920w"
+                    data-sizes="auto" src="https://images.unsplash.com/photo-1497285597995-6ed7de6bfebd?crop&#x3D;entropy&amp;cs&#x3D;tinysrgb&amp;fit&#x3D;max&amp;fm&#x3D;jpg&amp;ixid&#x3D;MnwxMTc3M3wwfDF8c2VhcmNofDE3fHxvcGVufGVufDB8fHx8MTY2MDk4NTE3NQ&amp;ixlib&#x3D;rb-1.2.1&amp;q&#x3D;80&amp;w&#x3D;2000"
+                    srcset="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                     alt="Replacing MATLAB with Python - Part 1">
+            </a>
+        </div>
+
+    </figure>
+                            <header class="post-header">
+        <h2 class="post-title">
+            <a class="post-title-link" href="../replacing-matlab-with-python-part-1/index.html">Replacing MATLAB with Python - Part 1</a>
+        </h2>
+            <div class="post-meta">
+                <span class="post-meta-item post-meta-date">
+                    <time datetime="2022-08-20">Aug 20, 2022</time>
+                </span>
+                <span class="post-meta-item post-meta-length">
+                    8 min read
+                </span>
+                    <span class="post-meta-item post-meta-tags">
+                        <a class="post-tag post-tag-python" href="../tag/python/index.html"
+                                title="Python">Python</a><a class="post-tag post-tag-matlab" href="../tag/matlab/index.html"
+                                title="MATLAB">MATLAB</a><a class="post-tag post-tag-engineering" href="../tag/engineering/index.html"
+                                title="Engineering">Engineering</a>
+                    </span>
+            </div>
+</header>                        </article>
+                    </div>
+            </div>
+        </section>
+                </main>
+</div>
+        </div>
+        <footer class="site-footer container large">
+    <div class="copyright">
+        Powered by <a href="https://ghost.org/" target="_blank" rel="noopener">Ghost</a>
+    </div>
+
+        <nav class="footer-nav">
+            <ul class="nav-list u-plain-list">
+        <li class="menu-item menu-item-sign-up"><a class="menu-item-link"
+                href="index.html#/portal/">Sign up</a></li>
+</ul>
+        </nav>
+
+    <div class="footer-social">
+            <a class="footer-social-item footer-social-item-facebook" href="https://www.facebook.com/ghost"
+                target="_blank" rel="noopener" aria-label="Facebook">
+                <i class="icon icon-facebook"></i>
+            </a>
+            <a class="footer-social-item footer-social-item-twitter" href="https://twitter.com/ghost"
+                target="_blank" rel="noopener" aria-label="Twitter">
+                <i class="icon icon-twitter"></i>
+            </a>
+        <a class="footer-social-item footer-social-item-rss"
+            href="https://feedly.com/i/subscription/feed/http://localhost:2368/rss/" target="_blank" rel="noopener"
+            aria-label="RSS">
+            <i class="icon icon-rss"></i>
+        </a>
+    </div>
+</footer>    </div>
+
+    <div class="dimmer"></div>
+
+    <div class="off-canvas">
+        <div class="canvas-close">
+            <i class="canvas-icon icon icon-window-close"></i>
+        </div>
+        <div class="mobile-menu"></div>
+    </div>
+
+    <script
+        src="https://code.jquery.com/jquery-3.5.1.min.js"
+        integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
+        crossorigin="anonymous">
+    </script>
+    <script src="../assets/built/main.min.js@v=8e59953f1b"></script>
+
+    
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-core.min.js" integrity="sha512-9khQRAUBYEJDCDVP2yw3LRUQvjJ0Pjx0EShmaQjcHa6AXiOv6qHQu9lCAIR8O+/D8FtaCoJ2c0Tf9Xo7hYH01Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/autoloader/prism-autoloader.min.js" integrity="sha512-fTl/qcO1VgvKtOMApX2PdZzkziyr2stM65GYPLGuYMnuMm1z2JLJG6XVU7C/mR+E7xBUqCivykuhlzfqxXBXbg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</body>
+
+</html>
