@@ -27,7 +27,7 @@
     <meta property="og:url" content="http://localhost:2368/using-matlab-and-statistics-to-analyze-raw-vehicle-data/" />
     <meta property="og:image" content="https://images.unsplash.com/photo-1512717919743-801d3d85ec83?crop&#x3D;entropy&amp;cs&#x3D;tinysrgb&amp;fit&#x3D;max&amp;fm&#x3D;jpg&amp;ixid&#x3D;MnwxMTc3M3wwfDF8c2VhcmNofDEwOHx8Y2FyJTIwdG95fGVufDB8fHx8MTY2MjMwMTQxMw&amp;ixlib&#x3D;rb-1.2.1&amp;q&#x3D;80&amp;w&#x3D;2000" />
     <meta property="article:published_time" content="2022-09-04T15:23:00.000Z" />
-    <meta property="article:modified_time" content="2022-09-09T19:15:15.000Z" />
+    <meta property="article:modified_time" content="2022-09-09T20:44:41.000Z" />
     <meta property="article:tag" content="MATLAB" />
     <meta property="article:tag" content="Engineering" />
     <meta property="article:tag" content="Data" />
@@ -78,7 +78,7 @@
     "headline": "Using MATLAB and statistics to analyze raw vehicle data",
     "url": "http://localhost:2368/using-matlab-and-statistics-to-analyze-raw-vehicle-data/",
     "datePublished": "2022-09-04T15:23:00.000Z",
-    "dateModified": "2022-09-09T19:15:15.000Z",
+    "dateModified": "2022-09-09T20:44:41.000Z",
     "image": {
         "@type": "ImageObject",
         "url": "https://images.unsplash.com/photo-1512717919743-801d3d85ec83?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxMTc3M3wwfDF8c2VhcmNofDEwOHx8Y2FyJTIwdG95fGVufDB8fHx8MTY2MjMwMTQxMw&ixlib=rb-1.2.1&q=80&w=2000",
@@ -260,7 +260,7 @@ for i_plot = 2:size(t1,2)
     legend
     
 end
-</code></pre><figure class="kg-card kg-image-card kg-card-hascaption"><img src="../content/images/2022/09/DATA_plot_MATLAB-1.jpg" class="kg-image" alt="DATA_plot.png" loading="lazy" width="2000" height="667" srcset="../content/images/size/w600/2022/09/DATA_plot_MATLAB-1.jpg 600w, ../content/images/size/w1000/2022/09/DATA_plot_MATLAB-1.jpg 1000w, ../content/images/size/w1600/2022/09/DATA_plot_MATLAB-1.jpg 1600w, ../content/images/size/w2400/2022/09/DATA_plot_MATLAB-1.jpg 2400w" sizes="(min-width: 720px) 720px"><figcaption>Time series plots of the data stored in the files. This is useful to visualize what kind of information we have.</figcaption></figure><p>Great! we have comparable data in both files. We have pressure data from a sensor in the hydraulic circuit of the car, raw acceleration data from an <a href="https://en.wikipedia.org/wiki/Inertial_measurement_unit">IMU</a>, and the rotational speed of the four motors attached to the wheels. There is a slight time offset between the two data sets, and one of them is a bit longer. This is raw data, so it is something completely normal. </p><p>Let’s find out which driver was faster.  To do this, we need to compute the vehicle speed. </p><hr><h3 id="estimating-the-vehicle-speeds">Estimating the vehicle speeds</h3><p></p><p>This is not easy at all - it might seem, <a href="http://dx.doi.org/10.26552/com.C.2021.2.B117-B129">but it is not</a> - at least if you want to do it accurately. What we can do is settle down for a simplified calculation assuming the following:</p><ul><li>When the vehicle is accelerating, the speed of the car is similar to the speed of the contact point of the slowest tire, i.e. the one that rotates slower than the others and thus has a smaller <a href="https://www.racecar-engineering.com/tech-explained/tyre-dynamics/#:~:text=The%20slip%20ratio%20is%20similar,tyre%20that%20has%20lost%20traction">slip ratio</a>.</li><li>On the other hand, when the car is braking, the slowest tire is most likely locked, with a higher absolute slip ratio than the others. So in this case the vehicle's speed is closer to that of the fastest spinning tire - no accelerating torque is present.</li></ul><p>This is a rough estimate but should be enough for this analysis. But before we do this, we need to do some work to clean up the raw acceleration data. I will remove the <a href="https://en.wikipedia.org/wiki/DC_bias">DC offset</a>, and filter the noise.</p><pre><code class="language-MATLAB">%% Filter the longitudinal acceleration
+</code></pre><figure class="kg-card kg-image-card kg-card-hascaption"><img src="../content/images/2022/09/DATA_plot_MATLAB-1.jpg" class="kg-image" alt="DATA_plot.png" loading="lazy" width="2000" height="667" srcset="../content/images/size/w600/2022/09/DATA_plot_MATLAB-1.jpg 600w, ../content/images/size/w1000/2022/09/DATA_plot_MATLAB-1.jpg 1000w, ../content/images/size/w1600/2022/09/DATA_plot_MATLAB-1.jpg 1600w, ../content/images/size/w2400/2022/09/DATA_plot_MATLAB-1.jpg 2400w" sizes="(min-width: 720px) 720px"><figcaption>Time series plots of the data stored in the files. This is useful to visualize what kind of information we have.</figcaption></figure><p>Great! we have comparable data in both files. We have pressure data from a sensor in the hydraulic circuit of the car, raw acceleration data from an <a href="https://en.wikipedia.org/wiki/Inertial_measurement_unit">IMU</a>, and the rotational speed of the four motors attached to the wheels. There is a slight time offset between the two data sets, and one of them is a bit longer. This is raw data, so it is something completely normal. </p><p>Let’s find out which driver was faster.  To do this, we need to compute the vehicle speed. </p><hr><h3 id="estimating-the-vehicle-speeds">Estimating the vehicle speeds</h3><p></p><p>This is not easy at all - it might seem, <a href="http://dx.doi.org/10.26552/com.C.2021.2.B117-B129">but it is not</a> - at least if you want to do it accurately. What we can do is settle for a simplified calculation assuming the following:</p><ul><li>When the vehicle is accelerating, the speed of the car is similar to the speed of the contact point of the slowest tire, i.e. the one that rotates slower than the others and thus has a smaller <a href="https://www.racecar-engineering.com/tech-explained/tyre-dynamics/#:~:text=The%20slip%20ratio%20is%20similar,tyre%20that%20has%20lost%20traction">slip ratio</a>.</li><li>On the other hand, when the car is braking, the slowest tire is most likely locked, with a higher absolute slip ratio than the others. So in this case the vehicle's speed is closer to that of the fastest spinning tire - no accelerating torque is present.</li></ul><p>This is a rough estimate but should be enough for this analysis. But before we do this, we need to do some work to clean up the raw acceleration data. I will remove the <a href="https://en.wikipedia.org/wiki/DC_bias">DC offset</a>, and filter the noise.</p><pre><code class="language-MATLAB">%% Filter the longitudinal acceleration
 
 % Compute the sum of the wheel speeds
 sum_of_speeds1 = t1.spd_rpmFR + t1.spd_rpmFL + t1.spd_rpmRR + t1.spd_rpmRL;
@@ -318,17 +318,19 @@ t2(t2.AccX &lt;= 0, 'Veh_Spd') = table(max(t2{t2.AccX &lt;= 0,...
     {'spd_rpmFL','spd_rpmFR','spd_rpmRL','spd_rpmRR'}}, [], 2)*pi/30*r/gear_ratio*3.6);
     
 toc % Elapsed time is 0.018584 seconds.
-</code></pre><p>Awesome! we get both velocity vectors in just a fraction of a second, instead of only one in 5 minutes. I just took advantage of the indexing capabilities of MATLAB - it was designed to work with matrix operations, so why not use them?  Let me explain a bit:</p><p>I first added empty columns to the tables. Then, I indexed the tables, selecting only the rows for which the acceleration was positive, and the empty column I just created.</p><p>In that selection, I inserted the minimum of the motor speeds for each row, again, considering only the rows for which the acceleration was positive, and converting that to linear speeds. </p><p>Then I did the same for the opposite case when the acceleration was negative.</p><p>A similar approach can be used to avoid <code>for</code> loops when using numeric arrays or cell arrays instead of tables. The difference is just the syntax for indexing them.</p><p>Moving on...</p><hr><h3 id="comparing-the-speeds-of-both-drivers">Comparing the speeds of both drivers</h3><p></p><p>Let’s see what we’ve got as vehicle speeds:</p><p></p><pre><code class="language-matlab">%% Create a figure with a tiled layout
+</code></pre><p>Awesome! we get both velocity vectors in just a fraction of a second, instead of only one in 5 minutes. I just took advantage of the indexing capabilities of MATLAB - it was designed to work with matrix operations, so why not use them?  Let me explain a bit:</p><p>I first added empty columns to the tables. Then, I indexed the tables, selecting only the rows for which the acceleration was positive, and the empty column I just created.</p><p>In that selection, I inserted the minimum of the motor speeds for each row, again, considering only the rows for which the acceleration was positive, and converting that to linear speeds. </p><p>Then I did the same for the opposite case when the acceleration was negative.</p><p>A similar approach can be used to avoid <code>for</code> loops when using numeric arrays or cell arrays instead of tables. The difference is just the syntax for indexing them.</p><p>Moving on...</p><hr><h3 id="comparing-the-speeds-of-both-drivers">Comparing the speeds of both drivers</h3><p></p><p>Let’s see what we’ve got as vehicle speeds:</p><p></p><pre><code class="language-matlab">%% Create a figure with tiled layout
                                                 
-time_series = figure('Position', [10 10 1200 400]);
+time_series = figure('Name', ['Time series comparison'], 'Position', [10 10 1200 400]);
 tiles = tiledlayout(2,1);
 title(tiles, 'Driver time comparison')
 xlabel(tiles, 'Time [s]')
 
-%% Plot the data from the first file
+%% Plot data from the first file
 
 nexttile
 plot(t1.Time_s, t1.Veh_Spd, '-b')
+xlim([0, 1200])
+ylim([0, 100])
 ylabel('Vehicle speed [km/h]')
 hold on
 time_start1 = t1.Time_s(min(find( t1.Veh_Spd &gt; 20)));
@@ -337,26 +339,30 @@ t_elap_1 = time_end1 - time_start1;
 
 plot([[time_start1 time_end1]; [time_start1 time_end1] ], ...
     repmat(ylim',1, 2), 'Color', 'k', 'LineWidth', 2);
-title(['Driver 1 approximate time: ' num2str(time_end1 - time_start1, '%0.1f') ' seconds'])
+title(['Driver 1 approximate time: ' num2str(time_end1 - time_start1, '%0.1f') ' seconds'...
+       newline 'Max. Speed: ' num2str(max(t1.Veh_Spd), '%0.0f') 'km/h, '...
+       'Mean Speed: ' num2str(mean(t1.Veh_Spd, 'omitnan'), '%0.0f') 'km/h'])
 grid minor
-xlim([0, 1200])
 
-%% Plot the data from the second file
+
+%% Plot data from the second file
 
 nexttile
 plot(t2.Time_s, t2.Veh_Spd, '-b')
+xlim([0, 1200])
+ylim([0, 100])
 ylabel('Vehicle speed [km/h]')
 hold on
 time_start2 = t2.Time_s(min(find(t2.Veh_Spd &gt; 20)));
 time_end2 = t2.Time_s(max(find(t2.Veh_Spd &gt; 20)));
 t_elap_1 = time_end1 - time_start1;
+        
 
 plot([[time_start2 time_end2]; [time_start2 time_end2] ], repmat(ylim',1, 2), 'Color', 'k', 'LineWidth', 2);
-title(['Driver 2 approximate time: ' num2str(time_end2 - time_start2, '%0.1f') ' seconds'])
 grid minor
-xlim([0, 1200])
-
-</code></pre><figure class="kg-card kg-image-card"><img src="../content/images/2022/09/Drivers_time_plot_MATLAB-2.jpg" class="kg-image" alt="Drivers_time_plot.jpg" loading="lazy" width="2000" height="667" srcset="../content/images/size/w600/2022/09/Drivers_time_plot_MATLAB-2.jpg 600w, ../content/images/size/w1000/2022/09/Drivers_time_plot_MATLAB-2.jpg 1000w, ../content/images/size/w1600/2022/09/Drivers_time_plot_MATLAB-2.jpg 1600w, ../content/images/size/w2400/2022/09/Drivers_time_plot_MATLAB-2.jpg 2400w" sizes="(min-width: 720px) 720px"></figure><p>Ok, the second driver was<em> </em><strong><em>a lot</em> </strong>faster, and he probably also did a few more laps during the test session. There could be very noticeable differences in the driving styles since they were using the same car. So let’s see If we can spot them. First, let’s look at their speeds from a statistical perspective:</p><p></p><pre><code class="language-matlab">%% Get statistics about the driving speeds                                               
+title(['Driver 2 approximate time: ' num2str(time_end2 - time_start2, '%0.1f') ' seconds'...
+       newline 'Max. Speed: ' num2str(max(t2.Veh_Spd), '%0.0f') 'km/h, '...
+       'Mean Speed: ' num2str(mean(t2.Veh_Spd, 'omitnan'), '%0.0f') 'km/h'])</code></pre><figure class="kg-card kg-image-card"><img src="../content/images/2022/09/Drivers_time_plot_MATLAB-3.jpg" class="kg-image" alt="Drivers_time_plot.jpg" loading="lazy" width="2000" height="667" srcset="../content/images/size/w600/2022/09/Drivers_time_plot_MATLAB-3.jpg 600w, ../content/images/size/w1000/2022/09/Drivers_time_plot_MATLAB-3.jpg 1000w, ../content/images/size/w1600/2022/09/Drivers_time_plot_MATLAB-3.jpg 1600w, ../content/images/size/w2400/2022/09/Drivers_time_plot_MATLAB-3.jpg 2400w" sizes="(min-width: 720px) 720px"></figure><p>Ok, the second driver was<em> </em><strong><em>a lot</em> </strong>faster. There could be very noticeable differences in the driving styles since they were using the same car. So let’s see If we can spot them. First, let’s look at their speeds from a statistical perspective:</p><p></p><pre><code class="language-matlab">%% Get statistics about the driving speeds                                               
 histograms = figure('Name', ['Histograms comparison'], 'Position', [10 10 1200 400]);
 tiles = tiledlayout(2,1);
 title(tiles, 'Comparing vehicle speed data using histograms')
