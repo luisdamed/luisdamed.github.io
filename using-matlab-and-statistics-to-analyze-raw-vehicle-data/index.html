@@ -27,11 +27,10 @@
     <meta property="og:url" content="http://localhost:2368/using-matlab-and-statistics-to-analyze-raw-vehicle-data/" />
     <meta property="og:image" content="https://images.unsplash.com/photo-1512717919743-801d3d85ec83?crop&#x3D;entropy&amp;cs&#x3D;tinysrgb&amp;fit&#x3D;max&amp;fm&#x3D;jpg&amp;ixid&#x3D;MnwxMTc3M3wwfDF8c2VhcmNofDEwOHx8Y2FyJTIwdG95fGVufDB8fHx8MTY2MjMwMTQxMw&amp;ixlib&#x3D;rb-1.2.1&amp;q&#x3D;80&amp;w&#x3D;2000" />
     <meta property="article:published_time" content="2022-09-04T15:23:00.000Z" />
-    <meta property="article:modified_time" content="2022-09-09T20:44:41.000Z" />
+    <meta property="article:modified_time" content="2022-09-20T06:09:36.000Z" />
     <meta property="article:tag" content="MATLAB" />
     <meta property="article:tag" content="Engineering" />
     <meta property="article:tag" content="Data" />
-    <meta property="article:tag" content="ReplacingMATLABwithPython" />
     <meta property="article:tag" content="SignalProcessing" />
     
     <meta property="article:publisher" content="https://www.facebook.com/ghost" />
@@ -43,7 +42,7 @@
     <meta name="twitter:label1" content="Written by" />
     <meta name="twitter:data1" content="Luis Medina" />
     <meta name="twitter:label2" content="Filed under" />
-    <meta name="twitter:data2" content="MATLAB, Engineering, Data, ReplacingMATLABwithPython, SignalProcessing" />
+    <meta name="twitter:data2" content="MATLAB, Engineering, Data, SignalProcessing" />
     <meta name="twitter:site" content="@ghost" />
     <meta property="og:image:width" content="2000" />
     <meta property="og:image:height" content="1225" />
@@ -78,14 +77,14 @@
     "headline": "Using MATLAB and statistics to analyze raw vehicle data",
     "url": "http://localhost:2368/using-matlab-and-statistics-to-analyze-raw-vehicle-data/",
     "datePublished": "2022-09-04T15:23:00.000Z",
-    "dateModified": "2022-09-09T20:44:41.000Z",
+    "dateModified": "2022-09-20T06:09:36.000Z",
     "image": {
         "@type": "ImageObject",
         "url": "https://images.unsplash.com/photo-1512717919743-801d3d85ec83?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxMTc3M3wwfDF8c2VhcmNofDEwOHx8Y2FyJTIwdG95fGVufDB8fHx8MTY2MjMwMTQxMw&ixlib=rb-1.2.1&q=80&w=2000",
         "width": 2000,
         "height": 1225
     },
-    "keywords": "MATLAB, Engineering, Data, ReplacingMATLABwithPython, SignalProcessing",
+    "keywords": "MATLAB, Engineering, Data, SignalProcessing",
     "description": "I am sharing an example of the workflow I would follow for getting insights from real-world data using histograms and some very basic statistics.",
     "mainEntityOfPage": {
         "@type": "WebPage",
@@ -163,7 +162,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/themes/prism-tomorrow.min.css" integrity="sha512-vswe+cgvic/XBoF1OcM/TeJ2FW0OofqAVdCZiEYkd6dwGXthvkSFWOoGGJgS2CW70VK5dQM5Oh+7ne47s74VTg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
-<body class="post-template tag-matlab tag-engineering tag-data tag-replacingmatlabwithpython tag-signalprocessing has-serif-title">
+<body class="post-template tag-matlab tag-engineering tag-data tag-signalprocessing has-serif-title">
     <div class="site">
         <header class="site-header container">
     <div class="navbar">
@@ -193,7 +192,7 @@
             
 <div class="content-area">
     <main class="site-main">
-            <article class="post tag-matlab tag-engineering tag-data tag-replacingmatlabwithpython tag-signalprocessing single-post">
+            <article class="post tag-matlab tag-engineering tag-data tag-signalprocessing single-post">
                 <header class="post-header big-title container medium">
         <h1 class="post-title">Using MATLAB and statistics to analyze raw vehicle data</h1>
             <div class="post-meta">
@@ -207,8 +206,7 @@
                         <a class="post-tag post-tag-matlab" href="../tag/matlab/index.html"
                                 title="MATLAB">MATLAB</a><a class="post-tag post-tag-engineering" href="../tag/engineering/index.html"
                                 title="Engineering">Engineering</a><a class="post-tag post-tag-data" href="../tag/data/index.html"
-                                title="Data">Data</a><a class="post-tag post-tag-replacingmatlabwithpython" href="../tag/replacingmatlabwithpython/index.html"
-                                title="ReplacingMATLABwithPython">ReplacingMATLABwithPython</a><a class="post-tag post-tag-signalprocessing" href="../tag/signalprocessing/index.html"
+                                title="Data">Data</a><a class="post-tag post-tag-signalprocessing" href="../tag/signalprocessing/index.html"
                                 title="SignalProcessing">SignalProcessing</a>
                     </span>
             </div>
@@ -386,9 +384,9 @@ grid on
 
 nexttile
 % Newer way of creating a histogram
-h1 = histogram(t1.Veh_Spd, binEdges, 'normalization' , 'probability')
+h1 = histogram(t1.Veh_Spd, binEdges, 'normalization' , 'pdf')
 hold on
-h2 = histogram(t2.Veh_Spd, binEdges, 'normalization' , 'probability')
+h2 = histogram(t2.Veh_Spd, binEdges, 'normalization' , 'pdf')
 legend('Driver 1', 'Driver 2')
 title('Plotting two overlapping histograms (histogram command)')
 ylabel('Probability')
@@ -401,7 +399,7 @@ v1_median = median(t1.Veh_Spd, 'omitnan')	% Medians of the two samples
 v2_median = median(t2.Veh_Spd, 'omitnan')
 v1_std = std(t1.Veh_Spd, 'omitnan')         % Standard deviations of the two samples
 v2_std = std(t2.Veh_Spd, 'omitnan')
-</code></pre><figure class="kg-card kg-image-card kg-card-hascaption"><img src="../content/images/2022/09/histogram_Speed_MATLAB.jpg" class="kg-image" alt="veh_spd_histograms_MATLAB.png" loading="lazy" width="2000" height="667" srcset="../content/images/size/w600/2022/09/histogram_Speed_MATLAB.jpg 600w, ../content/images/size/w1000/2022/09/histogram_Speed_MATLAB.jpg 1000w, ../content/images/size/w1600/2022/09/histogram_Speed_MATLAB.jpg 1600w, ../content/images/size/w2400/2022/09/histogram_Speed_MATLAB.jpg 2400w" sizes="(min-width: 720px) 720px"><figcaption>Two different ways of plotting histograms in MATLAB. There is also the "bar" command. I didn’t bother to normalize the data on the left side, in this particular case it doesn’t matters much.</figcaption></figure><p>The histograms on the right side are normalized so that we can compare both files, even if the time of the second driver was shorter - which means that we have fewer data points. By dividing the counts of each bin by the size of the total sample, we actually get a representation of the discrete probability distribution. In this case, the width of the bins is constant, but if there were bins of different sizes, we would also need to divide by the width of the bins to get a valid comparison.</p><hr><h3 id="analyzing-the-braking-pressures">Analyzing the braking pressures</h3><p></p><p>The histograms show that the second driver spent more time at speeds above 60 km/h than the first one.  But both drivers were using exactly the same car. And the mean and median speed values are not that different between the two. So what could have changed? Perhaps it is also important to see how they were using the brakes.</p><pre><code class="language-matlab">%% Create histograms of the braking pressures
+</code></pre><figure class="kg-card kg-image-card kg-card-hascaption"><img src="../content/images/2022/09/histogram_Speed_MATLAB-2.jpg" class="kg-image" alt="veh_spd_histograms_MATLAB.png" loading="lazy" width="2000" height="667" srcset="../content/images/size/w600/2022/09/histogram_Speed_MATLAB-2.jpg 600w, ../content/images/size/w1000/2022/09/histogram_Speed_MATLAB-2.jpg 1000w, ../content/images/size/w1600/2022/09/histogram_Speed_MATLAB-2.jpg 1600w, ../content/images/size/w2400/2022/09/histogram_Speed_MATLAB-2.jpg 2400w" sizes="(min-width: 720px) 720px"><figcaption>Two different ways of plotting histograms in MATLAB. There is also the "bar" command.</figcaption></figure><p>The histograms on the right side are normalized so that we can compare both files, even if the time of the second driver was shorter - which means that we have fewer data points. By dividing the counts of each bin by the size of the total sample, we actually get a representation of the discrete probability density function.</p><hr><h3 id="analyzing-the-braking-pressures">Analyzing the braking pressures</h3><p></p><p>The histograms show that the second driver spent more time at speeds above 60 km/h than the first one.  But both drivers were using exactly the same car. And the mean and median speed values are not that different between the two. So what could have changed? Perhaps it is also important to see how they were using the brakes.</p><pre><code class="language-matlab">%% Create histograms of the braking pressures
 % This considers only the use of mechanical brakes.
 % The electric car can also use the electric motors for regenerative braking. 
 % This is enabled through a small portion of the brake pedal travel.
@@ -413,14 +411,15 @@ t2.BrakeFront(t2.BrakeFront &lt;=0) = 0; %filter negative pressure values
 %%
 figure;
 hold on
-histogram(t1.BrakeFront, 'Normalization', 'probability')
-histogram(t2.BrakeFront, 'Normalization', 'probability')
-ylabel('Probability')
+histogram(t2.BrakeFront, 'Normalization', 'cdf')
+histogram(t1.BrakeFront, 'Normalization', 'cdf')
+set(gca,'YScale','log')
+ylabel('cumcount (log scale)')
 xlabel('Pressure [bar]' )
 title('Brakes pressure in the front circuit ')
-legend('Driver 1', 'Dirver 2')
+legend( 'Driver 2', 'Driver 1')
 grid on
-</code></pre><figure class="kg-card kg-image-card kg-card-hascaption"><img src="../content/images/2022/09/pressure_hist_2Driver_ARROWS_tile1_MATLAB.jpg" class="kg-image" alt="pressure_hist_2Driver_ARROWS_tile1_MATLAB.jpg" loading="lazy" width="2000" height="577" srcset="../content/images/size/w600/2022/09/pressure_hist_2Driver_ARROWS_tile1_MATLAB.jpg 600w, ../content/images/size/w1000/2022/09/pressure_hist_2Driver_ARROWS_tile1_MATLAB.jpg 1000w, ../content/images/size/w1600/2022/09/pressure_hist_2Driver_ARROWS_tile1_MATLAB.jpg 1600w, ../content/images/2022/09/pressure_hist_2Driver_ARROWS_tile1_MATLAB.jpg 2262w" sizes="(min-width: 720px) 720px"><figcaption>If we zoomed in, we would notice that the second driver also was using the brakes at higher pressures compared to the first one. But I left the zoomed-out scale to highlight the peak on the left side.</figcaption></figure><p></p><p>The high bar on the left side represents the low-pressure values, which are the most common values present during driving. This makes sense since one doesn’t drive with the brakes pressed, especially during a race. But driver 1 did spend more time braking. We can see that the probability of having the brakes completely disengaged (e.g.about zero hydraulic pressure in the circuit) is lower for driver one. And we also see that the probability of having low pressures in the circuit is higher in case 1. This could mean that the first driver actually had the brakes slightly pressed constantly, perhaps without noticing. </p><p>Let’s see also at what speeds the drivers were braking. </p><hr><h3 id="finding-the-vehicle-speeds-at-the-start-of-the-braking-maneuvers">Finding the vehicle speeds at the start of the braking maneuvers</h3><p></p><p>To do this, we need to identify the speeds at the start of the braking maneuvers. I defined a small pressure value to use as a threshold for identifying when the brakes are pressed. This is a bit of an iterative process - you don’t get it right the first time and need to adjust the value until the results make sense.</p><!--kg-card-begin: markdown--><p>Let's use again the power of indexing, I don't want to wait forever with a for loop. We just need to determine in which rows there was a change in pressure that we could recognize as a pedal press. We also need to consider only the cases in which the vehicle was actually moving. So we have three conditions:</p>
+</code></pre><figure class="kg-card kg-image-card kg-card-hascaption"><img src="../content/images/2022/09/pressure_hist_cumcount_MATLAB-1.jpg" class="kg-image" alt="pressure_hist_2Driver_ARROWS_tile1_MATLAB.jpg" loading="lazy" width="2000" height="759" srcset="../content/images/size/w600/2022/09/pressure_hist_cumcount_MATLAB-1.jpg 600w, ../content/images/size/w1000/2022/09/pressure_hist_cumcount_MATLAB-1.jpg 1000w, ../content/images/size/w1600/2022/09/pressure_hist_cumcount_MATLAB-1.jpg 1600w, ../content/images/size/w2400/2022/09/pressure_hist_cumcount_MATLAB-1.jpg 2400w" sizes="(min-width: 720px) 720px"><figcaption>Cumulative count density of the pressures in the hydraulic circuits. 'Density' means the counts for each bin have been normalized to the total number of counts, this way we can compare the distributions even if the samples have different sizes.</figcaption></figure><p></p><p>The bars on the left side represent the low-pressure values, which are the most common values present during driving. This makes sense since one doesn’t drive with the brakes pressed, especially during a race. However, we can see that the number of times that the brakes were completely disengaged was lower for driver 1. And we also see that the number of instants with low braking pressures - around 5 bar - is higher in case 1. This could mean that the first driver actually had the brakes slightly pressed constantly, perhaps without noticing. Driver 1 also pushed the brakes to higher pressures (up to 40 bar, which probably was the full-scale reading of the pressure sensor).</p><p>Let’s see also at what speeds the drivers were braking. </p><hr><h3 id="finding-the-vehicle-speeds-at-the-start-of-the-braking-maneuvers">Finding the vehicle speeds at the start of the braking maneuvers</h3><p></p><p>To do this, we need to identify the speeds at the start of the braking maneuvers. I defined a small pressure value to use as a threshold for identifying when the brakes are pressed. This is a bit of an iterative process - you don’t get it right the first time and need to adjust the value until the results make sense.</p><!--kg-card-begin: markdown--><p>Let's use again the power of indexing, I don't want to wait forever with a for loop. We just need to determine in which rows there was a change in pressure that we could recognize as a pedal press. We also need to consider only the cases in which the vehicle was actually moving. So we have three conditions:</p>
 <ol>
 <li>Low pressure on instant t</li>
 <li>High pressure (greater than a threshold) on instant t+1</li>
@@ -536,7 +535,7 @@ grid on
             <h3 class="related-title"><span class="text">You might also like...</span></h3>
             <div class="row">
                     <div class="col-md-4 related-column">
-                        <article class="post tag-data tag-engineering tag-matlab tag-python tag-replacingmatlabwithpython tag-signalprocessing">
+                        <article class="post tag-python tag-matlab tag-data tag-engineering tag-signalprocessing">
                                 <figure class="post-media">
         <div class="u-placeholder rectangle">
             <a class="post-image-link" href="../replacing-matlab-with-python-part-2/index.html">
@@ -562,19 +561,18 @@ grid on
                     10 min read
                 </span>
                     <span class="post-meta-item post-meta-tags">
-                        <a class="post-tag post-tag-data" href="../tag/data/index.html"
+                        <a class="post-tag post-tag-python" href="../tag/python/index.html"
+                                title="Python">Python</a><a class="post-tag post-tag-matlab" href="../tag/matlab/index.html"
+                                title="MATLAB">MATLAB</a><a class="post-tag post-tag-data" href="../tag/data/index.html"
                                 title="Data">Data</a><a class="post-tag post-tag-engineering" href="../tag/engineering/index.html"
-                                title="Engineering">Engineering</a><a class="post-tag post-tag-matlab" href="../tag/matlab/index.html"
-                                title="MATLAB">MATLAB</a><a class="post-tag post-tag-python" href="../tag/python/index.html"
-                                title="Python">Python</a><a class="post-tag post-tag-replacingmatlabwithpython" href="../tag/replacingmatlabwithpython/index.html"
-                                title="ReplacingMATLABwithPython">ReplacingMATLABwithPython</a><a class="post-tag post-tag-signalprocessing" href="../tag/signalprocessing/index.html"
+                                title="Engineering">Engineering</a><a class="post-tag post-tag-signalprocessing" href="../tag/signalprocessing/index.html"
                                 title="SignalProcessing">SignalProcessing</a>
                     </span>
             </div>
 </header>                        </article>
                     </div>
                     <div class="col-md-4 related-column">
-                        <article class="post tag-python tag-matlab tag-engineering">
+                        <article class="post tag-python tag-matlab tag-engineering tag-data">
                                 <figure class="post-media">
         <div class="u-placeholder rectangle">
             <a class="post-image-link" href="../replacing-matlab-with-python-part-1/index.html">
@@ -603,7 +601,8 @@ grid on
                         <a class="post-tag post-tag-python" href="../tag/python/index.html"
                                 title="Python">Python</a><a class="post-tag post-tag-matlab" href="../tag/matlab/index.html"
                                 title="MATLAB">MATLAB</a><a class="post-tag post-tag-engineering" href="../tag/engineering/index.html"
-                                title="Engineering">Engineering</a>
+                                title="Engineering">Engineering</a><a class="post-tag post-tag-data" href="../tag/data/index.html"
+                                title="Data">Data</a>
                     </span>
             </div>
 </header>                        </article>
