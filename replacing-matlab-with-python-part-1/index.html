@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Replacing MATLAB with Python - Part 1</title>
-    <link rel="stylesheet" href="../assets/built/screen.css@v=6613460358.css">
+    <link rel="stylesheet" href="../assets/built/screen.css@v=fe96e610ec.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400;1,700&family=Mulish:ital,wght@0,400;0,700;0,800;1,400;1,700&display=swap">
@@ -27,7 +27,7 @@
     <meta property="og:url" content="http://localhost:2368/replacing-matlab-with-python-part-1/" />
     <meta property="og:image" content="https://images.unsplash.com/photo-1497285597995-6ed7de6bfebd?crop&#x3D;entropy&amp;cs&#x3D;tinysrgb&amp;fit&#x3D;max&amp;fm&#x3D;jpg&amp;ixid&#x3D;MnwxMTc3M3wwfDF8c2VhcmNofDE3fHxvcGVufGVufDB8fHx8MTY2MDk4NTE3NQ&amp;ixlib&#x3D;rb-1.2.1&amp;q&#x3D;80&amp;w&#x3D;2000" />
     <meta property="article:published_time" content="2022-08-20T08:32:32.000Z" />
-    <meta property="article:modified_time" content="2022-09-21T04:09:06.000Z" />
+    <meta property="article:modified_time" content="2022-09-26T17:44:34.000Z" />
     <meta property="article:tag" content="Python" />
     <meta property="article:tag" content="MATLAB" />
     <meta property="article:tag" content="Engineering" />
@@ -77,7 +77,7 @@
     "headline": "Replacing MATLAB with Python - Part 1",
     "url": "http://localhost:2368/replacing-matlab-with-python-part-1/",
     "datePublished": "2022-08-20T08:32:32.000Z",
-    "dateModified": "2022-09-21T04:09:06.000Z",
+    "dateModified": "2022-09-26T17:44:34.000Z",
     "image": {
         "@type": "ImageObject",
         "url": "https://images.unsplash.com/photo-1497285597995-6ed7de6bfebd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxMTc3M3wwfDF8c2VhcmNofDE3fHxvcGVufGVufDB8fHx8MTY2MDk4NTE3NQ&ixlib=rb-1.2.1&q=80&w=2000",
@@ -200,7 +200,7 @@
                     <time datetime="2022-08-20">Aug 20, 2022</time>
                 </span>
                 <span class="post-meta-item post-meta-length">
-                    8 min read
+                    9 min read
                 </span>
                     <span class="post-meta-item post-meta-tags">
                         <a class="post-tag post-tag-python" href="../tag/python/index.html"
@@ -252,7 +252,7 @@
 <p>However, methods and classes are not unique to Python, they exist in almost any programming language, and even in MATLAB. The difference is how they are used depending on the <em>intent</em> of the language. MATLAB is specific for matrix computations, so it relies heavily on functions, whereas Python has specific libraries for different purposes, and they use both functions and methods to accomplish some tasks. There are also some <a href="https://docs.python.org/3/library/functions.html">built-in functions in Python</a></p>
 <p>Next, we create the figure and plot the data. We first need to specify the figure size, otherwise, the default figure dimensions will be too small. In this case, we are using subplots to obtain the following result:</p>
 <!--kg-card-end: markdown--><figure class="kg-card kg-image-card kg-card-hascaption"><img src="../content/images/2022/08/Python_fig_timeseries-1.jpeg" class="kg-image" alt loading="lazy" width="1800" height="1200" srcset="../content/images/size/w600/2022/08/Python_fig_timeseries-1.jpeg 600w, ../content/images/size/w1000/2022/08/Python_fig_timeseries-1.jpeg 1000w, ../content/images/size/w1600/2022/08/Python_fig_timeseries-1.jpeg 1600w, ../content/images/2022/08/Python_fig_timeseries-1.jpeg 1800w" sizes="(min-width: 720px) 720px"><figcaption>Plot of time series data obtained using Python (Pyplot) - Image by author</figcaption></figure><p>Granted, the Python plot needs a bit more manual formatting to have the same look as the MATLAB one. But this is not really an issue once you know what you need to change to get the format you want. You can set the defaults for creating figures on the top of your script, or make a function that does the formatting for new figures.</p><!--kg-card-begin: markdown--><p>If you have trouble getting some details to work, you can just google your answer. The amount of Python users is huge <a href="https://ponder.io/pandas-is-now-as-popular-as-python-was-in-2016/#Python%E2%80%99s%20Popularity%20more%20than%20Doubled%20Between%202013%20and%202022">and growing</a>, so it is very likely you will find someone already asked a similar question online. For instance, I was having a hard time getting the axes titles to show correctly, and there was <a href="https://stackoverflow.com/questions/6774086/how-to-adjust-padding-with-cutoff-or-overlapping-labels">a Stackoverflow thread</a> solving exactly the same issue - turns out you need to add <code>plt.tight_layout()</code> for the figure to be padded correctly. Just part of the learning curve. It's like when I needed to call the legend in MATLAB as <code>legend('interpreter', 'none')</code> to avoid <em>tex</em> interpretation of variable names with underscores, for instance.</p>
-<!--kg-card-end: markdown--><p>Plus, this example was done using <a href="https://matplotlib.org/stable/tutorials/introductory/pyplot.html#:~:text=pyplot%20is%20a%20collection%20of,In%20matplotlib.">Pyplot</a>. There are other libraries for plotting, which can produce cleaner plots in different cases, depending on your purposes.</p><hr><p>This post was a bit longer than the others, being the introduction of the series, but I hope you found it helpful or at least interesting. Over the next weeks, I will be sharing other example codes, highlighting the differences between MATLAB and Python, and showing also the things I struggled with. I hope you are motivated to learn Python as I am, and this can be an incentive to try it on your own.</p><p>I will update this first post to index the new examples I include as I go, so it is easier to navigate between the different entries.</p><p>Until the next one!</p><p>Luis</p><p></p>
+<!--kg-card-end: markdown--><p>Plus, this example was done using <a href="https://matplotlib.org/stable/tutorials/introductory/pyplot.html#:~:text=pyplot%20is%20a%20collection%20of,In%20matplotlib.">Pyplot</a>. There are other libraries for plotting, which can produce cleaner plots in different cases, depending on your purposes.</p><hr><p>This post was a bit longer than the others, being the introduction of the series, but I hope you found it helpful or at least interesting. Over the next weeks, I will be sharing other example codes, highlighting the differences between MATLAB and Python, and showing also the things I struggled with. I hope you are motivated to learn Python as I am, and this can be an incentive to try it on your own.</p><p>I will update this first post to index the new examples I include as I go, so it is easier to navigate between the different entries. </p><p>Until the next one!</p><p>Luis</p><p></p><p><em>Edit 2022-09-26:</em> A list of the latest posts in the series:</p><p></p><figure class="kg-card kg-bookmark-card"><a class="kg-bookmark-container" href="https://makerluis.com/using-matlab-and-statistics-to-analyze-raw-vehicle-data"><div class="kg-bookmark-content"><div class="kg-bookmark-title">Using MATLAB and statistics to analyze raw vehicle data</div><div class="kg-bookmark-description">I am sharing an example of the workflow I would follow for getting insights from real-world data using histograms and some very basic statistics.</div><div class="kg-bookmark-metadata"><img class="kg-bookmark-icon" src="../favicon.ico" alt=""><span class="kg-bookmark-author">Making stuff after office hours</span><span class="kg-bookmark-publisher">Luis Medina</span></div></div><div class="kg-bookmark-thumbnail"><img src="https://images.unsplash.com/photo-1512717919743-801d3d85ec83?crop&#x3D;entropy&amp;cs&#x3D;tinysrgb&amp;fit&#x3D;max&amp;fm&#x3D;jpg&amp;ixid&#x3D;MnwxMTc3M3wwfDF8c2VhcmNofDEwOHx8Y2FyJTIwdG95fGVufDB8fHx8MTY2MjMwMTQxMw&amp;ixlib&#x3D;rb-1.2.1&amp;q&#x3D;80&amp;w&#x3D;2000" alt=""></div></a></figure><figure class="kg-card kg-bookmark-card"><a class="kg-bookmark-container" href="https://makerluis.com/replacing-matlab-with-python-part-2"><div class="kg-bookmark-content"><div class="kg-bookmark-title">Replacing MATLAB with Python - Part 2: Formatting subplots and indexing data</div><div class="kg-bookmark-description">I used Python to complete the first part of the task from my previous post in the series. I learned about formatting plots and indexing Pandas dataframes.</div><div class="kg-bookmark-metadata"><img class="kg-bookmark-icon" src="../favicon.ico" alt=""><span class="kg-bookmark-author">Making stuff after office hours</span><span class="kg-bookmark-publisher">Luis Medina</span></div></div><div class="kg-bookmark-thumbnail"><img src="https://images.unsplash.com/photo-1551431524-06b3c82d31ca?crop&#x3D;entropy&amp;cs&#x3D;tinysrgb&amp;fit&#x3D;max&amp;fm&#x3D;jpg&amp;ixid&#x3D;MnwxMTc3M3wwfDF8c2VhcmNofDk3fHxrZXlib2FyZHxlbnwwfHx8fDE2NjM1NjQ5NDc&amp;ixlib&#x3D;rb-1.2.1&amp;q&#x3D;80&amp;w&#x3D;2000" alt=""></div></a></figure>
                 </div>
                 <div class="container medium">
                         <div class="share u-hover-wrapper">
@@ -320,6 +320,41 @@
 </div>                        <section class="related-posts container medium">
             <h3 class="related-title"><span class="text">You might also like...</span></h3>
             <div class="row">
+                    <div class="col-md-4 related-column">
+                        <article class="post tag-python tag-data tag-engineering">
+                                <figure class="post-media">
+        <div class="u-placeholder rectangle">
+            <a class="post-image-link" href="../replacing-matlab-with-python-part-3/index.html">
+                <img class="post-image lazyload u-object-fit"
+
+                    data-srcset="https://images.unsplash.com/photo-1548081597-c3552b4e9853?crop&#x3D;entropy&amp;cs&#x3D;tinysrgb&amp;fit&#x3D;max&amp;fm&#x3D;jpg&amp;ixid&#x3D;MnwxMTc3M3wwfDF8c2VhcmNofDE3fHxwYW5kYXxlbnwwfHx8fDE2NjQyMTM5Nzc&amp;ixlib&#x3D;rb-1.2.1&amp;q&#x3D;80&amp;w&#x3D;2000 400w, https://images.unsplash.com/photo-1548081597-c3552b4e9853?crop&#x3D;entropy&amp;cs&#x3D;tinysrgb&amp;fit&#x3D;max&amp;fm&#x3D;jpg&amp;ixid&#x3D;MnwxMTc3M3wwfDF8c2VhcmNofDE3fHxwYW5kYXxlbnwwfHx8fDE2NjQyMTM5Nzc&amp;ixlib&#x3D;rb-1.2.1&amp;q&#x3D;80&amp;w&#x3D;2000 750w, https://images.unsplash.com/photo-1548081597-c3552b4e9853?crop&#x3D;entropy&amp;cs&#x3D;tinysrgb&amp;fit&#x3D;max&amp;fm&#x3D;jpg&amp;ixid&#x3D;MnwxMTc3M3wwfDF8c2VhcmNofDE3fHxwYW5kYXxlbnwwfHx8fDE2NjQyMTM5Nzc&amp;ixlib&#x3D;rb-1.2.1&amp;q&#x3D;80&amp;w&#x3D;2000 960w, https://images.unsplash.com/photo-1548081597-c3552b4e9853?crop&#x3D;entropy&amp;cs&#x3D;tinysrgb&amp;fit&#x3D;max&amp;fm&#x3D;jpg&amp;ixid&#x3D;MnwxMTc3M3wwfDF8c2VhcmNofDE3fHxwYW5kYXxlbnwwfHx8fDE2NjQyMTM5Nzc&amp;ixlib&#x3D;rb-1.2.1&amp;q&#x3D;80&amp;w&#x3D;2000 1140w, https://images.unsplash.com/photo-1548081597-c3552b4e9853?crop&#x3D;entropy&amp;cs&#x3D;tinysrgb&amp;fit&#x3D;max&amp;fm&#x3D;jpg&amp;ixid&#x3D;MnwxMTc3M3wwfDF8c2VhcmNofDE3fHxwYW5kYXxlbnwwfHx8fDE2NjQyMTM5Nzc&amp;ixlib&#x3D;rb-1.2.1&amp;q&#x3D;80&amp;w&#x3D;2000 1920w"
+                    data-sizes="auto" src="https://images.unsplash.com/photo-1548081597-c3552b4e9853?crop&#x3D;entropy&amp;cs&#x3D;tinysrgb&amp;fit&#x3D;max&amp;fm&#x3D;jpg&amp;ixid&#x3D;MnwxMTc3M3wwfDF8c2VhcmNofDE3fHxwYW5kYXxlbnwwfHx8fDE2NjQyMTM5Nzc&amp;ixlib&#x3D;rb-1.2.1&amp;q&#x3D;80&amp;w&#x3D;2000"
+                    srcset="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                     alt="Replacing MATLAB with Python - Part 3: Histograms and more data-indexing">
+            </a>
+        </div>
+
+    </figure>
+                            <header class="post-header">
+        <h2 class="post-title">
+            <a class="post-title-link" href="../replacing-matlab-with-python-part-3/index.html">Replacing MATLAB with Python - Part 3: Histograms and more data-indexing</a>
+        </h2>
+            <div class="post-meta">
+                <span class="post-meta-item post-meta-date">
+                    <time datetime="2022-09-26">Sep 26, 2022</time>
+                </span>
+                <span class="post-meta-item post-meta-length">
+                    8 min read
+                </span>
+                    <span class="post-meta-item post-meta-tags">
+                        <a class="post-tag post-tag-python" href="../tag/python/index.html"
+                                title="Python">Python</a><a class="post-tag post-tag-data" href="../tag/data/index.html"
+                                title="Data">Data</a><a class="post-tag post-tag-engineering" href="../tag/engineering/index.html"
+                                title="Engineering">Engineering</a>
+                    </span>
+            </div>
+</header>                        </article>
+                    </div>
                     <div class="col-md-4 related-column">
                         <article class="post tag-python tag-matlab tag-data tag-engineering tag-signalprocessing">
                                 <figure class="post-media">
@@ -445,7 +480,7 @@
         integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
         crossorigin="anonymous">
     </script>
-    <script src="../assets/built/main.min.js@v=6613460358"></script>
+    <script src="../assets/built/main.min.js@v=fe96e610ec"></script>
 
     
 

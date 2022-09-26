@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Replacing MATLAB with Python - Part 3: Histograms and more data-indexing</title>
+    <link rel="stylesheet" href="../assets/built/screen.css@v=fe96e610ec.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400;1,700&family=Mulish:ital,wght@0,400;0,700;0,800;1,400;1,700&display=swap">
+
+    <script>
+        if (localStorage.getItem('alto_dark') == 'true') {
+            document.documentElement.classList.add('dark-mode');
+        }
+    </script>
+
+    <meta name="description" content="I am sharing how I used Python to complete the second part of an example task originally done with MATLAB. I learned more about slicing dataframes and making histograms with two different libraries" />
+    <link rel="canonical" href="index.html" />
+    <meta name="referrer" content="no-referrer-when-downgrade" />
+    
+    <meta property="og:site_name" content="Making stuff after office hours" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Replacing MATLAB with Python - Part 3: Histograms and more data-indexing" />
+    <meta property="og:description" content="I am sharing how I used Python to complete the second part of an example task originally done with MATLAB. I learned more about slicing dataframes and making histograms with two different libraries" />
+    <meta property="og:url" content="http://localhost:2368/replacing-matlab-with-python-part-3/" />
+    <meta property="og:image" content="https://images.unsplash.com/photo-1548081597-c3552b4e9853?crop&#x3D;entropy&amp;cs&#x3D;tinysrgb&amp;fit&#x3D;max&amp;fm&#x3D;jpg&amp;ixid&#x3D;MnwxMTc3M3wwfDF8c2VhcmNofDE3fHxwYW5kYXxlbnwwfHx8fDE2NjQyMTM5Nzc&amp;ixlib&#x3D;rb-1.2.1&amp;q&#x3D;80&amp;w&#x3D;2000" />
+    <meta property="article:published_time" content="2022-09-26T17:39:21.000Z" />
+    <meta property="article:modified_time" content="2022-09-26T17:40:01.000Z" />
+    <meta property="article:tag" content="Python" />
+    <meta property="article:tag" content="Data" />
+    <meta property="article:tag" content="Engineering" />
+    
+    <meta property="article:publisher" content="https://www.facebook.com/ghost" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Replacing MATLAB with Python - Part 3: Histograms and more data-indexing" />
+    <meta name="twitter:description" content="I am sharing how I used Python to complete the second part of an example task originally done with MATLAB. I learned more about slicing dataframes and making histograms with two different libraries" />
+    <meta name="twitter:url" content="http://localhost:2368/replacing-matlab-with-python-part-3/" />
+    <meta name="twitter:image" content="https://images.unsplash.com/photo-1548081597-c3552b4e9853?crop&#x3D;entropy&amp;cs&#x3D;tinysrgb&amp;fit&#x3D;max&amp;fm&#x3D;jpg&amp;ixid&#x3D;MnwxMTc3M3wwfDF8c2VhcmNofDE3fHxwYW5kYXxlbnwwfHx8fDE2NjQyMTM5Nzc&amp;ixlib&#x3D;rb-1.2.1&amp;q&#x3D;80&amp;w&#x3D;2000" />
+    <meta name="twitter:label1" content="Written by" />
+    <meta name="twitter:data1" content="Luis Medina" />
+    <meta name="twitter:label2" content="Filed under" />
+    <meta name="twitter:data2" content="Python, Data, Engineering" />
+    <meta name="twitter:site" content="@ghost" />
+    <meta property="og:image:width" content="2000" />
+    <meta property="og:image:height" content="1333" />
+    
+    <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "publisher": {
+        "@type": "Organization",
+        "name": "Making stuff after office hours",
+        "url": "http://localhost:2368/",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "http://localhost:2368/favicon.ico",
+            "width": 48,
+            "height": 48
+        }
+    },
+    "author": {
+        "@type": "Person",
+        "name": "Luis Medina",
+        "image": {
+            "@type": "ImageObject",
+            "url": "http://localhost:2368/content/images/2022/07/IMG_20210703_160904-1.jpg",
+            "width": 1475,
+            "height": 1474
+        },
+        "url": "http://localhost:2368/author/luis/",
+        "sameAs": []
+    },
+    "headline": "Replacing MATLAB with Python - Part 3: Histograms and more data-indexing",
+    "url": "http://localhost:2368/replacing-matlab-with-python-part-3/",
+    "datePublished": "2022-09-26T17:39:21.000Z",
+    "dateModified": "2022-09-26T17:40:01.000Z",
+    "image": {
+        "@type": "ImageObject",
+        "url": "https://images.unsplash.com/photo-1548081597-c3552b4e9853?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxMTc3M3wwfDF8c2VhcmNofDE3fHxwYW5kYXxlbnwwfHx8fDE2NjQyMTM5Nzc&ixlib=rb-1.2.1&q=80&w=2000",
+        "width": 2000,
+        "height": 1333
+    },
+    "keywords": "Python, Data, Engineering",
+    "description": "I am sharing how I used Python to complete the second part of an example task originally done with MATLAB. I learned more about slicing dataframes and making histograms with two different libraries",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "http://localhost:2368/"
+    }
+}
+    </script>
+
+    <meta name="generator" content="Ghost 5.2" />
+    <link rel="alternate" type="application/rss+xml" title="Making stuff after office hours" href="../rss/index.html" />
+    <script defer src="https://unpkg.com/@tryghost/portal@~2.2.0/umd/portal.min.js" data-ghost="http://localhost:2368/" data-key="301bf1d34b7e435e3fcf462aa7" data-api="http://localhost:2368/ghost/api/content/" crossorigin="anonymous"></script><style id="gh-members-styles">.gh-post-upgrade-cta-content,
+.gh-post-upgrade-cta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    text-align: center;
+    width: 100%;
+    color: #ffffff;
+    font-size: 16px;
+}
+
+.gh-post-upgrade-cta-content {
+    border-radius: 8px;
+    padding: 40px 4vw;
+}
+
+.gh-post-upgrade-cta h2 {
+    color: #ffffff;
+    font-size: 28px;
+    letter-spacing: -0.2px;
+    margin: 0;
+    padding: 0;
+}
+
+.gh-post-upgrade-cta p {
+    margin: 20px 0 0;
+    padding: 0;
+}
+
+.gh-post-upgrade-cta small {
+    font-size: 16px;
+    letter-spacing: -0.2px;
+}
+
+.gh-post-upgrade-cta a {
+    color: #ffffff;
+    cursor: pointer;
+    font-weight: 500;
+    box-shadow: none;
+    text-decoration: underline;
+}
+
+.gh-post-upgrade-cta a:hover {
+    color: #ffffff;
+    opacity: 0.8;
+    box-shadow: none;
+    text-decoration: underline;
+}
+
+.gh-post-upgrade-cta a.gh-btn {
+    display: block;
+    background: #ffffff;
+    text-decoration: none;
+    margin: 28px 0 0;
+    padding: 8px 18px;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.gh-post-upgrade-cta a.gh-btn:hover {
+    opacity: 0.92;
+}</style><style>:root {--ghost-accent-color: #19809a;}</style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/themes/prism-tomorrow.min.css" integrity="sha512-vswe+cgvic/XBoF1OcM/TeJ2FW0OofqAVdCZiEYkd6dwGXthvkSFWOoGGJgS2CW70VK5dQM5Oh+7ne47s74VTg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body class="post-template tag-python tag-data tag-engineering has-serif-title">
+    <div class="site">
+        <header class="site-header container">
+    <div class="navbar">
+        <div class="navbar-left">
+            <div class="burger hidden-lg hidden-xl"></div>
+            <a class="logo" href="../index.html">
+        <span class="logo-text">Making stuff after office hours</span>
+</a>            <div class="sep hidden-xs hidden-sm hidden-sm"></div>
+                <nav class="main-menu hidden-xs hidden-sm hidden-md">
+                    <ul class="nav-list u-plain-list">
+        <li class="menu-item menu-item-home"><a class="menu-item-link"
+                href="../index.html">Home</a></li>
+        <li class="menu-item menu-item-about"><a class="menu-item-link"
+                href="../about/index.html">About</a></li>
+</ul>
+                </nav>
+        </div>
+        <div class="navbar-right">
+            <div class="toggle-track">
+                <div class="toggle-moon"><i class="icon icon-brightness-2"></i></div>
+                <div class="toggle-sun"><i class="icon icon-white-balance-sunny"></i></div>
+                <div class="toggle-thumb"></div>
+            </div>
+        </div>
+    </div>
+</header>        <div class="site-content">
+            
+<div class="content-area">
+    <main class="site-main">
+            <article class="post tag-python tag-data tag-engineering single-post">
+                <header class="post-header big-title container medium">
+        <h1 class="post-title">Replacing MATLAB with Python - Part 3: Histograms and more data-indexing</h1>
+            <div class="post-meta">
+                <span class="post-meta-item post-meta-date">
+                    <time datetime="2022-09-26">Sep 26, 2022</time>
+                </span>
+                <span class="post-meta-item post-meta-length">
+                    8 min read
+                </span>
+                    <span class="post-meta-item post-meta-tags">
+                        <a class="post-tag post-tag-python" href="../tag/python/index.html"
+                                title="Python">Python</a><a class="post-tag post-tag-data" href="../tag/data/index.html"
+                                title="Data">Data</a><a class="post-tag post-tag-engineering" href="../tag/engineering/index.html"
+                                title="Engineering">Engineering</a>
+                    </span>
+            </div>
+</header>                    <figure class="post-media container large">
+        <div class="u-placeholder horizontal">
+            <a class="post-image-link" href="index.html">
+                <img class="post-image lazyload u-object-fit"
+
+                    data-srcset="https://images.unsplash.com/photo-1548081597-c3552b4e9853?crop&#x3D;entropy&amp;cs&#x3D;tinysrgb&amp;fit&#x3D;max&amp;fm&#x3D;jpg&amp;ixid&#x3D;MnwxMTc3M3wwfDF8c2VhcmNofDE3fHxwYW5kYXxlbnwwfHx8fDE2NjQyMTM5Nzc&amp;ixlib&#x3D;rb-1.2.1&amp;q&#x3D;80&amp;w&#x3D;2000 400w, https://images.unsplash.com/photo-1548081597-c3552b4e9853?crop&#x3D;entropy&amp;cs&#x3D;tinysrgb&amp;fit&#x3D;max&amp;fm&#x3D;jpg&amp;ixid&#x3D;MnwxMTc3M3wwfDF8c2VhcmNofDE3fHxwYW5kYXxlbnwwfHx8fDE2NjQyMTM5Nzc&amp;ixlib&#x3D;rb-1.2.1&amp;q&#x3D;80&amp;w&#x3D;2000 750w, https://images.unsplash.com/photo-1548081597-c3552b4e9853?crop&#x3D;entropy&amp;cs&#x3D;tinysrgb&amp;fit&#x3D;max&amp;fm&#x3D;jpg&amp;ixid&#x3D;MnwxMTc3M3wwfDF8c2VhcmNofDE3fHxwYW5kYXxlbnwwfHx8fDE2NjQyMTM5Nzc&amp;ixlib&#x3D;rb-1.2.1&amp;q&#x3D;80&amp;w&#x3D;2000 960w, https://images.unsplash.com/photo-1548081597-c3552b4e9853?crop&#x3D;entropy&amp;cs&#x3D;tinysrgb&amp;fit&#x3D;max&amp;fm&#x3D;jpg&amp;ixid&#x3D;MnwxMTc3M3wwfDF8c2VhcmNofDE3fHxwYW5kYXxlbnwwfHx8fDE2NjQyMTM5Nzc&amp;ixlib&#x3D;rb-1.2.1&amp;q&#x3D;80&amp;w&#x3D;2000 1140w, https://images.unsplash.com/photo-1548081597-c3552b4e9853?crop&#x3D;entropy&amp;cs&#x3D;tinysrgb&amp;fit&#x3D;max&amp;fm&#x3D;jpg&amp;ixid&#x3D;MnwxMTc3M3wwfDF8c2VhcmNofDE3fHxwYW5kYXxlbnwwfHx8fDE2NjQyMTM5Nzc&amp;ixlib&#x3D;rb-1.2.1&amp;q&#x3D;80&amp;w&#x3D;2000 1920w"
+                    data-sizes="auto" src="https://images.unsplash.com/photo-1548081597-c3552b4e9853?crop&#x3D;entropy&amp;cs&#x3D;tinysrgb&amp;fit&#x3D;max&amp;fm&#x3D;jpg&amp;ixid&#x3D;MnwxMTc3M3wwfDF8c2VhcmNofDE3fHxwYW5kYXxlbnwwfHx8fDE2NjQyMTM5Nzc&amp;ixlib&#x3D;rb-1.2.1&amp;q&#x3D;80&amp;w&#x3D;2000"
+                    srcset="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                     alt="Replacing MATLAB with Python - Part 3: Histograms and more data-indexing">
+            </a>
+        </div>
+
+                <figcaption>Photo by <a href="https://unsplash.com/@lijiangang?utm_source=ghost&utm_medium=referral&utm_campaign=api-credit">Li Jiangang</a> / <a href="https://unsplash.com/?utm_source=ghost&utm_medium=referral&utm_campaign=api-credit">Unsplash</a></figcaption>
+    </figure>
+                <div class="post-content gh-content kg-canvas">
+                    <p></p><p>Getting used to doing engineering or scientific computations using Python can be tricky, especially if starting with a MATLAB background. Some things might seem actually easier to do once you understand how Python works, and some other things might seem like they require a lot of additional work to get the results you want, compared to MATLAB. That happened to me, particularly when creating figures and plotting data, I struggled to obtain the exact same look as my MATLAB figures.</p><p>Speaking of replicating what we do in MATLAB, this is what I’m actually doing with this series of posts about <a href="https://makerluis.com/replacing-matlab-with-python-part-1/">Replacing MATLAB with Python</a>. The last few entries have been centered around an example task that <a href="https://makerluis.com/using-matlab-and-statistics-to-analyze-raw-vehicle-data">I first solved with MATLAB</a>, and now I am trying to do the same with Python instead. To keep this post short, I’m saving you the explanation of the context and what we are trying to achieve since I’ve already talked about it in the previous two posts.</p><p>I hope this kind of examples can be useful if you are also learning Python and trying to do similar things for school, work, or just hobby.</p><p>In the <a href="https://makerluis.com/replacing-matlab-with-python-part-2">previous post</a>, I completed the first part of the task, estimating the vehicle speeds and elapsed times of two drivers, using some raw data. We saw different examples of how to index (slice) pandas dataframes quickly to sort out our data. I also used both Pyplot and Plotly to create figures with subplots of time series. This time, I’ll show you how I completed the second part of the task. This will be a useful exercise to practice making histograms. I will try again both libraries since they are very different and I want to learn both of them.</p><p>Let's begin!</p><h2 id="creating-histograms-with-pyplot">Creating histograms with Pyplot</h2><p>I want to compare how much time the drivers spent at different speeds. A common way to do this is by making a histogram of their speeds.</p><p>As with MATLAB, I learned two different ways to do this using the “standard” libraries for Python. In this case, I'm calling Pyplot “standard” only because it is probably the first plotting library most people see and start using when coming from MATLAB. The syntax and logic are quite similar - it is part of <a href="https://matplotlib.org/">Matplotlib</a>.</p><p>I will start by creating a figure with two subplots, and will use each subplot to illustrate a different approach - this is just the same thing I did with MATLAB <a href="https://makerluis.com/using-matlab-and-statistics-to-analyze-raw-vehicle-data/index.html#comparing-the-speeds-of-both-drivers">here</a>, I want to highlight the parallelism.</p><pre><code class="language-python">fig, axs = plt.subplots(1,2, sharex=True, figsize = (3000/300, 1000/300), dpi = 300)
+fig.suptitle('Different types of histogram using Pyplot (driver speed comparison)', fontweight='bold')
+
+# Define common bins to use
+histbins = np.linspace(0, 100, num=20, endpoint=True)
+
+</code></pre><p>Now I will plot on the left side two histograms at once. To do this, I put the two dataframe columns in a list using <code>[&lt;data1&gt;, &lt;data2&gt;]</code>  -  remember from the previous posts that we have our data stored in two dataframes, <code>df1</code> and <code>df2</code>. Then knowing the order of my list, I can define the format consistently for each data series.</p><pre><code class="language-python"># Left side: Side-by-side bars, not normalized
+axs[0].set_title('Side-by-side bars', loc = 'center')
+axs[0].grid(alpha= 0.3)
+axs[0].hist([df1['Vehicle Speed'], df2['Vehicle Speed']], bins = histbins, 
+                                                          density=False, 
+                                                          histtype='bar', 
+                                                          color=['blue', 'red'], 
+                                                          label=['Driver 1', 'Driver 2'], 
+                                                          edgecolor = 'black')
+axs[0].set_ylabel('Counts')
+axs[0].set_xlabel('Vehicle speed [km/h]')
+axs[0].legend()
+</code></pre><!--kg-card-begin: markdown--><p>Notice that these two histograms are not normalized (<code>density = False</code>) and the counts are represented using side-by-side bars.</p>
+<!--kg-card-end: markdown--><p>Next, on the right side, I will create two overlapping histograms, this time normalized. Here it’s especially important to use common bins, otherwise, the comparison will be skewed. This is why I defined <code>histbins</code> in advance. It is also a good practice to add some transparency using the <code>alpha</code> argument to be able to see the areas where they will overlap.</p><pre><code class="language-python"># Right side: Overlapping and normalized histograms
+axs[1].set_title('Overlapping histograms', loc = 'center')
+axs[1].grid(alpha= 0.3)
+axs[1].hist(df1['Vehicle Speed'], bins = histbins, density=True, 
+                                  histtype='bar',  color='blue', 
+                                  label='Driver 1', edgecolor = 'black', 
+                                  alpha = 0.5)
+
+axs[1].hist(df2['Vehicle Speed'], bins = histbins, density=True, 
+                                  histtype='bar',  color='red', 
+                                  label='Driver 2', edgecolor = 'black', 
+                                  alpha = 0.5)
+axs[1].set_ylabel('Probability Density Function (PDF)')
+axs[1].set_xlabel('Vehicle speed [km/h]')
+axs[1].legend()
+</code></pre><p>The result is very close to the MATLAB figure:</p><figure class="kg-card kg-image-card"><img src="../content/images/2022/09/different_histograms_Pyplot.jpeg" class="kg-image" alt loading="lazy" width="2000" height="671" srcset="../content/images/size/w600/2022/09/different_histograms_Pyplot.jpeg 600w, ../content/images/size/w1000/2022/09/different_histograms_Pyplot.jpeg 1000w, ../content/images/size/w1600/2022/09/different_histograms_Pyplot.jpeg 1600w, ../content/images/size/w2400/2022/09/different_histograms_Pyplot.jpeg 2400w" sizes="(min-width: 720px) 720px"></figure><p>As we’ve already discussed, the second driver was faster (spent more time at higher speeds).</p><p>The next thing we want to do is to figure out at what speeds were the two of them braking, i.e. at which vehicle speed they were starting to press the brake pedal at corner entries. This gives us a better idea of what is making them have such different speeds since both of them were using the exact same car (at different moments, of course).</p><h2 id="slicing-pandas-dataframes-to-identify-brake-pedal-pressings">Slicing Pandas dataframes to identify brake pedal pressings</h2><p>We need to find the speeds at the start of braking. With MATLAB, I first tried doing this with a for-loop (which took ages) and then showed how faster it was to use indexing operations instead.  Here, I will jump straight to the indexing part.</p><p>As in the MATLAB example, I first defined a low threshold value of pressure to identify the start of pedal presses.</p><pre><code class="language-python">p_start = 2
+</code></pre><p>Then, I want to find the rows that satisfy these three conditions:</p><ul><li>The current pressure is lower than the threshold</li><li>Pressure in the next instant is greater than the threshold</li><li>The vehicle is moving above a minimum speed</li></ul><p>To compare the two instants, I made copies of the columns containing the brake pressures and shifted them by one row upwards. This way I have both the current and the next pressure values in the same rows. Then I deleted the last row of each dataframe, since it would contain an empty value due to the column shift.</p><pre><code class="language-python">df1['BrakesShifted'] = df1['BrakeFront'].shift(-1)
+df1 = df1[:-1]
+
+df2['BrakesShifted'] = df2['BrakeFront'].shift(-1)
+df2 = df2[:-1]
+</code></pre><p>Maybe an unorthodox trick? I don’t know, but it worked great. Having that, I just needed to use the  <code>loc</code> method to slice the dataframes using the three conditions mentioned before, and store the results in a new pair of dataframes:</p><pre><code class="language-python">Brake_start1 = df1.loc[(df1.BrakeFront &lt;= p_start) &amp; 
+                       (df1.BrakesShifted &gt; p_start) &amp; 
+                       (df1['Vehicle Speed'] &gt;= 15) ]
+
+Brake_start2 = df2.loc[(df2.BrakeFront &lt;= p_start) &amp;
+                       (df2.BrakesShifted &gt; p_start) &amp; 
+                       (df2['Vehicle Speed'] &gt;= 15) ] 
+</code></pre><p>Next, I plotted the results to make sure they make sense. This time I will use Plotly to practice using a different library. The approach it uses is very different from Matplotlib. Just remember from the previous post that I imported the library and the methods for working with subplots using</p><pre><code class="language-python">import plotly.graph_objects as go
+from plotly.subplots import make_subplots
+</code></pre><p>The first thing to do having imported the library is to create a figure from the graphical objects library. I had to specify in advance that the figure will have secondary axes. To do this, I pass to the function <code>make_subplots</code>  an argument consisting of a list of dictionaries (in this case just one, indicating that the secondary axis is enabled). How would I know that? Very simple, I learned it from the <a href="https://plotly.com/python/multiple-axes/">documentation</a>.</p><pre><code class="language-python">fig = make_subplots(specs=[[{"secondary_y": True}]])
+</code></pre><p>This created a figure, and now I can add traces for the vehicle speed and brake pressure. I want to overlap the two of them, using a common x-axis (time base). To do this, I added two independent traces, one for each variable, but the data for the x-axis is the same for both.</p><pre><code class="language-python"># Add line plots
+fig.add_trace(
+    go.Line(y=df1['Vehicle Speed'] ,x=df1.Time_s,name = 'Vehicle Speed'),
+    secondary_y=False)
+fig.update_yaxes(title_text="Speed [km/h]", range=[0, 80], secondary_y=False)
+
+fig.add_trace(
+    go.Line(y=df1['BrakeFront'] ,x=df1.Time_s,name = 'Brakes Pressure'),
+    secondary_y=True)
+fig.update_yaxes(title_text="Pressure [bar]", range=[0, 50], secondary_y=True, color = 'red')
+</code></pre><p>Notice that I specified the option <code>secondary_y=True</code> for the second set of data (in this case the pressure). In MATLAB, I would have issued a <code>yyaxis right</code> command just before creating the second line plot. The procedure here is simply different.</p><p>Next, I wanted to add vertical lines to indicate the instants that I identified as starts of braking maneuvers. If the pressure was rising suddenly starting from those points, and the vehicle speed was plausible for a braking maneuver, then the identified points make sense.</p><p>To make the lines, I had to resort to a for-loop this time:</p><pre><code class="language-python">for time in Brake_start1.Time_s:
+    fig.add_shape(go.layout.Shape(type = "line",
+                                    yref = "y", xref = "x",
+                                    x0 = time, y0=0,
+                                    x1 = time, y1 = 100))
+</code></pre><p>Shame on me for not having a better method. This won’t let me sleep at night until I figure out how to do it more efficiently. Or maybe not, we’ll see.</p><p>To finish, I added some formatting with the following code:</p><pre><code class="language-python">fig.update_xaxes(title_text="Time [s]", range = [700, 750] )
+fig.update_layout(title = {
+                            'text': '&lt;b&gt;Identified starts of braking maneuvers&lt;/b&gt;', 
+                            'xanchor' : 'center',
+                            'x' : 0.5, 'y': .95, 'font_size' : 12
+                            },
+                showlegend=False)
+
+fig
+</code></pre><p>The result looks quite good! And the interactive plot can be used in websites, like this one 😃</p><!--kg-card-begin: html--><iframe width="900" height="450" frameborder="0" scrolling="no" src="http://htmlpreview.github.io/?https://github.com/luisdamed/luisdamed.github.io/blob/master/interactive_plots/Braking_Starts_Plotly.html" ></iframe><!--kg-card-end: html--><p></p><p>To obtain this interactive HTML file, I used:</p><pre><code class="language-python">filename = example
+fig.write_html(f'{filename}.html')
+</code></pre><p>Which saved an HTML file in my local directory. I then hosted it on GitHub to share it with you guys on this post.</p><h2 id="creating-histograms-with-plotly">Creating histograms with Plotly</h2><p>OK! the points identified as starts of braking maneuvers make sense. Now it’s time to use Plotly to make some histograms.</p><p>I created a figure and defined the common bins to use. Notice that the bins are defined using a dictionary:</p><pre><code class="language-python">#Create figure
+fig = go.Figure()
+
+#Define common bins
+bins = dict(start= 10,
+            end=  100,
+            size= 5)
+</code></pre><p>Then, I added the traces and formatted the figure:</p><pre><code class="language-python">fig.add_trace(go.Histogram(x=Brake_start1['Vehicle Speed'],
+                           xbins = bins, 
+                           histnorm='probability density', 
+                           opacity=0.9,
+                           name = 'Driver 1'))
+
+fig.add_trace(go.Histogram(x=Brake_start2['Vehicle Speed'],
+                           xbins = bins, 
+                           histnorm='probability density',
+                           opacity=0.7,
+                           name = 'Driver 2'))                            
+
+fig.update_layout(
+    title_text='&lt;b&gt;Vehicle speeds at the start of braking&lt;/b&gt;', 
+    xaxis_title_text='Vehicle speed [km/h]', 
+    yaxis_title_text='Probability Density', 
+    bargap=0.2,)
+
+fig.show()
+</code></pre><!--kg-card-begin: html--><iframe width="900" height="450" frameborder="0" scrolling="no" src="http://htmlpreview.github.io/?https://github.com/luisdamed/luisdamed.github.io/blob/master/interactive_plots/Histogram_Braking_Starts_Plotly.html" ></iframe><!--kg-card-end: html--><p>The histograms don’t lie! Again, but this time with Python, we can see that the first driver was braking earlier than the second one. Although they both reached speeds of 80 km/h, it seems that the first driver never made a braking maneuver above 75 km/h. Instead, driver 1 made a significantly greater number of braking maneuvers between 65 and 70 km/h - the peak for driver 2 is around 75 - 80 km/h instead.</p><h2 id="conclusion">Conclusion</h2><p>Just like that, we have completed the last part of the original post I wrote about <a href="https://makerluis.com/using-matlab-and-statistics-to-analyze-raw-vehicle-data/index.html">doing this with MATLAB</a>. This was a very simplified or superficial analysis, but I think it was a great toy example for me to practice and learn more Python with some specific tasks. I had to filter data, index dataframes, plot time-series data and create different types of histograms. I even used figures with subplots and secondary axes.</p><!--kg-card-begin: html--><div style="width:100%;height:0;padding-bottom:77%;position:relative;"><iframe src="https://giphy.com/embed/uCZPNoeoaLjt6" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen></iframe></div><p><a href="https://giphy.com/gifs/community-nice-great-uCZPNoeoaLjt6">via GIPHY</a></p><!--kg-card-end: html--><p>I’m starting to embrace the fact that Python is meant to be used in a different way, and things are actually easier now that I focus on learning how to use the language to complete a task, rather than replicating exactly what I did using MATLAB, especially when it comes to plotting data. If I get the same look, then it’s fine. If I don’t, but the results are decent, I don’t stress too much about formatting - unless it is strictly required.</p><p>I really enjoyed making this series of posts, and I hope you have found some useful things here. Anyways, the Replacing MATLAB with Python series does not finish here, I am just making some space for other articles I have prepared, and will certainly add other posts for this series in the future. Perhaps more related to the original subject of this blog, which is actually making stuff. We’ll see.</p><p>Thank you for reading this and stay tuned for the next one!</p><p>Cheers!</p><h3 id="the-pythonic-way-of-doing-things">The Pythonic way of doing things</h3><p>One of the most popular things about Python is its readability. When the language is being used properly, the code is more efficient, and it almost reads like plain English. The best way to achieve this is to follow a set of guidelines for coding style, which are known as the <a href="https://docs.python-guide.org/writing/style/">“Pythonic”</a> way. I will try to learn this and apply it to my code as I go. I think it makes you think more in terms of code efficiency and make better use of the language.</p>
+                </div>
+                <div class="container medium">
+                        <div class="share u-hover-wrapper">
+    <a class="share-item share-facebook u-hover-item"
+        href="https://www.facebook.com/sharer.php?u=http://localhost:2368/replacing-matlab-with-python-part-3/" target="_blank" rel="noopener"><i
+            class="icon icon-facebook"></i></a>
+    <a class="share-item share-twitter u-hover-item"
+        href="https://twitter.com/intent/tweet?url=http://localhost:2368/replacing-matlab-with-python-part-3/&text=Replacing%20MATLAB%20with%20Python%20-%20Part%203%3A%20Histograms%20and%20more%20data-indexing" target="_blank" rel="noopener"><i
+            class="icon icon-twitter"></i></a>
+    <a class="share-item share-pinterest u-hover-item"
+        href="https://pinterest.com/pin/create/button/?url=http://localhost:2368/replacing-matlab-with-python-part-3/&media=&description=Replacing%20MATLAB%20with%20Python%20-%20Part%203%3A%20Histograms%20and%20more%20data-indexing"
+        target="_blank" rel="noopener" data-pin-do="none"><i class="icon icon-pinterest"></i></a>
+    <a class="share-item share-linkedin u-hover-item"
+        href="https://www.linkedin.com/shareArticle?mini=true&url=http://localhost:2368/replacing-matlab-with-python-part-3/&title=Replacing%20MATLAB%20with%20Python%20-%20Part%203%3A%20Histograms%20and%20more%20data-indexing"
+        target="_blank" rel="noopener"><i class="icon icon-linkedin"></i></a>
+    <a class="share-item share-reddit u-hover-item"
+        href="https://reddit.com/submit?url=http://localhost:2368/replacing-matlab-with-python-part-3/&title=Replacing%20MATLAB%20with%20Python%20-%20Part%203%3A%20Histograms%20and%20more%20data-indexing" target="_blank" rel="noopener"><i
+            class="icon icon-reddit"></i></a>
+    <a class="share-item share-tumblr u-hover-item"
+        href="https://www.tumblr.com/widgets/share/tool?canonicalUrl=http://localhost:2368/replacing-matlab-with-python-part-3/&title=Replacing%20MATLAB%20with%20Python%20-%20Part%203%3A%20Histograms%20and%20more%20data-indexing"
+        target="_blank" rel="noopener"><i class="icon icon-tumblr"></i></a>
+    <a class="share-item share-vk u-hover-item"
+        href="http://vk.com/share.php?url=http://localhost:2368/replacing-matlab-with-python-part-3/&title=Replacing%20MATLAB%20with%20Python%20-%20Part%203%3A%20Histograms%20and%20more%20data-indexing" target="_blank" rel="noopener"><i
+            class="icon icon-vk"></i></a>
+    <a class="share-item share-pocket u-hover-item" href="https://getpocket.com/edit?url=http://localhost:2368/replacing-matlab-with-python-part-3/"
+        target="_blank" rel="noopener"><i class="icon icon-pocket"></i></a>
+    <a class="share-item share-telegram u-hover-item"
+        href="https://t.me/share/url?url=http://localhost:2368/replacing-matlab-with-python-part-3/&text=Replacing%20MATLAB%20with%20Python%20-%20Part%203%3A%20Histograms%20and%20more%20data-indexing" target="_blank" rel="noopener"><i
+            class="icon icon-telegram"></i></a>
+</div>                            <section class="author">
+        <div class="author-image-placeholder u-placeholder">
+            <img class="author-image lazyload u-object-fit"
+                data-srcset="/content/images/size/w150/2022/07/IMG_20210703_160904-1.jpg"
+                src="../content/images/size/w150/2022/07/IMG_20210703_160904-1.jpg"
+                srcset="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                alt="Luis Medina">
+        </div>
+        <div class="author-wrapper">
+            <header class="author-header">
+                <div class="author-header-wrapper">
+                    <h4 class="author-name">Luis Medina</h4>
+                    <div class="author-social">
+                        <a class="author-social-item author-more"
+                            href="../author/luis/index.html">More posts</a>
+                    </div>
+                </div>
+            </header>
+            <div class="author-bio"></div>
+        </div>
+    </section>
+                </div>
+            </article>
+            <div class="navigation container medium">
+        <div class="navigation-item navigation-previous">
+            <a class="navigation-item-link button-arrow button-arrow-left" href="../replacing-matlab-with-python-part-2/index.html">
+                <i class="button-arrow-icon icon icon-arrow-left"></i> Previous Post
+            </a>
+        </div>
+
+</div>                        <section class="related-posts container medium">
+            <h3 class="related-title"><span class="text">You might also like...</span></h3>
+            <div class="row">
+                    <div class="col-md-4 related-column">
+                        <article class="post tag-python tag-matlab tag-data tag-engineering tag-signalprocessing">
+                                <figure class="post-media">
+        <div class="u-placeholder rectangle">
+            <a class="post-image-link" href="../replacing-matlab-with-python-part-2/index.html">
+                <img class="post-image lazyload u-object-fit"
+
+                    data-srcset="https://images.unsplash.com/photo-1551431524-06b3c82d31ca?crop&#x3D;entropy&amp;cs&#x3D;tinysrgb&amp;fit&#x3D;max&amp;fm&#x3D;jpg&amp;ixid&#x3D;MnwxMTc3M3wwfDF8c2VhcmNofDk3fHxrZXlib2FyZHxlbnwwfHx8fDE2NjM1NjQ5NDc&amp;ixlib&#x3D;rb-1.2.1&amp;q&#x3D;80&amp;w&#x3D;2000 400w, https://images.unsplash.com/photo-1551431524-06b3c82d31ca?crop&#x3D;entropy&amp;cs&#x3D;tinysrgb&amp;fit&#x3D;max&amp;fm&#x3D;jpg&amp;ixid&#x3D;MnwxMTc3M3wwfDF8c2VhcmNofDk3fHxrZXlib2FyZHxlbnwwfHx8fDE2NjM1NjQ5NDc&amp;ixlib&#x3D;rb-1.2.1&amp;q&#x3D;80&amp;w&#x3D;2000 750w, https://images.unsplash.com/photo-1551431524-06b3c82d31ca?crop&#x3D;entropy&amp;cs&#x3D;tinysrgb&amp;fit&#x3D;max&amp;fm&#x3D;jpg&amp;ixid&#x3D;MnwxMTc3M3wwfDF8c2VhcmNofDk3fHxrZXlib2FyZHxlbnwwfHx8fDE2NjM1NjQ5NDc&amp;ixlib&#x3D;rb-1.2.1&amp;q&#x3D;80&amp;w&#x3D;2000 960w, https://images.unsplash.com/photo-1551431524-06b3c82d31ca?crop&#x3D;entropy&amp;cs&#x3D;tinysrgb&amp;fit&#x3D;max&amp;fm&#x3D;jpg&amp;ixid&#x3D;MnwxMTc3M3wwfDF8c2VhcmNofDk3fHxrZXlib2FyZHxlbnwwfHx8fDE2NjM1NjQ5NDc&amp;ixlib&#x3D;rb-1.2.1&amp;q&#x3D;80&amp;w&#x3D;2000 1140w, https://images.unsplash.com/photo-1551431524-06b3c82d31ca?crop&#x3D;entropy&amp;cs&#x3D;tinysrgb&amp;fit&#x3D;max&amp;fm&#x3D;jpg&amp;ixid&#x3D;MnwxMTc3M3wwfDF8c2VhcmNofDk3fHxrZXlib2FyZHxlbnwwfHx8fDE2NjM1NjQ5NDc&amp;ixlib&#x3D;rb-1.2.1&amp;q&#x3D;80&amp;w&#x3D;2000 1920w"
+                    data-sizes="auto" src="https://images.unsplash.com/photo-1551431524-06b3c82d31ca?crop&#x3D;entropy&amp;cs&#x3D;tinysrgb&amp;fit&#x3D;max&amp;fm&#x3D;jpg&amp;ixid&#x3D;MnwxMTc3M3wwfDF8c2VhcmNofDk3fHxrZXlib2FyZHxlbnwwfHx8fDE2NjM1NjQ5NDc&amp;ixlib&#x3D;rb-1.2.1&amp;q&#x3D;80&amp;w&#x3D;2000"
+                    srcset="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                     alt="Replacing MATLAB with Python - Part 2: Formatting subplots and indexing data">
+            </a>
+        </div>
+
+    </figure>
+                            <header class="post-header">
+        <h2 class="post-title">
+            <a class="post-title-link" href="../replacing-matlab-with-python-part-2/index.html">Replacing MATLAB with Python - Part 2: Formatting subplots and indexing data</a>
+        </h2>
+            <div class="post-meta">
+                <span class="post-meta-item post-meta-date">
+                    <time datetime="2022-09-19">Sep 19, 2022</time>
+                </span>
+                <span class="post-meta-item post-meta-length">
+                    11 min read
+                </span>
+                    <span class="post-meta-item post-meta-tags">
+                        <a class="post-tag post-tag-python" href="../tag/python/index.html"
+                                title="Python">Python</a><a class="post-tag post-tag-matlab" href="../tag/matlab/index.html"
+                                title="MATLAB">MATLAB</a><a class="post-tag post-tag-data" href="../tag/data/index.html"
+                                title="Data">Data</a><a class="post-tag post-tag-engineering" href="../tag/engineering/index.html"
+                                title="Engineering">Engineering</a><a class="post-tag post-tag-signalprocessing" href="../tag/signalprocessing/index.html"
+                                title="SignalProcessing">SignalProcessing</a>
+                    </span>
+            </div>
+</header>                        </article>
+                    </div>
+                    <div class="col-md-4 related-column">
+                        <article class="post tag-python tag-matlab tag-engineering tag-data">
+                                <figure class="post-media">
+        <div class="u-placeholder rectangle">
+            <a class="post-image-link" href="../replacing-matlab-with-python-part-1/index.html">
+                <img class="post-image lazyload u-object-fit"
+
+                    data-srcset="https://images.unsplash.com/photo-1497285597995-6ed7de6bfebd?crop&#x3D;entropy&amp;cs&#x3D;tinysrgb&amp;fit&#x3D;max&amp;fm&#x3D;jpg&amp;ixid&#x3D;MnwxMTc3M3wwfDF8c2VhcmNofDE3fHxvcGVufGVufDB8fHx8MTY2MDk4NTE3NQ&amp;ixlib&#x3D;rb-1.2.1&amp;q&#x3D;80&amp;w&#x3D;2000 400w, https://images.unsplash.com/photo-1497285597995-6ed7de6bfebd?crop&#x3D;entropy&amp;cs&#x3D;tinysrgb&amp;fit&#x3D;max&amp;fm&#x3D;jpg&amp;ixid&#x3D;MnwxMTc3M3wwfDF8c2VhcmNofDE3fHxvcGVufGVufDB8fHx8MTY2MDk4NTE3NQ&amp;ixlib&#x3D;rb-1.2.1&amp;q&#x3D;80&amp;w&#x3D;2000 750w, https://images.unsplash.com/photo-1497285597995-6ed7de6bfebd?crop&#x3D;entropy&amp;cs&#x3D;tinysrgb&amp;fit&#x3D;max&amp;fm&#x3D;jpg&amp;ixid&#x3D;MnwxMTc3M3wwfDF8c2VhcmNofDE3fHxvcGVufGVufDB8fHx8MTY2MDk4NTE3NQ&amp;ixlib&#x3D;rb-1.2.1&amp;q&#x3D;80&amp;w&#x3D;2000 960w, https://images.unsplash.com/photo-1497285597995-6ed7de6bfebd?crop&#x3D;entropy&amp;cs&#x3D;tinysrgb&amp;fit&#x3D;max&amp;fm&#x3D;jpg&amp;ixid&#x3D;MnwxMTc3M3wwfDF8c2VhcmNofDE3fHxvcGVufGVufDB8fHx8MTY2MDk4NTE3NQ&amp;ixlib&#x3D;rb-1.2.1&amp;q&#x3D;80&amp;w&#x3D;2000 1140w, https://images.unsplash.com/photo-1497285597995-6ed7de6bfebd?crop&#x3D;entropy&amp;cs&#x3D;tinysrgb&amp;fit&#x3D;max&amp;fm&#x3D;jpg&amp;ixid&#x3D;MnwxMTc3M3wwfDF8c2VhcmNofDE3fHxvcGVufGVufDB8fHx8MTY2MDk4NTE3NQ&amp;ixlib&#x3D;rb-1.2.1&amp;q&#x3D;80&amp;w&#x3D;2000 1920w"
+                    data-sizes="auto" src="https://images.unsplash.com/photo-1497285597995-6ed7de6bfebd?crop&#x3D;entropy&amp;cs&#x3D;tinysrgb&amp;fit&#x3D;max&amp;fm&#x3D;jpg&amp;ixid&#x3D;MnwxMTc3M3wwfDF8c2VhcmNofDE3fHxvcGVufGVufDB8fHx8MTY2MDk4NTE3NQ&amp;ixlib&#x3D;rb-1.2.1&amp;q&#x3D;80&amp;w&#x3D;2000"
+                    srcset="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                     alt="Replacing MATLAB with Python - Part 1">
+            </a>
+        </div>
+
+    </figure>
+                            <header class="post-header">
+        <h2 class="post-title">
+            <a class="post-title-link" href="../replacing-matlab-with-python-part-1/index.html">Replacing MATLAB with Python - Part 1</a>
+        </h2>
+            <div class="post-meta">
+                <span class="post-meta-item post-meta-date">
+                    <time datetime="2022-08-20">Aug 20, 2022</time>
+                </span>
+                <span class="post-meta-item post-meta-length">
+                    9 min read
+                </span>
+                    <span class="post-meta-item post-meta-tags">
+                        <a class="post-tag post-tag-python" href="../tag/python/index.html"
+                                title="Python">Python</a><a class="post-tag post-tag-matlab" href="../tag/matlab/index.html"
+                                title="MATLAB">MATLAB</a><a class="post-tag post-tag-engineering" href="../tag/engineering/index.html"
+                                title="Engineering">Engineering</a><a class="post-tag post-tag-data" href="../tag/data/index.html"
+                                title="Data">Data</a>
+                    </span>
+            </div>
+</header>                        </article>
+                    </div>
+                    <div class="col-md-4 related-column">
+                        <article class="post tag-maker tag-plans tag-organization tag-cad tag-electronics tag-esp32 tag-3dprinting tag-python featured">
+                                <figure class="post-media">
+        <div class="u-placeholder rectangle">
+            <a class="post-image-link" href="../hello-world-welcome-to-my-blog/index.html">
+                <img class="post-image lazyload u-object-fit"
+
+                    data-srcset="/content/images/size/w400/2022/06/Portacoronas-23-15.jpg 400w, /content/images/size/w750/2022/06/Portacoronas-23-15.jpg 750w, /content/images/size/w960/2022/06/Portacoronas-23-15.jpg 960w, /content/images/size/w1140/2022/06/Portacoronas-23-15.jpg 1140w, /content/images/size/w1920/2022/06/Portacoronas-23-15.jpg 1920w"
+                    data-sizes="auto" src="../content/images/size/w960/2022/06/Portacoronas-23-15.jpg"
+                    srcset="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                     alt="Hello world! Welcome to my blog">
+            </a>
+        </div>
+
+    </figure>
+                            <header class="post-header">
+        <h2 class="post-title">
+            <a class="post-title-link" href="../hello-world-welcome-to-my-blog/index.html">Hello world! Welcome to my blog</a>
+        </h2>
+            <div class="post-meta">
+                <span class="post-meta-item post-meta-date">
+                    <time datetime="2022-06-30">Jun 30, 2022</time>
+                </span>
+                <span class="post-meta-item post-meta-length">
+                    2 min read
+                </span>
+                    <span class="post-meta-item post-meta-tags">
+                        <a class="post-tag post-tag-maker" href="../tag/maker/index.html"
+                                title="Maker">Maker</a><a class="post-tag post-tag-plans" href="../tag/plans/index.html"
+                                title="Plans">Plans</a><a class="post-tag post-tag-organization" href="../tag/organization/index.html"
+                                title="Organization">Organization</a><a class="post-tag post-tag-cad" href="../tag/cad/index.html"
+                                title="CAD">CAD</a><a class="post-tag post-tag-electronics" href="../tag/electronics/index.html"
+                                title="Electronics">Electronics</a><a class="post-tag post-tag-esp32" href="../tag/esp32/index.html"
+                                title="EsP32">EsP32</a><a class="post-tag post-tag-3dprinting" href="../tag/3dprinting/index.html"
+                                title="3dprinting">3dprinting</a><a class="post-tag post-tag-python" href="../tag/python/index.html"
+                                title="Python">Python</a>
+                    </span>
+            </div>
+</header>                        </article>
+                    </div>
+            </div>
+        </section>
+                </main>
+</div>
+        </div>
+        <footer class="site-footer container large">
+    <div class="copyright">
+        Powered by <a href="https://ghost.org/" target="_blank" rel="noopener">Ghost</a>
+    </div>
+
+        <nav class="footer-nav">
+            <ul class="nav-list u-plain-list">
+        <li class="menu-item menu-item-sign-up"><a class="menu-item-link"
+                href="index.html#/portal/">Sign up</a></li>
+</ul>
+        </nav>
+
+    <div class="footer-social">
+            <a class="footer-social-item footer-social-item-facebook" href="https://www.facebook.com/ghost"
+                target="_blank" rel="noopener" aria-label="Facebook">
+                <i class="icon icon-facebook"></i>
+            </a>
+            <a class="footer-social-item footer-social-item-twitter" href="https://twitter.com/ghost"
+                target="_blank" rel="noopener" aria-label="Twitter">
+                <i class="icon icon-twitter"></i>
+            </a>
+        <a class="footer-social-item footer-social-item-rss"
+            href="https://feedly.com/i/subscription/feed/http://localhost:2368/rss/" target="_blank" rel="noopener"
+            aria-label="RSS">
+            <i class="icon icon-rss"></i>
+        </a>
+    </div>
+</footer>    </div>
+
+    <div class="dimmer"></div>
+
+    <div class="off-canvas">
+        <div class="canvas-close">
+            <i class="canvas-icon icon icon-window-close"></i>
+        </div>
+        <div class="mobile-menu"></div>
+    </div>
+
+    <script
+        src="https://code.jquery.com/jquery-3.5.1.min.js"
+        integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
+        crossorigin="anonymous">
+    </script>
+    <script src="../assets/built/main.min.js@v=fe96e610ec"></script>
+
+    
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-core.min.js" integrity="sha512-9khQRAUBYEJDCDVP2yw3LRUQvjJ0Pjx0EShmaQjcHa6AXiOv6qHQu9lCAIR8O+/D8FtaCoJ2c0Tf9Xo7hYH01Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/autoloader/prism-autoloader.min.js" integrity="sha512-fTl/qcO1VgvKtOMApX2PdZzkziyr2stM65GYPLGuYMnuMm1z2JLJG6XVU7C/mR+E7xBUqCivykuhlzfqxXBXbg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</body>
+
+</html>
