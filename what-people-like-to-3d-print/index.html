@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>What do people like to 3D print?</title>
+    <link rel="stylesheet" href="../assets/built/screen.css@v=0f706ad2a7.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400;1,700&family=Mulish:ital,wght@0,400;0,700;0,800;1,400;1,700&display=swap">
+
+    <script>
+        if (localStorage.getItem('alto_dark') == 'true') {
+            document.documentElement.classList.add('dark-mode');
+        }
+    </script>
+
+    <meta name="description" content="I used Python &quot;Requests&quot; module and Thingiverse&#x27;s REST API to analyze the popularity of different categories of files for 3D printing" />
+    <link rel="canonical" href="index.html" />
+    <meta name="referrer" content="no-referrer-when-downgrade" />
+    
+    <meta property="og:site_name" content="Making stuff after office hours" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="What do people like to 3D print?" />
+    <meta property="og:description" content="I used Python &quot;Requests&quot; module and Thingiverse&#x27;s REST API to analyze the popularity of different categories of files for 3D printing" />
+    <meta property="og:url" content="http://localhost:2368/what-people-like-to-3d-print/" />
+    <meta property="og:image" content="http://localhost:2368/content/images/2022/11/IMG_1462.jpg" />
+    <meta property="article:published_time" content="2022-11-30T16:14:58.000Z" />
+    <meta property="article:modified_time" content="2022-11-30T16:14:58.000Z" />
+    <meta property="article:tag" content="3dprinting" />
+    <meta property="article:tag" content="Data" />
+    <meta property="article:tag" content="Python" />
+    <meta property="article:tag" content="DataAnalysis" />
+    <meta property="article:tag" content="Maker" />
+    
+    <meta property="article:publisher" content="https://www.facebook.com/ghost" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="What do people like to 3D print?" />
+    <meta name="twitter:description" content="I used Python &quot;Requests&quot; module and Thingiverse&#x27;s REST API to analyze the popularity of different categories of files for 3D printing" />
+    <meta name="twitter:url" content="http://localhost:2368/what-people-like-to-3d-print/" />
+    <meta name="twitter:image" content="http://localhost:2368/content/images/2022/11/IMG_1462.jpg" />
+    <meta name="twitter:label1" content="Written by" />
+    <meta name="twitter:data1" content="Luis Medina" />
+    <meta name="twitter:label2" content="Filed under" />
+    <meta name="twitter:data2" content="3dprinting, Data, Python, DataAnalysis, Maker" />
+    <meta name="twitter:site" content="@ghost" />
+    <meta property="og:image:width" content="2000" />
+    <meta property="og:image:height" content="2000" />
+    
+    <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "publisher": {
+        "@type": "Organization",
+        "name": "Making stuff after office hours",
+        "url": "http://localhost:2368/",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "http://localhost:2368/favicon.ico",
+            "width": 48,
+            "height": 48
+        }
+    },
+    "author": {
+        "@type": "Person",
+        "name": "Luis Medina",
+        "image": {
+            "@type": "ImageObject",
+            "url": "http://localhost:2368/content/images/2022/07/IMG_20210703_160904-1.jpg",
+            "width": 1475,
+            "height": 1474
+        },
+        "url": "http://localhost:2368/author/luis/",
+        "sameAs": []
+    },
+    "headline": "What do people like to 3D print?",
+    "url": "http://localhost:2368/what-people-like-to-3d-print/",
+    "datePublished": "2022-11-30T16:14:58.000Z",
+    "dateModified": "2022-11-30T16:14:58.000Z",
+    "image": {
+        "@type": "ImageObject",
+        "url": "http://localhost:2368/content/images/2022/11/IMG_1462.jpg",
+        "width": 2000,
+        "height": 2000
+    },
+    "keywords": "3dprinting, Data, Python, DataAnalysis, Maker",
+    "description": "I used Python &quot;Requests&quot; module and Thingiverse&#x27;s REST API to analyze the popularity of different categories of files for 3D printing",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "http://localhost:2368/"
+    }
+}
+    </script>
+
+    <meta name="generator" content="Ghost 5.24" />
+    <link rel="alternate" type="application/rss+xml" title="Making stuff after office hours" href="../rss/index.html" />
+    <script defer src="https://cdn.jsdelivr.net/ghost/portal@~2.20/umd/portal.min.js" data-ghost="http://localhost:2368/" data-key="301bf1d34b7e435e3fcf462aa7" data-api="http://localhost:2368/ghost/api/content/" crossorigin="anonymous"></script><style id="gh-members-styles">.gh-post-upgrade-cta-content,
+.gh-post-upgrade-cta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    text-align: center;
+    width: 100%;
+    color: #ffffff;
+    font-size: 16px;
+}
+
+.gh-post-upgrade-cta-content {
+    border-radius: 8px;
+    padding: 40px 4vw;
+}
+
+.gh-post-upgrade-cta h2 {
+    color: #ffffff;
+    font-size: 28px;
+    letter-spacing: -0.2px;
+    margin: 0;
+    padding: 0;
+}
+
+.gh-post-upgrade-cta p {
+    margin: 20px 0 0;
+    padding: 0;
+}
+
+.gh-post-upgrade-cta small {
+    font-size: 16px;
+    letter-spacing: -0.2px;
+}
+
+.gh-post-upgrade-cta a {
+    color: #ffffff;
+    cursor: pointer;
+    font-weight: 500;
+    box-shadow: none;
+    text-decoration: underline;
+}
+
+.gh-post-upgrade-cta a:hover {
+    color: #ffffff;
+    opacity: 0.8;
+    box-shadow: none;
+    text-decoration: underline;
+}
+
+.gh-post-upgrade-cta a.gh-btn {
+    display: block;
+    background: #ffffff;
+    text-decoration: none;
+    margin: 28px 0 0;
+    padding: 8px 18px;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.gh-post-upgrade-cta a.gh-btn:hover {
+    opacity: 0.92;
+}</style>
+    <script defer src="https://cdn.jsdelivr.net/ghost/sodo-search@~1.1/umd/sodo-search.min.js" data-key="301bf1d34b7e435e3fcf462aa7" data-styles="https://cdn.jsdelivr.net/ghost/sodo-search@~1.1/umd/main.css" data-sodo-search="http://localhost:2368/" crossorigin="anonymous"></script>
+    <script defer src="http://localhost:2368/public/member-attribution.min.js?v=0f706ad2a7"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/themes/prism-tomorrow.min.css" integrity="sha512-vswe+cgvic/XBoF1OcM/TeJ2FW0OofqAVdCZiEYkd6dwGXthvkSFWOoGGJgS2CW70VK5dQM5Oh+7ne47s74VTg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<!DOCTYPE html>
+<!-- KaTeX requires the use of the HTML5 doctype. Without it, KaTeX may not render properly -->
+<html>
+  <head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css" integrity="sha384-MlJdn/WNKDGXveldHDdyRP1R4CTHr3FeuDNfhsLPYrq2t0UBkUdK2jyTnXPEK1NQ" crossorigin="anonymous">
+
+    <!-- The loading of KaTeX is deferred to speed up page rendering -->
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.js" integrity="sha384-VQ8d8WVFw0yHhCk5E8I86oOhv48xLpnDZx5T9GogA/Y84DcCKWXDmSDfn13bzFZY" crossorigin="anonymous"></script>
+
+    <!-- To automatically render math in text elements, include the auto-render extension: -->
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"
+        onload="renderMathInElement(document.body);"></script>
+  </head>
+ 
+</html><style>:root {--ghost-accent-color: #19809a;}</style>
+</head>
+
+<body class="post-template tag-3dprinting tag-data tag-python tag-dataanalysis tag-maker has-serif-title">
+    <div class="site">
+        <header class="site-header container">
+    <div class="navbar">
+        <div class="navbar-left">
+            <div class="burger hidden-lg hidden-xl"></div>
+            <a class="logo" href="../index.html">
+        <span class="logo-text">Making stuff after office hours</span>
+</a>            <div class="sep hidden-xs hidden-sm hidden-sm"></div>
+                <nav class="main-menu hidden-xs hidden-sm hidden-md">
+                    <ul class="nav-list u-plain-list">
+        <li class="menu-item menu-item-home"><a class="menu-item-link"
+                href="../index.html">Home</a></li>
+        <li class="menu-item menu-item-about"><a class="menu-item-link"
+                href="../about/index.html">About</a></li>
+</ul>
+                </nav>
+        </div>
+        <div class="navbar-right">
+            <div class="toggle-track">
+                <div class="toggle-moon"><i class="icon icon-brightness-2"></i></div>
+                <div class="toggle-sun"><i class="icon icon-white-balance-sunny"></i></div>
+                <div class="toggle-thumb"></div>
+            </div>
+        </div>
+    </div>
+</header>        <div class="site-content">
+            
+<div class="content-area">
+    <main class="site-main">
+            <article class="post tag-3dprinting tag-data tag-python tag-dataanalysis tag-maker single-post">
+                <header class="post-header big-title container medium">
+        <h1 class="post-title">What do people like to 3D print?</h1>
+            <div class="post-meta">
+                <span class="post-meta-item post-meta-date">
+                    <time datetime="2022-11-30">Nov 30, 2022</time>
+                </span>
+                <span class="post-meta-item post-meta-length">
+                    6 min read
+                </span>
+                    <span class="post-meta-item post-meta-tags">
+                        <a class="post-tag post-tag-3dprinting" href="../tag/3dprinting/index.html"
+                                title="3dprinting">3dprinting</a><a class="post-tag post-tag-data" href="../tag/data/index.html"
+                                title="Data">Data</a><a class="post-tag post-tag-python" href="../tag/python/index.html"
+                                title="Python">Python</a><a class="post-tag post-tag-dataanalysis" href="../tag/dataanalysis/index.html"
+                                title="DataAnalysis">DataAnalysis</a><a class="post-tag post-tag-maker" href="../tag/maker/index.html"
+                                title="Maker">Maker</a>
+                    </span>
+            </div>
+</header>                    <figure class="post-media container large">
+        <div class="u-placeholder horizontal">
+            <a class="post-image-link" href="index.html">
+                <img class="post-image lazyload u-object-fit"
+
+                    data-srcset="/content/images/size/w400/2022/11/IMG_1462.jpg 400w, /content/images/size/w750/2022/11/IMG_1462.jpg 750w, /content/images/size/w960/2022/11/IMG_1462.jpg 960w, /content/images/size/w1140/2022/11/IMG_1462.jpg 1140w, /content/images/size/w1920/2022/11/IMG_1462.jpg 1920w"
+                    data-sizes="auto" src="../content/images/size/w960/2022/11/IMG_1462.jpg"
+                    srcset="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                     alt="What do people like to 3D print?">
+            </a>
+        </div>
+
+    </figure>
+                <div class="post-content gh-content kg-canvas">
+                    <!--kg-card-begin: markdown--><h3 id="what-are-the-most-popular-types-of-objects-for-3d-printing">What are the most popular types of objects for 3d printing?</h3>
+<p>It’s been more than a month since the last post. Recently, I have been busy making stuff and not writing about it - which is kinda against the whole idea behind this blog.</p>
+<p>Around this time last year, my girlfriend and I created an Instagram account (<a href="https://www.instagram.com/twothingies/">@TwoThingies</a>) to share the things we make with 3D printing at home. It’s been a fun journey since we started with the project and for sure I’ll write something about it later on in a different post. But for this one, let’s stay with the themes of Python and Data Analytics.</p>
+<p>I’ve also been completing <a href="https://www.coursera.org/professional-certificates/google-data-analytics">Google’s Data Analytics Professional Certificate</a> so I thought it would be interesting to do something practical with what I’m learning. I decided to do some research about the trends in popular files for 3D printing, what types of objects are more popular, and by how much. This is, of course, an excuse to use some Python and analytics skills with real-world, non-automotive-related data. But I also was genuinely curious about the preferences of 3D printing enthusiasts.</p>
+<h2 id="thingiverse-statistics-with-python">Thingiverse statistics with Python</h2>
+<p>The first point was to find out what are the most popular things people print at home. I'm talking about makers and hobbyists. Both casual users and people who 3D print a lot of things. Not professional users working with additive manufacturing within specific industries.</p>
+<p>For industrial and professional users, there are different sources of information giving some insights. For instance, companies like <a href="https://formlabs.com/3d-printing-applications-report-2022/">FormLabs</a>, <a href="https://www.hubs.com/get/trends/">3DHubs</a>, <a href="https://www.makerbot.com/stories/news/makerbot-pro-3d-printing-trend-report-2020/">MakerBot</a> and <a href="https://www.sculpteo.com/en/ebooks/state-of-3d-printing-report-2021/">Sculpteo</a>, and media platforms like <a href="https://www.3dnatives.com/en/wohlers-report-2021-180320214/">3D Natives</a> have released annual surveys with their findings about trends in the Additive Manufacturing industry itself, or in the use of 3D printing within other industries.</p>
+<p>Home or hobby usage, instead, is more difficult to measure. The obvious answer was: go to the source. I wanted to analyze the data from the platforms people use to obtain and share files for personal use or very small businesses.</p>
+<p>There are many sites where people get their 3D-printable files online, but the biggest one is - by far - <a href="https://www.thingiverse.com/">Thingiverse.com</a>. Tens of millions of people visit the site every month, and, according to a quick search on <a href="https://www.similarweb.com/website/thingiverse.com/#traffic">SimilarWeb</a>, that is more than 3 times the monthly traffic for the closest competitor, <a href="https://cults3d.com/">Cults3D.com</a>. Even though <strong>Thingiverse is dying due to a lack of proper maintenance and other issues</strong>, it is still by far the most popular site for sharing 3d printable models. Also, its the only platform for sharing 3D print files having an open <a href="https://www.redhat.com/en/topics/api/what-is-a-rest-api">REST API</a>  one can access to collect data about all the models uploaded to the site. Thus, I figured I could use it as a representative sample to find what people are 3d printing.</p>
+<h3 id="findings">Findings</h3>
+<p>Using Python’s <a href="https://pypi.org/project/requests/0.9.0/">“requests” module</a>, and  <a href="https://www.thingiverse.com/developers/rest-api-reference">Thingiverse’s REST API</a>, I found out that <strong>by October 30th, 2022, there were 2155435 published models on the site</strong>. If you are curious to see how I gathered all the data, <a href="https://gist.github.com/luisdamed/f3e262971211184f232cea8553729a85">check out the code I used</a>.</p>
+<p>There were also:</p>
+<ul>
+<li>75539318 likes</li>
+<li>875899 “makes”</li>
+<li>3144710 comments</li>
+<li>And there were at least 6304142 registered users - there’s no direct way to know how many of them are active on the platform - might be an interesting analysis for later.</li>
+</ul>
+<p>The models are subdivided into 10 main categories, and I was curious to know how many models belonged to each one. So I made a pie plot to represent their share of the total number of likes, makes and published things on the platform.</p>
+<!--kg-card-end: markdown--><!--kg-card-begin: html--><iframe width="900" height="450" frameborder="0" scrolling="no" src="PieChart_Python_Pygal_Thingiverse_Categories_Condensed.html" ></iframe><!--kg-card-end: html--><!--kg-card-begin: markdown--><p>We can see that “3D-printing” and “Household” are by far the largest ones, with 22 and 20% of the total number of models published on the site belonging to them, respectively.</p>
+<p>Next, I wanted to know how popular those categories are among users. To measure that, I could compare different indicators of user interaction. On Thingiverse, people can interact with a published model by giving it a like, downloading it, publishing a “make” (picture of the part they 3D printed using the files), commenting on it, and saving it on a collection.</p>
+<p>The only way to know for sure whether a file has actually been printed is by looking at the “makes” published for that file. But I wonder how many people who download the files and print them actually go and publish a picture of their print. I’m guessing not a lot.</p>
+<p>To find out, I analyzed the total number of published models, to see what portion of them have at least 1 make published. It turned out that <strong>there’s only an 11% chance that users will publish at least one make for a published model</strong>.</p>
+<!--kg-card-end: markdown--><!--kg-card-begin: html--><iframe width="900" height="450" frameborder="0" scrolling="no" src="PieChart_Python_Pygal_Thingiverse_1Make.html" ></iframe><!--kg-card-end: html--><!--kg-card-begin: markdown--><p>Anyways, I wanted to know what categories are more popular in terms of published makes. This brings another issue:</p>
+<p>Having different numbers of models, I cannot compare <em>directly</em> the number of makes among the different categories. If you put a bunch of bins of different sizes next to each other and randomly throw plastic balls at them, the larger bins will end up with more spheres, just because they are larger. The categories here are “bins” of different sizes. Having more makes, likes or comments on one of them does not necessarily indicate that it is more popular than the others among people using the platform to get their files, not publishing.</p>
+<p>I needed to account for the size of each category in order to make a fair comparison. To do that, I divided the number of makes of each category by the number of models uploaded to that category. I think of this metric as a “MakesDensity”, but this is something I’m just doing here.</p>
+<p>\[MakesDensity =   \frac{number \space of \space makes\space for\space category}{number\space of\space models\space for\space category}\]</p>
+<p>Now I can answer my question. And it turns out that Toys and Games are by far the most popular models by this metric.</p>
+<!--kg-card-end: markdown--><!--kg-card-begin: html--><iframe width="900" height="450" frameborder="0" scrolling="no" src="PieChart_Python_Pygal_Thingiverse_Proportion_Makes_vs_Things.html" ></iframe><!--kg-card-end: html--><!--kg-card-begin: markdown--><p>The next way to measure whether an object has been printed is by looking at the number of times it has been downloaded. You need to download a file in order to print it. But I know many of us download files and end up not using them, so this is not a direct indicator. Besides, I could not find a way to gather the download information about the files on Thingiverse using their API or in any other way.</p>
+<p>That leaves me with likes and comments as metrics for popularity. Doing a similar analysis as before, I divided the like count for each category, by the number of models to get a useful metric:</p>
+<p>\[Like Density =   \frac{number \space of \space likes \space for\space category}{number\space of\space models\space for\space category}\]</p>
+<p>When comparing this with the total number of likes, I get the results below:</p>
+<!--kg-card-end: markdown--><!--kg-card-begin: html--><iframe width="900" height="450" frameborder="0" scrolling="no" src="BarChart_Python_Plotly_Thingiverse_likes_vs_likes_density_3D_printing.html" ></iframe><!--kg-card-end: html--><!--kg-card-begin: markdown--><p>As we saw before, most objects on the portal are in the “household” and “3D-printing” categories. For that reason, they have the largest number of likes. However,  “Toys-and-games” shows the highest density of likes by published files - more than double of the next highest one, “models”.</p>
+<p>I’m curious to know whether that is because there are relatively few “toys-and-games” models with an insane amount of likes, or just because the people really like them and there are genuinely more likes per model in that category.</p>
+<p>To find out, I plotted the empirical Cumulative Density Function of the like count for each category.</p>
+<!--kg-card-end: markdown--><figure class="kg-card kg-image-card"><img src="../content/images/2022/11/eCDF_Likes_by_3D_print_categories_Thingiverse_Python_Seaborn.jpeg" class="kg-image" alt loading="lazy" width="2000" height="1500" srcset="../content/images/size/w600/2022/11/eCDF_Likes_by_3D_print_categories_Thingiverse_Python_Seaborn.jpeg 600w, ../content/images/size/w1000/2022/11/eCDF_Likes_by_3D_print_categories_Thingiverse_Python_Seaborn.jpeg 1000w, ../content/images/size/w1600/2022/11/eCDF_Likes_by_3D_print_categories_Thingiverse_Python_Seaborn.jpeg 1600w, ../content/images/2022/11/eCDF_Likes_by_3D_print_categories_Thingiverse_Python_Seaborn.jpeg 2400w" sizes="(min-width: 720px) 720px"></figure><!--kg-card-begin: markdown--><p>It turns out that Toys and Games are really a lot more popular than the other categories (at least on Thingiverse). Around 60% of the Toys and Games models on the platform have less than 100 likes. For the other categories, that number is above 80% in all cases. In other words, there is a 40% chance that a Toys and Games model has more than 100 likes, and for the other categories, there is only a maximum chance of 20% for the Models category.</p>
+<p>But this analysis does not consider the time it takes for the models to receive those likes. To analyze that, I divided the like count for each model by the number of days that passed since the day they were published and created another eCDF plot. Please notice the much smaller scale on the X-axis.</p>
+<p>More than 90% of the models of all categories have an average of less than 0.1 like per day - that is 1 like every 10 days, except for Toys and Makes, and Models.</p>
+<!--kg-card-end: markdown--><figure class="kg-card kg-image-card"><img src="../content/images/2022/11/eCDF_Likes_by_3D_print_categories_Thingiverse_Python_Seaborn_time.jpeg" class="kg-image" alt loading="lazy" width="2000" height="1500" srcset="../content/images/size/w600/2022/11/eCDF_Likes_by_3D_print_categories_Thingiverse_Python_Seaborn_time.jpeg 600w, ../content/images/size/w1000/2022/11/eCDF_Likes_by_3D_print_categories_Thingiverse_Python_Seaborn_time.jpeg 1000w, ../content/images/size/w1600/2022/11/eCDF_Likes_by_3D_print_categories_Thingiverse_Python_Seaborn_time.jpeg 1600w, ../content/images/2022/11/eCDF_Likes_by_3D_print_categories_Thingiverse_Python_Seaborn_time.jpeg 2400w" sizes="(min-width: 720px) 720px"></figure><p>I think these are pretty interesting insights. Compared to Yeggi’s survey <a href="https://www.yeggi.com/int/infographics?igid=What-People-Search-2013">“What people search”</a> conducted in 2013, this information also includes more recent data. Unfortunately, I left out the tags of each model when collecting the data, mainly because they created some issues when parsing the server responses as a pandas data frames. I might run my script again to get more updated information (maybe at the end of the year) and do some analysis with the tags of the most popular models.</p><p>I hope you liked this one! In the next post, I will go through the code I used to make this analysis. So stay tuned if you’d like to see that.</p><p>Have a great day!</p>
+                </div>
+                <div class="container medium">
+                        <div class="share u-hover-wrapper">
+    <a class="share-item share-facebook u-hover-item"
+        href="https://www.facebook.com/sharer.php?u=http://localhost:2368/what-people-like-to-3d-print/" target="_blank" rel="noopener"><i
+            class="icon icon-facebook"></i></a>
+    <a class="share-item share-twitter u-hover-item"
+        href="https://twitter.com/intent/tweet?url=http://localhost:2368/what-people-like-to-3d-print/&text=What%20do%20people%20like%20to%203D%20print%3F" target="_blank" rel="noopener"><i
+            class="icon icon-twitter"></i></a>
+    <a class="share-item share-pinterest u-hover-item"
+        href="https://pinterest.com/pin/create/button/?url=http://localhost:2368/what-people-like-to-3d-print/&media=&description=What%20do%20people%20like%20to%203D%20print%3F"
+        target="_blank" rel="noopener" data-pin-do="none"><i class="icon icon-pinterest"></i></a>
+    <a class="share-item share-linkedin u-hover-item"
+        href="https://www.linkedin.com/shareArticle?mini=true&url=http://localhost:2368/what-people-like-to-3d-print/&title=What%20do%20people%20like%20to%203D%20print%3F"
+        target="_blank" rel="noopener"><i class="icon icon-linkedin"></i></a>
+    <a class="share-item share-reddit u-hover-item"
+        href="https://reddit.com/submit?url=http://localhost:2368/what-people-like-to-3d-print/&title=What%20do%20people%20like%20to%203D%20print%3F" target="_blank" rel="noopener"><i
+            class="icon icon-reddit"></i></a>
+    <a class="share-item share-tumblr u-hover-item"
+        href="https://www.tumblr.com/widgets/share/tool?canonicalUrl=http://localhost:2368/what-people-like-to-3d-print/&title=What%20do%20people%20like%20to%203D%20print%3F"
+        target="_blank" rel="noopener"><i class="icon icon-tumblr"></i></a>
+    <a class="share-item share-vk u-hover-item"
+        href="http://vk.com/share.php?url=http://localhost:2368/what-people-like-to-3d-print/&title=What%20do%20people%20like%20to%203D%20print%3F" target="_blank" rel="noopener"><i
+            class="icon icon-vk"></i></a>
+    <a class="share-item share-pocket u-hover-item" href="https://getpocket.com/edit?url=http://localhost:2368/what-people-like-to-3d-print/"
+        target="_blank" rel="noopener"><i class="icon icon-pocket"></i></a>
+    <a class="share-item share-telegram u-hover-item"
+        href="https://t.me/share/url?url=http://localhost:2368/what-people-like-to-3d-print/&text=What%20do%20people%20like%20to%203D%20print%3F" target="_blank" rel="noopener"><i
+            class="icon icon-telegram"></i></a>
+</div>                            <section class="author">
+        <div class="author-image-placeholder u-placeholder">
+            <img class="author-image lazyload u-object-fit"
+                data-srcset="/content/images/size/w150/2022/07/IMG_20210703_160904-1.jpg"
+                src="../content/images/size/w150/2022/07/IMG_20210703_160904-1.jpg"
+                srcset="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                alt="Luis Medina">
+        </div>
+        <div class="author-wrapper">
+            <header class="author-header">
+                <div class="author-header-wrapper">
+                    <h4 class="author-name">Luis Medina</h4>
+                    <div class="author-social">
+                        <a class="author-social-item author-more"
+                            href="../author/luis/index.html">More posts</a>
+                    </div>
+                </div>
+            </header>
+            <div class="author-bio"></div>
+        </div>
+    </section>
+                </div>
+            </article>
+            <div class="navigation container medium">
+        <div class="navigation-item navigation-previous">
+            <a class="navigation-item-link button-arrow button-arrow-left" href="../replacing-matlab-with-python-part-3/index.html">
+                <i class="button-arrow-icon icon icon-arrow-left"></i> Previous Post
+            </a>
+        </div>
+
+</div>                        <section class="related-posts container medium">
+            <h3 class="related-title"><span class="text">You might also like...</span></h3>
+            <div class="row">
+                    <div class="col-md-4 related-column">
+                        <article class="post tag-3dprinting tag-blog tag-maker tag-organization tag-plans">
+                                <figure class="post-media">
+        <div class="u-placeholder rectangle">
+            <a class="post-image-link" href="../that-s-it-i-am-getting-a-more-reliable-3d-printer/index.html">
+                <img class="post-image lazyload u-object-fit"
+
+                    data-srcset="/content/images/size/w400/2022/07/1555354607653-1.jpg 400w, /content/images/size/w750/2022/07/1555354607653-1.jpg 750w, /content/images/size/w960/2022/07/1555354607653-1.jpg 960w, /content/images/size/w1140/2022/07/1555354607653-1.jpg 1140w, /content/images/size/w1920/2022/07/1555354607653-1.jpg 1920w"
+                    data-sizes="auto" src="../content/images/size/w960/2022/07/1555354607653-1.jpg"
+                    srcset="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                     alt="That&#x27;s it: I&#x27;m getting a more reliable 3D printer">
+            </a>
+        </div>
+
+    </figure>
+                            <header class="post-header">
+        <h2 class="post-title">
+            <a class="post-title-link" href="../that-s-it-i-am-getting-a-more-reliable-3d-printer/index.html">That&#x27;s it: I&#x27;m getting a more reliable 3D printer</a>
+        </h2>
+            <div class="post-meta">
+                <span class="post-meta-item post-meta-date">
+                    <time datetime="2022-07-05">Jul 5, 2022</time>
+                </span>
+                <span class="post-meta-item post-meta-length">
+                    5 min read
+                </span>
+                    <span class="post-meta-item post-meta-tags">
+                        <a class="post-tag post-tag-3dprinting" href="../tag/3dprinting/index.html"
+                                title="3dprinting">3dprinting</a><a class="post-tag post-tag-blog" href="../tag/blog/index.html"
+                                title="Blog">Blog</a><a class="post-tag post-tag-maker" href="../tag/maker/index.html"
+                                title="Maker">Maker</a><a class="post-tag post-tag-organization" href="../tag/organization/index.html"
+                                title="Organization">Organization</a><a class="post-tag post-tag-plans" href="../tag/plans/index.html"
+                                title="Plans">Plans</a>
+                    </span>
+            </div>
+</header>                        </article>
+                    </div>
+                    <div class="col-md-4 related-column">
+                        <article class="post tag-maker tag-plans tag-organization tag-cad tag-electronics tag-esp32 tag-3dprinting tag-python featured">
+                                <figure class="post-media">
+        <div class="u-placeholder rectangle">
+            <a class="post-image-link" href="../hello-world-welcome-to-my-blog/index.html">
+                <img class="post-image lazyload u-object-fit"
+
+                    data-srcset="/content/images/size/w400/2022/06/Portacoronas-23-15.jpg 400w, /content/images/size/w750/2022/06/Portacoronas-23-15.jpg 750w, /content/images/size/w960/2022/06/Portacoronas-23-15.jpg 960w, /content/images/size/w1140/2022/06/Portacoronas-23-15.jpg 1140w, /content/images/size/w1920/2022/06/Portacoronas-23-15.jpg 1920w"
+                    data-sizes="auto" src="../content/images/size/w960/2022/06/Portacoronas-23-15.jpg"
+                    srcset="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                     alt="Hello world! Welcome to my blog">
+            </a>
+        </div>
+
+    </figure>
+                            <header class="post-header">
+        <h2 class="post-title">
+            <a class="post-title-link" href="../hello-world-welcome-to-my-blog/index.html">Hello world! Welcome to my blog</a>
+        </h2>
+            <div class="post-meta">
+                <span class="post-meta-item post-meta-date">
+                    <time datetime="2022-06-30">Jun 30, 2022</time>
+                </span>
+                <span class="post-meta-item post-meta-length">
+                    2 min read
+                </span>
+                    <span class="post-meta-item post-meta-tags">
+                        <a class="post-tag post-tag-maker" href="../tag/maker/index.html"
+                                title="Maker">Maker</a><a class="post-tag post-tag-plans" href="../tag/plans/index.html"
+                                title="Plans">Plans</a><a class="post-tag post-tag-organization" href="../tag/organization/index.html"
+                                title="Organization">Organization</a><a class="post-tag post-tag-cad" href="../tag/cad/index.html"
+                                title="CAD">CAD</a><a class="post-tag post-tag-electronics" href="../tag/electronics/index.html"
+                                title="Electronics">Electronics</a><a class="post-tag post-tag-esp32" href="../tag/esp32/index.html"
+                                title="EsP32">EsP32</a><a class="post-tag post-tag-3dprinting" href="../tag/3dprinting/index.html"
+                                title="3dprinting">3dprinting</a><a class="post-tag post-tag-python" href="../tag/python/index.html"
+                                title="Python">Python</a>
+                    </span>
+            </div>
+</header>                        </article>
+                    </div>
+            </div>
+        </section>
+                </main>
+</div>
+        </div>
+        <footer class="site-footer container large">
+    <div class="copyright">
+        Powered by <a href="https://ghost.org/" target="_blank" rel="noopener">Ghost</a>
+    </div>
+
+        <nav class="footer-nav">
+            <ul class="nav-list u-plain-list">
+        <li class="menu-item menu-item-sign-up"><a class="menu-item-link"
+                href="index.html#/portal/">Sign up</a></li>
+</ul>
+        </nav>
+
+    <div class="footer-social">
+            <a class="footer-social-item footer-social-item-facebook" href="https://www.facebook.com/ghost"
+                target="_blank" rel="noopener" aria-label="Facebook">
+                <i class="icon icon-facebook"></i>
+            </a>
+            <a class="footer-social-item footer-social-item-twitter" href="https://twitter.com/ghost"
+                target="_blank" rel="noopener" aria-label="Twitter">
+                <i class="icon icon-twitter"></i>
+            </a>
+        <a class="footer-social-item footer-social-item-rss"
+            href="https://feedly.com/i/subscription/feed/http://localhost:2368/rss/" target="_blank" rel="noopener"
+            aria-label="RSS">
+            <i class="icon icon-rss"></i>
+        </a>
+    </div>
+</footer>    </div>
+
+    <div class="dimmer"></div>
+
+    <div class="off-canvas">
+        <div class="canvas-close">
+            <i class="canvas-icon icon icon-window-close"></i>
+        </div>
+        <div class="mobile-menu"></div>
+    </div>
+
+    <script
+        src="https://code.jquery.com/jquery-3.5.1.min.js"
+        integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
+        crossorigin="anonymous">
+    </script>
+    <script src="../assets/built/main.min.js@v=0f706ad2a7"></script>
+
+    
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-core.min.js" integrity="sha512-9khQRAUBYEJDCDVP2yw3LRUQvjJ0Pjx0EShmaQjcHa6AXiOv6qHQu9lCAIR8O+/D8FtaCoJ2c0Tf9Xo7hYH01Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/autoloader/prism-autoloader.min.js" integrity="sha512-fTl/qcO1VgvKtOMApX2PdZzkziyr2stM65GYPLGuYMnuMm1z2JLJG6XVU7C/mR+E7xBUqCivykuhlzfqxXBXbg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</body>
+
+</html>
