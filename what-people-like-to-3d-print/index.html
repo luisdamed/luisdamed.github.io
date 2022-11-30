@@ -25,7 +25,7 @@
     <meta property="og:title" content="What do people like to 3D print?" />
     <meta property="og:description" content="I used Python &quot;Requests&quot; module and Thingiverse&#x27;s REST API to analyze the popularity of different categories of files for 3D printing" />
     <meta property="og:url" content="http://localhost:2368/what-people-like-to-3d-print/" />
-    <meta property="og:image" content="http://localhost:2368/content/images/2022/11/IMG_1462.jpg" />
+    <meta property="og:image" content="IMG_1462.jpg" />
     <meta property="article:published_time" content="2022-11-30T16:14:58.000Z" />
     <meta property="article:modified_time" content="2022-11-30T16:14:58.000Z" />
     <meta property="article:tag" content="3dprinting" />
@@ -39,7 +39,7 @@
     <meta name="twitter:title" content="What do people like to 3D print?" />
     <meta name="twitter:description" content="I used Python &quot;Requests&quot; module and Thingiverse&#x27;s REST API to analyze the popularity of different categories of files for 3D printing" />
     <meta name="twitter:url" content="http://localhost:2368/what-people-like-to-3d-print/" />
-    <meta name="twitter:image" content="http://localhost:2368/content/images/2022/11/IMG_1462.jpg" />
+    <meta name="twitter:image" content="IMG_1462.jpg" />
     <meta name="twitter:label1" content="Written by" />
     <meta name="twitter:data1" content="Luis Medina" />
     <meta name="twitter:label2" content="Filed under" />
@@ -81,7 +81,7 @@
     "dateModified": "2022-11-30T16:14:58.000Z",
     "image": {
         "@type": "ImageObject",
-        "url": "http://localhost:2368/content/images/2022/11/IMG_1462.jpg",
+        "url": "IMG_1462.jpg",
         "width": 2000,
         "height": 2000
     },
@@ -276,7 +276,7 @@
 <p>That leaves me with likes and comments as metrics for popularity. Doing a similar analysis as before, I divided the like count for each category, by the number of models to get a useful metric:</p>
 <p>\[Like Density =   \frac{number \space of \space likes \space for\space category}{number\space of\space models\space for\space category}\]</p>
 <p>When comparing this with the total number of likes, I get the results below:</p>
-<!--kg-card-end: markdown--><!--kg-card-begin: html--><iframe width="900" height="900" frameborder="0" scrolling="no" src="BarChart_Python_Plotly_Thingiverse_likes_vs_likes_density_3D_printing.html" ></iframe><!--kg-card-end: html--><!--kg-card-begin: markdown--><p>As we saw before, most objects on the portal are in the “household” and “3D-printing” categories. For that reason, they have the largest number of likes. However,  “Toys-and-games” shows the highest density of likes by published files - more than double of the next highest one, “models”.</p>
+<!--kg-card-end: markdown--><!--kg-card-begin: html--><iframe width="900" height="450" frameborder="0" scrolling="no" src="BarChart_Python_Plotly_Thingiverse_likes_vs_likes_density_3D_printing.html" ></iframe><!--kg-card-end: html--><!--kg-card-begin: markdown--><p>As we saw before, most objects on the portal are in the “household” and “3D-printing” categories. For that reason, they have the largest number of likes. However,  “Toys-and-games” shows the highest density of likes by published files - more than double of the next highest one, “models”.</p>
 <p>I’m curious to know whether that is because there are relatively few “toys-and-games” models with an insane amount of likes, or just because the people really like them and there are genuinely more likes per model in that category.</p>
 <p>To find out, I plotted the empirical Cumulative Density Function of the like count for each category.</p>
 <!--kg-card-end: markdown--><figure class="kg-card kg-image-card"><img src="../content/images/2022/11/eCDF_Likes_by_3D_print_categories_Thingiverse_Python_Seaborn.jpeg" class="kg-image" alt loading="lazy" width="2000" height="1500" srcset="../content/images/size/w600/2022/11/eCDF_Likes_by_3D_print_categories_Thingiverse_Python_Seaborn.jpeg 600w, ../content/images/size/w1000/2022/11/eCDF_Likes_by_3D_print_categories_Thingiverse_Python_Seaborn.jpeg 1000w, ../content/images/size/w1600/2022/11/eCDF_Likes_by_3D_print_categories_Thingiverse_Python_Seaborn.jpeg 1600w, ../content/images/2022/11/eCDF_Likes_by_3D_print_categories_Thingiverse_Python_Seaborn.jpeg 2400w" sizes="(min-width: 720px) 720px"></figure><!--kg-card-begin: markdown--><p>It turns out that Toys and Games are really a lot more popular than the other categories (at least on Thingiverse). Around 60% of the Toys and Games models on the platform have less than 100 likes. For the other categories, that number is above 80% in all cases. In other words, there is a 40% chance that a Toys and Games model has more than 100 likes, and for the other categories, there is only a maximum chance of 20% for the Models category.</p>
